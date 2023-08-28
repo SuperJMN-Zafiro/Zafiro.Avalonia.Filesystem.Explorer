@@ -8,5 +8,5 @@ namespace Zafiro.Avalonia.FileExplorer.Sample.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    public FolderViewModel FolderViewModel { get; } = new(new LocalDirectory(new DirectoryInfo("D:\\"), Maybe<ILogger>.None));
+    public FolderViewModel FolderViewModel { get; } = new(new LocalDirectory(new DirectoryInfo("D:"), Maybe<ILogger>.None));
 }

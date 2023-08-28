@@ -58,27 +58,6 @@ public class FolderViewModel : ViewModelBase, IFolder
         return result;
     }
 
-    //public Task<Result> CreateFolder(string name)
-    //{
-    //    return Result
-    //        .Try(() => seaweed.CreateFolder(PathUtils.Combine(Path, name)))
-    //        .Tap(() => sourceCache.AddOrUpdate(new Folder(new FolderDto { Path = PathUtils.Combine(Path, name) }, seaweed)));
-    //}
-
-    //public Task<Result> DeleteFolder(string name)
-    //{
-    //    return Result
-    //        .Try(() => throw new NotImplementedException())
-    //        .Tap(() => sourceCache.Remove(name));
-    //}
-
-    //public Task<Result<IFolder>> Create(string path, ISeaweedFS seaweedFs)
-    //{
-    //    return Result
-    //        .Try(() => directory.GetFile())
-    //        .Map(folder => (IFolder) new Folder(folder, seaweedFs));
-    //}
-
     private Task<Result<IEnumerable<IEntry>>> GetEntries(IZafiroDirectory directory)
     {
         var files = directory.GetFiles().Map(files => files.Select(file => (IEntry)new FileViewModel(file)));
