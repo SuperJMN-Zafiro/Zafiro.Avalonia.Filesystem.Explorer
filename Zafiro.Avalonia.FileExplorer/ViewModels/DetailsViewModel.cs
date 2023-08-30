@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using DynamicData;
@@ -16,12 +14,12 @@ using Zafiro.FileSystem;
 
 namespace Zafiro.Avalonia.FileExplorer.ViewModels;
 
-public class FolderViewModel : ViewModelBase, IFolder
+public class DetailsViewModel : ViewModelBase
 {
     private readonly IZafiroDirectory directory;
     private readonly SourceCache<IEntry, string> sourceCache;
 
-    public FolderViewModel(IZafiroDirectory directory)
+    public DetailsViewModel(IZafiroDirectory directory)
     {
         this.directory = directory;
         sourceCache = new SourceCache<IEntry, string>(entry => entry.Path.Name());
@@ -38,6 +36,7 @@ public class FolderViewModel : ViewModelBase, IFolder
 
         Children = collection;
         IsLoadingChildren = LoadChildren.IsExecuting;
+        LoadChildren.Execute().Subscribe();
     }
 
     public IObservable<bool> IsLoadingChildren { get; }
@@ -49,20 +48,10 @@ public class FolderViewModel : ViewModelBase, IFolder
     public ReadOnlyObservableCollection<IEntry> Children { get; }
     public string Name => Path.Name();
 
-    public async Task<Result<IEntry>> Add(string name, Stream contents, CancellationToken cancellationToken)
-    {
-        var result = await directory.GetFile(name)
-            .Map(file => new FileViewModel(file))
-            .Tap(f => sourceCache.AddOrUpdate(f))
-            .Map(file => (IEntry)file);
-
-        return result;
-    }
-
     private Task<Result<IEnumerable<IEntry>>> GetEntries(IZafiroDirectory directory)
     {
         var files = directory.GetFiles().Map(files => files.Select(file => (IEntry)new FileViewModel(file)));
-        var dirs = directory.GetDirectories().Map(dirs => dirs.Select(dir => (IEntry)new FolderViewModel(dir)));
+        var dirs = directory.GetDirectories().Map(dirs => dirs.Select(dir => (IEntry)new FolderItemViewModel(dir)));
 
         return from f in files
             from n in dirs

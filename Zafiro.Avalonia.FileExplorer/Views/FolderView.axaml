@@ -9,9 +9,6 @@
 	<UserControl.Resources>
 
 		<ResourceDictionary>
-			<!--<ResourceDictionary.MergedDictionaries>
-				<ResourceInclude Source="avares://Zafiro.Avalonia.FileExplorer/Styles/Expander.axaml"></ResourceInclude>
-			</ResourceDictionary.MergedDictionaries>-->
 
 			<DrawingGroup x:Key="Folder">
 				<DrawingGroup.ClipGeometry>
@@ -38,21 +35,21 @@
 				</DrawingGroup>
 			</DrawingGroup>
 
-            <ControlTheme x:Key="{x:Type Expander}" TargetType="Expander">
-                <Setter Property="Template">
-                    <Setter.Value>
-                        <ControlTemplate>
-                            <DockPanel>
-                                <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
-                                    <ToggleButton IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}" />
-                                    <ContentPresenter Content="{TemplateBinding Header}" />
-                                </StackPanel>
-                                <ContentPresenter Padding="12 0 0 0" Content="{TemplateBinding Content}" IsVisible="{TemplateBinding IsExpanded, Mode=TwoWay}"></ContentPresenter>
-                            </DockPanel>
-                        </ControlTemplate>
-                    </Setter.Value>
-                </Setter>
-            </ControlTheme>
+			<ControlTheme x:Key="{x:Type Expander}" TargetType="Expander">
+				<Setter Property="Template">
+					<Setter.Value>
+						<ControlTemplate>
+							<DockPanel>
+								<StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+									<ToggleButton Content="+" IsChecked="{TemplateBinding IsExpanded, Mode=TwoWay}" />
+									<ContentPresenter Content="{TemplateBinding Header}" />
+								</StackPanel>
+								<ContentPresenter Padding="12 0 0 0" Content="{TemplateBinding Content}" IsVisible="{TemplateBinding IsExpanded, Mode=TwoWay}"></ContentPresenter>
+							</DockPanel>
+						</ControlTemplate>
+					</Setter.Value>
+				</Setter>
+			</ControlTheme>
 
 		</ResourceDictionary>
 
@@ -67,15 +64,18 @@
 		</Expander.Styles>
 
 		<Expander.Header>
-			<DockPanel>
-				<Image Margin="4" DockPanel.Dock="Left" Height="24">
-					<Image.Source>
-						<DrawingImage Drawing="{StaticResource Folder}" />
-					</Image.Source>
-				</Image>
-				<TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
-			</DockPanel>
-		</Expander.Header>
+            <DockPanel>
+                <Image Margin="4" DockPanel.Dock="Left" Height="24">
+                    <Image.Source>
+                        <DrawingImage Drawing="{StaticResource Folder}" />
+                    </Image.Source>
+                </Image>
+                <Panel>
+                    <ProgressBar HorizontalAlignment="Stretch" Height="2" VerticalAlignment="Bottom" IsIndeterminate="True" IsVisible="{Binding IsLoadingChildren^}" />
+                    <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+                </Panel>
+            </DockPanel>
+        </Expander.Header>
 		<ListBox ItemsSource="{Binding Children}">
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
@@ -84,7 +84,7 @@
 			</ListBox.ItemsPanel>
 			<Interaction.Behaviors>
 				<DataTriggerBehavior Binding="{Binding #Expander.IsExpanded}" Value="True">
-					<InvokeCommandAction Command="{Binding Load}" />
+					<InvokeCommandAction Command="{Binding LoadChildren}" />
 				</DataTriggerBehavior>
 			</Interaction.Behaviors>
 		</ListBox>

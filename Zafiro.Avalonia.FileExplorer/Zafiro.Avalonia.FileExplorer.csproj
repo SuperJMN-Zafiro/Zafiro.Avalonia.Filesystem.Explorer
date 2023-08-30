@@ -15,5 +15,15 @@
     <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Zafiro.FileSystem.Local" Version="4.0.16" />
+    <PackageReference Include="Zafiro.FileSystem.SeaweedFS" Version="4.0.16" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Views\DetailsView.axaml.cs">
+      <DependentUpon>%(Filename)</DependentUpon>
+    </Compile>
+    <Compile Update="Views\FolderItemView.axaml.cs">
+      <DependentUpon>FolderItemView.axaml</DependentUpon>
+    </Compile>
   </ItemGroup>
 </Project>
