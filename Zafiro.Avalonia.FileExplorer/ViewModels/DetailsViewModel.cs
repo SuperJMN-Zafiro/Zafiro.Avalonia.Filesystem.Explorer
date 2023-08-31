@@ -9,6 +9,7 @@ using CSharpFunctionalExtensions;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 
@@ -37,7 +38,10 @@ public class DetailsViewModel : ViewModelBase
         Children = collection;
         IsLoadingChildren = LoadChildren.IsExecuting;
         LoadChildren.Execute().Subscribe();
+        SelectedItems = this.WhenAnyValue(x => x.SelectedItem);
     }
+
+    public IObservable<IEntry> SelectedItems { get; }
 
     public IObservable<bool> IsLoadingChildren { get; }
 
@@ -46,6 +50,9 @@ public class DetailsViewModel : ViewModelBase
     public ZafiroPath Path => directory.Path;
 
     public ReadOnlyObservableCollection<IEntry> Children { get; }
+
+    [Reactive] public IEntry SelectedItem { get; set; }
+
     public string Name => Path.Name();
 
     private Task<Result<IEnumerable<IEntry>>> GetEntries(IZafiroDirectory directory)

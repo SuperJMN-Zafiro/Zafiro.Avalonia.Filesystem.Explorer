@@ -1,0 +1,19 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Zafiro.Avalonia.FileExplorer.Views.FolderContentsView"
+             x:DataType="viewModels:FolderContentsViewModel">
+	<DockPanel>
+		<DockPanel DockPanel.Dock="Top">
+			<StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
+				<Button Content="Load" Command="{Binding GoToPath}" />
+				<Button Content="Back" Command="{Binding GoBack}" DockPanel.Dock="Right" />
+            </StackPanel>
+			<TextBox Text="{Binding RequestedPath}" VerticalAlignment="Center" />
+		</DockPanel>
+		<ContentControl Content="{Binding Details}" />
+	</DockPanel>
+</UserControl>

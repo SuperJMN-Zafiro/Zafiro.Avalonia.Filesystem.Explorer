@@ -13,9 +13,6 @@
 		<vm:MainViewModel />
 	</Design.DataContext>
 
-	<Grid ColumnDefinitions="Auto *">
-		<ContentControl Content="{Binding FolderViewModel}" />
-        <ContentControl Grid.Column="1" Content="{Binding DetailsViewModel}" />
-    </Grid>
+    <ContentControl  Content="{Binding Contents}" />
 
 </UserControl>

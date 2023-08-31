@@ -6,7 +6,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.Views.DetailsView"
              x:DataType="viewModels:DetailsViewModel">
-    <ListBox ItemsSource="{Binding Children}">
+    <ListBox ItemsSource="{Binding Children}" SelectedItem="{Binding SelectedItem}">
         <ListBox.ItemsPanel>
             <ItemsPanelTemplate>
                 <StackPanel />

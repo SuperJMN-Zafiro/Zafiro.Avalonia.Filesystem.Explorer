@@ -1,5 +1,7 @@
-﻿namespace Zafiro.Avalonia.FileExplorer.ViewModels;
+﻿using ReactiveUI;
 
-public class ViewModelBase
+namespace Zafiro.Avalonia.FileExplorer.ViewModels;
+
+public class ViewModelBase : ReactiveObject
 {
 }

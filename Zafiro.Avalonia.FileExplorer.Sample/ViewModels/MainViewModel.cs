@@ -22,17 +22,20 @@ public class MainViewModel : ViewModelBase
     public MainViewModel()
     {
         fileSystem = new SeaweedFileSystem(new SeaweedFSClient(new HttpClient() { BaseAddress = new Uri("http://192.168.1.31:8888") }), Maybe<ILogger>.None);
-        var command = ReactiveCommand.CreateFromTask(() => fileSystem.GetDirectory("/"));
-        vm = command.Successes().Select(m => new FolderViewModel(m)).ToProperty(this, x => x.FolderViewModel);
-        command.Failures().Subscribe(s => { });
-        command.Execute().Subscribe();
+        Contents = new FolderContentsViewModel(fileSystem);
+        //var command = ReactiveCommand.CreateFromTask(() => fileSystem.GetDirectory("/"));
+        //vm = command.Successes().Select(m => new FolderViewModel(m)).ToProperty(this, x => x.FolderViewModel);
+        //command.Failures().Subscribe(s => { });
+        //command.Execute().Subscribe();
 
-        var loadDetails = ReactiveCommand.CreateFromTask(() => fileSystem.GetDirectory("/Música"));
-        
-        details = loadDetails.Successes().Select(directory => new DetailsViewModel(directory)).ToProperty(this, x => x.DetailsViewModel);
-        loadDetails.Execute().Subscribe();
+        //var loadDetails = ReactiveCommand.CreateFromTask(() => fileSystem.GetDirectory("/Música"));
+
+        //details = loadDetails.Successes().Select(directory => new DetailsViewModel(directory)).ToProperty(this, x => x.DetailsViewModel);
+        //loadDetails.Execute().Subscribe();
     }
 
+    public FolderContentsViewModel Contents { get; }
+    
     public DetailsViewModel DetailsViewModel => details.Value;
 
     public FolderViewModel FolderViewModel => vm.Value;
