@@ -21,20 +21,6 @@ public class FolderContentsViewModel : ViewModelBase
     {
         FileSystem = fileSystem;
         History = new History<ZafiroPath>(GetDefaultPath());
-        
-        //GoToPath = ReactiveCommand.CreateFromTask(() => fileSystem.GetDirectory(Path!), this.WhenAnyValue(x => x.Path).NotNull());
-        //GoToPath.Successes().Select(x => x.Path).BindTo(this, x => x.History.CurrentFolder);
-
-        //details = GoToPath.Successes()
-        //    .Select(directory => new DetailsViewModel(directory))
-        //    .ToProperty(this, model => model.Details);
-
-        //this.WhenAnyValue(x => x.History.CurrentFolder)
-        //    .BindTo(this, x => x.Path);
-
-        //this.WhenAnyObservable(x => x.Details.SelectedItems).OfType<FolderItemViewModel>()
-        //    .Do(activatedFolder => Path = activatedFolder.Path)
-        //    .Subscribe();
 
         Path = GetDefaultPath();
         GoToPath = ReactiveCommand.CreateFromTask(() => fileSystem.GetDirectory(RequestedPath!), this.WhenAnyValue(x => x.RequestedPath).NotNull());
@@ -42,6 +28,10 @@ public class FolderContentsViewModel : ViewModelBase
         details = GoToPath.Successes()
             .Select(directory => new DetailsViewModel(directory))
             .ToProperty(this, model => model.Details);
+
+        GoToPath.Successes()
+            .Select(directory => directory.Path)
+            .ToProperty(this, model => model.Path);
 
         GoToPath.Successes().Select(x => x.Path).BindTo(this, x => x.History.CurrentFolder);
         this.WhenAnyObservable(x => x.Details.SelectedItems).OfType<FolderItemViewModel>()
@@ -66,8 +56,7 @@ public class FolderContentsViewModel : ViewModelBase
 
     public ReactiveCommand<Unit, Result<IZafiroDirectory>> GoToPath { get; }
 
-    [Reactive]
-    public string Path { get; set; }
+    public ZafiroPath Path { get; private set; }
 
     public IObservable<bool> IsNavigating { get; }
 
