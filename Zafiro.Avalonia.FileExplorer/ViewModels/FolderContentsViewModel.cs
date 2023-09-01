@@ -52,6 +52,7 @@ public class FolderContentsViewModel : ViewModelBase
             .InvokeCommand(GoToPath);
 
         GoBack = History.GoBack;
+        IsNavigating = GoToPath.IsExecuting.CombineLatest(this.WhenAnyObservable(model => model.Details.IsLoadingChildren), (b, b1) => b || b1);
     }
 
     public ReactiveCommand<Unit, Unit> GoBack { get; set; }
@@ -67,6 +68,8 @@ public class FolderContentsViewModel : ViewModelBase
 
     [Reactive]
     public string Path { get; set; }
+
+    public IObservable<bool> IsNavigating { get; }
 
     private static ZafiroPath GetDefaultPath()
     {

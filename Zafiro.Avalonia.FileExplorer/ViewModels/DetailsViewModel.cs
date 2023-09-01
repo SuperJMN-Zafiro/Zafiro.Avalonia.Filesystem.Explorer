@@ -25,7 +25,7 @@ public class DetailsViewModel : ViewModelBase
         this.directory = directory;
         sourceCache = new SourceCache<IEntry, string>(entry => entry.Path.Name());
         LoadChildren = ReactiveCommand.CreateFromTask(() => GetEntries(directory));
-        
+
         LoadChildren.Successes().Do(entries => sourceCache.Edit(updater => updater.Load(entries))).Subscribe();
 
         sourceCache
@@ -36,7 +36,7 @@ public class DetailsViewModel : ViewModelBase
             .Subscribe();
 
         Children = collection;
-        IsLoadingChildren = LoadChildren.IsExecuting;
+        IsLoadingChildren = LoadChildren.IsExecuting.DelayItem(true, TimeSpan.FromSeconds(0.5));
         LoadChildren.Execute().Subscribe();
         SelectedItems = this.WhenAnyValue(x => x.SelectedItem);
     }
@@ -46,7 +46,7 @@ public class DetailsViewModel : ViewModelBase
     public IObservable<bool> IsLoadingChildren { get; }
 
     public ReactiveCommand<Unit, Result<IEnumerable<IEntry>>> LoadChildren { get; }
-    
+
     public ZafiroPath Path => directory.Path;
 
     public ReadOnlyObservableCollection<IEntry> Children { get; }
@@ -61,7 +61,17 @@ public class DetailsViewModel : ViewModelBase
         var dirs = directory.GetDirectories().Map(dirs => dirs.Select(dir => (IEntry)new FolderItemViewModel(dir)));
 
         return from f in files
-            from n in dirs
-            select f.Concat(n);
+               from n in dirs
+               select f.Concat(n);
+    }
+}
+
+public static class ObservableExtensions
+{
+    public static IObservable<T> DelayItem<T>(this IObservable<T> sequence, T itemToDelay, TimeSpan timeSpan) where T : notnull
+    {
+        return sequence
+            .Select(x => x.Equals(itemToDelay) ? Observable.Return(x).Delay(timeSpan) : Observable.Return(x))
+            .Switch();
     }
 }

@@ -8,11 +8,12 @@
              x:DataType="viewModels:FolderContentsViewModel">
 	<DockPanel>
 		<DockPanel DockPanel.Dock="Top">
-			<StackPanel Orientation="Horizontal" DockPanel.Dock="Right">
-				<Button Content="Load" Command="{Binding GoToPath}" />
-				<Button Content="Back" Command="{Binding GoBack}" DockPanel.Dock="Right" />
-            </StackPanel>
-			<TextBox Text="{Binding RequestedPath}" VerticalAlignment="Center" />
+			<Button Content="Back" Command="{Binding GoBack}" DockPanel.Dock="Left" />
+			<Button Content="Load" Command="{Binding GoToPath}" DockPanel.Dock="Right" />
+			<Panel>
+				<ProgressBar VerticalAlignment="Stretch" IsIndeterminate="True" IsVisible="{Binding IsNavigating^}" />
+				<TextBox Text="{Binding RequestedPath}" VerticalAlignment="Center" />
+			</Panel>
 		</DockPanel>
 		<ContentControl Content="{Binding Details}" />
 	</DockPanel>

@@ -3,14 +3,18 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.ViewModels"
+             xmlns:avaloniaProgressRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.Views.DetailsView"
              x:DataType="viewModels:DetailsViewModel">
-    <ListBox ItemsSource="{Binding Children}" SelectedItem="{Binding SelectedItem}">
-        <ListBox.ItemsPanel>
-            <ItemsPanelTemplate>
-                <StackPanel />
-            </ItemsPanelTemplate>
-        </ListBox.ItemsPanel>
-    </ListBox>
+	<Panel>
+		<ListBox ItemsSource="{Binding Children}" SelectedItem="{Binding SelectedItem}">
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<StackPanel />
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+		</ListBox>
+		<avaloniaProgressRing:ProgressRing Height="100" Width="100" IsActive="{Binding IsLoadingChildren^}" />
+    </Panel>
 </UserControl>
