@@ -13,12 +13,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zafiro.Avalonia.FileExplore
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{19444FF7-E9CD-43A0-B099-63618A3AC483}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{2DD1EB3E-11A2-45F9-AC8F-A34D04418D00}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2DD1EB3E-11A2-45F9-AC8F-A34D04418D00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2DD1EB3E-11A2-45F9-AC8F-A34D04418D00}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F4F7D40-7B0F-4E95-A652-C34DA2FAED91}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3F4F7D40-7B0F-4E95-A652-C34DA2FAED91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F4F7D40-7B0F-4E95-A652-C34DA2FAED91}.Release|Any CPU.ActiveCfg = Release|Any CPU
