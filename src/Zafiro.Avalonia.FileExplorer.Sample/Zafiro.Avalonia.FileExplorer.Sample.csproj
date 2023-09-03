@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Zafiro.Avalonia.FileExplorer.Pickers\Zafiro.Avalonia.FileExplorer.Pickers.csproj" />
     <ProjectReference Include="..\Zafiro.Avalonia.FileExplorer\Zafiro.Avalonia.FileExplorer.csproj" />
   </ItemGroup>
 </Project>

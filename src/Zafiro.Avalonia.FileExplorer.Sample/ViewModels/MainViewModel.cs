@@ -1,13 +1,13 @@
 ﻿using System;
-using System.IO;
 using System.Net.Http;
-using System.Reactive.Linq;
-using System.Threading;
+using System.Reactive;
 using CSharpFunctionalExtensions;
 using ReactiveUI;
 using Serilog;
+using Zafiro.Avalonia.Dialogs;
+using Zafiro.Avalonia.FileExplorer.Pickers;
 using Zafiro.Avalonia.FileExplorer.ViewModels;
-using Zafiro.CSharpFunctionalExtensions;
+using Zafiro.FileSystem;
 using Zafiro.FileSystem.SeaweedFS;
 using Zafiro.FileSystem.SeaweedFS.Filer.Client;
 
@@ -22,7 +22,8 @@ public class MainViewModel : ViewModelBase
     public MainViewModel()
     {
         fileSystem = new SeaweedFileSystem(new SeaweedFSClient(new HttpClient() { BaseAddress = new Uri("http://192.168.1.31:8888") }), Maybe<ILogger>.None);
-        Contents = new FolderContentsViewModel(fileSystem);
+        Contents = new FolderContentsViewModel(fileSystem, DirectoryListing.GetAll);
+        var picker = new FolderPicker(new ClassicDesktopDialogService(Maybe<Action<ConfigureWindowContext>>.None), () => fileSystem);
         //var command = ReactiveCommand.CreateFromTask(() => fileSystem.GetDirectory("/"));
         //vm = command.Successes().Select(m => new FolderViewModel(m)).ToProperty(this, x => x.FolderViewModel);
         //command.Failures().Subscribe(s => { });
@@ -32,7 +33,11 @@ public class MainViewModel : ViewModelBase
 
         //details = loadDetails.Successes().Select(directory => new DetailsViewModel(directory)).ToProperty(this, x => x.DetailsViewModel);
         //loadDetails.Execute().Subscribe();
+        Pick = ReactiveCommand.CreateFromObservable(() => picker.Pick("Pick a folder"));
+        Pick.Subscribe(maybe => { });
     }
+
+    public ReactiveCommand<Unit, Maybe<IZafiroDirectory>> Pick { get; set; }
 
     public FolderContentsViewModel Contents { get; }
     

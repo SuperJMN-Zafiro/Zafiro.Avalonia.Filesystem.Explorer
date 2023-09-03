@@ -14,6 +14,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Zafiro.Avalonia.FileExplorer.Sample\Zafiro.Avalonia.FileExplorer.Sample.csproj" />
     <ProjectReference Include="..\Zafiro.Avalonia.FileExplorer\Zafiro.Avalonia.FileExplorer.csproj" />
   </ItemGroup>
 </Project>

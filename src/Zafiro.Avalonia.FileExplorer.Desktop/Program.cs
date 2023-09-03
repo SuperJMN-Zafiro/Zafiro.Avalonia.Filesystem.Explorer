@@ -2,6 +2,7 @@
 
 using Avalonia;
 using Avalonia.ReactiveUI;
+using Zafiro.Avalonia.FileExplorer.Sample;
 
 namespace Zafiro.Avalonia.FileExplorer.Desktop;
 

@@ -13,6 +13,9 @@
 		<vm:MainViewModel />
 	</Design.DataContext>
 
-    <ContentControl  Content="{Binding Contents}" />
+	<DockPanel>
+        <Button DockPanel.Dock="Top" Content="Pick" Command="{Binding Pick}" />
+        <ContentControl Content="{Binding Contents}" />
+	</DockPanel>
 
 </UserControl>

@@ -15,21 +15,21 @@ namespace Zafiro.Avalonia.FileExplorer.ViewModels;
 public class FolderContentsViewModel : ViewModelBase
 {
     private readonly ObservableAsPropertyHelper<DetailsViewModel> details;
+    private readonly ObservableAsPropertyHelper<ZafiroPath> path;
     public IFileSystem FileSystem { get; }
 
-    public FolderContentsViewModel(IFileSystem fileSystem)
+    public FolderContentsViewModel(IFileSystem fileSystem, DirectoryListing.ListingStrategy strategy)
     {
         FileSystem = fileSystem;
         History = new History<ZafiroPath>(GetDefaultPath());
 
-        Path = GetDefaultPath();
         GoToPath = ReactiveCommand.CreateFromTask(() => fileSystem.GetDirectory(RequestedPath!), this.WhenAnyValue(x => x.RequestedPath).NotNull());
 
         details = GoToPath.Successes()
-            .Select(directory => new DetailsViewModel(directory))
+            .Select(directory => new DetailsViewModel(directory, strategy))
             .ToProperty(this, model => model.Details);
 
-        GoToPath.Successes()
+        path = GoToPath.Successes()
             .Select(directory => directory.Path)
             .ToProperty(this, model => model.Path);
 
@@ -43,7 +43,11 @@ public class FolderContentsViewModel : ViewModelBase
 
         GoBack = History.GoBack;
         IsNavigating = GoToPath.IsExecuting.CombineLatest(this.WhenAnyObservable(model => model.Details.IsLoadingChildren), (b, b1) => b || b1);
+
+        RequestedPath = "/";
     }
+
+    public ZafiroPath Path => path.Value;
 
     public ReactiveCommand<Unit, Unit> GoBack { get; set; }
 
@@ -55,8 +59,6 @@ public class FolderContentsViewModel : ViewModelBase
     public DetailsViewModel Details => details.Value;
 
     public ReactiveCommand<Unit, Result<IZafiroDirectory>> GoToPath { get; }
-
-    public ZafiroPath Path { get; private set; }
 
     public IObservable<bool> IsNavigating { get; }
 
