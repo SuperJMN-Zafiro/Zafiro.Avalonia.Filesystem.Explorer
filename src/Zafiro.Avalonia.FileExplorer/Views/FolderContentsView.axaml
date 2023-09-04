@@ -3,6 +3,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.ViewModels"
+             xmlns:fileExplorer="clr-namespace:Zafiro.Avalonia.FileExplorer"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.Views.FolderContentsView"
              x:DataType="viewModels:FolderContentsViewModel">
@@ -42,8 +43,15 @@
 			</Button>
 			<Panel>
 				<ProgressBar Margin="6" VerticalAlignment="Stretch" IsIndeterminate="True" IsVisible="{Binding IsNavigating^}" />
-				<TextBox Text="{Binding RequestedPath}" VerticalAlignment="Center" />
-			</Panel>
+				<TextBox AcceptsReturn="False" Text="{Binding RequestedPath}" VerticalAlignment="Center">
+                    <Interaction.Behaviors>
+                        <fileExplorer:TextBoxAutoSelectTextBehavior />
+                        <fileExplorer:KeyDownTrigger EventRoutingStrategy="Tunnel" MarkAsHandled="True" Key="Enter">
+                            <InvokeCommandAction Command="{Binding GoToPath}" />
+                        </fileExplorer:KeyDownTrigger>
+                    </Interaction.Behaviors>
+                </TextBox>
+            </Panel>
 		</DockPanel>
 		<ContentControl Content="{Binding Details}" />
 	</DockPanel>
