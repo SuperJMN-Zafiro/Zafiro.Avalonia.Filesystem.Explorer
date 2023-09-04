@@ -22,8 +22,9 @@ public class MainViewModel : ViewModelBase
     public MainViewModel()
     {
         fileSystem = new SeaweedFileSystem(new SeaweedFSClient(new HttpClient() { BaseAddress = new Uri("http://192.168.1.31:8888") }), Maybe<ILogger>.None);
-        Contents = new FolderContentsViewModel(fileSystem, DirectoryListing.GetAll);
-        var picker = new FolderPicker(new ClassicDesktopDialogService(Maybe<Action<ConfigureWindowContext>>.None), () => fileSystem);
+        var notificationService = new NotificationDialog(new ClassicDesktopDialogService(Maybe<Action<ConfigureWindowContext>>.None));
+        Contents = new FolderContentsViewModel(fileSystem, DirectoryListing.GetAll, notificationService);
+        var picker = new FolderPicker(new ClassicDesktopDialogService(Maybe<Action<ConfigureWindowContext>>.None), fileSystem, notificationService);
         //var command = ReactiveCommand.CreateFromTask(() => fileSystem.GetDirectory("/"));
         //vm = command.Successes().Select(m => new FolderViewModel(m)).ToProperty(this, x => x.FolderViewModel);
         //command.Failures().Subscribe(s => { });

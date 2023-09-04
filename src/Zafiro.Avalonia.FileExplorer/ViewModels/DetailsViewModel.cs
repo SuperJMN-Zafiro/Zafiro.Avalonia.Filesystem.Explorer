@@ -12,42 +12,24 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
+using Zafiro.UI;
 using static Zafiro.Avalonia.FileExplorer.ViewModels.DirectoryListing;
 
 namespace Zafiro.Avalonia.FileExplorer.ViewModels;
-
-
-public class DirectoryListing
-{
-    public static Task<Result<IEnumerable<IEntry>>> GetAll(IZafiroDirectory directory)
-    {
-        var files = directory.GetFiles().Map(files => files.Select(file => (IEntry)new FileViewModel(file)));
-        var dirs = GetDirectories(directory);
-
-        return from f in files
-            from n in dirs
-            select f.Concat(n);
-    }
-
-    public static Task<Result<IEnumerable<IEntry>>> GetDirectories(IZafiroDirectory directory)
-    {
-        return directory.GetDirectories().Map(dirs => dirs.Select(dir => (IEntry)new FolderItemViewModel(dir)));
-    }
-
-    public delegate Task<Result<IEnumerable<IEntry>>> ListingStrategy(IZafiroDirectory directory);
-}
 
 public class DetailsViewModel : ViewModelBase
 {
     private readonly IZafiroDirectory directory;
 
-    public DetailsViewModel(IZafiroDirectory directory, ListingStrategy strategy)
+    public DetailsViewModel(IZafiroDirectory directory, Strategy strategy, INotificationService notificationService)
     {
         this.directory = directory;
         SourceCache<IEntry, string> sourceCache = new(entry => entry.Path.Name());
         LoadChildren = ReactiveCommand.CreateFromTask(() => strategy(directory));
 
         LoadChildren.Successes().Do(entries => sourceCache.Edit(updater => updater.Load(entries))).Subscribe();
+        LoadChildren.HandleErrorsWith(notificationService);
+
 
         sourceCache
             .Connect()

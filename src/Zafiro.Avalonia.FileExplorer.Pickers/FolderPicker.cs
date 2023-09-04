@@ -12,18 +12,19 @@ namespace Zafiro.Avalonia.FileExplorer.Pickers
     public class FolderPicker : IFolderPicker
     {
         private readonly IDialogService dialogService;
-        private readonly Func<IFileSystem> fileSystemFactory;
+        private readonly IFileSystem fileSystem;
+        private readonly INotificationService notificationService;
 
-        public FolderPicker(IDialogService dialogService, Func<IFileSystem> fileSystemFactory)
+        public FolderPicker(IDialogService dialogService, IFileSystem fileSystem, INotificationService notificationService)
         {
             this.dialogService = dialogService;
-            this.fileSystemFactory = fileSystemFactory;
+            this.fileSystem = fileSystem;
+            this.notificationService = notificationService;
         }
 
         public IObservable<Maybe<IZafiroDirectory>> Pick(string title)
         {
-            var fileSystem = fileSystemFactory();
-            var folderContentsViewModel = new FolderContentsViewModel(fileSystem, DirectoryListing.GetDirectories);
+            var folderContentsViewModel = new FolderContentsViewModel(fileSystem, DirectoryListing.GetDirectories,notificationService);
             var fromAsync = Observable
                 .FromAsync(() =>
                 {
