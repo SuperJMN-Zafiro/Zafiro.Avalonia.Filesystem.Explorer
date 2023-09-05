@@ -5,7 +5,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Zafiro.Avalonia.Dialogs" Version="3.0.26" />
+		<PackageReference Include="Zafiro.Avalonia.Dialogs" Version="3.0.32" />
 		<PackageReference Include="Zafiro.UI" Version="4.0.7" />
 	</ItemGroup>
 	<ItemGroup>
