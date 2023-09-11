@@ -3,7 +3,6 @@ using CSharpFunctionalExtensions;
 using ReactiveUI;
 using Zafiro.Avalonia.Dialogs;
 using Zafiro.Avalonia.FileExplorer.ViewModels;
-using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.UI;
 
@@ -30,8 +29,13 @@ namespace Zafiro.Avalonia.FileExplorer.Pickers
                 {
                     var pickAFolder = title;
                     var okTitle = "Select";
-                    return dialogService.Prompt(pickAFolder, folderContentsViewModel, okTitle, model => ReactiveCommand.CreateFromObservable(() => Observable.FromAsync(() => fileSystem.GetDirectory(model.Path)).Successes()));
-                });
+                    return dialogService.ShowDialog(folderContentsViewModel, pickAFolder, model => Observable.FromAsync(() => model.Result), new OptionConfiguration<FolderContentsViewModel, ZafiroPath>("OK", x => ReactiveCommand.Create(() => x.SetResult(x.Path))));
+                })
+                .SelectMany(path =>
+                {
+                    return path.Map(zafiroPath => fileSystem.GetDirectory(zafiroPath));
+                })
+                .Select(maybe => maybe.Where(result => result.IsSuccess).Select(x => x.Value));
 
             return fromAsync;
         }

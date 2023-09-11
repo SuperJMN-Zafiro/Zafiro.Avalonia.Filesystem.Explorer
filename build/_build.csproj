@@ -8,10 +8,11 @@
 		<NukeRootDirectory>..</NukeRootDirectory>
 		<NukeScriptDirectory>..</NukeScriptDirectory>
 		<NukeTelemetryVersion>1</NukeTelemetryVersion>
+		<IsPackable>False</IsPackable>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Nuke.Common" Version="7.0.4" />
+		<PackageReference Include="Nuke.Common" Version="7.0.1" />
 	</ItemGroup>
 
 	<ItemGroup>
