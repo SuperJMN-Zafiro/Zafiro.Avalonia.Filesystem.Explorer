@@ -4,11 +4,12 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
+	<Import Project="..\Common.props" />
 	<ItemGroup>
-		<PackageReference Include="Zafiro.Avalonia.Dialogs" Version="3.0.34" />
+		<PackageReference Include="Zafiro.Avalonia.Dialogs" Version="3.0.35" />
 		<PackageReference Include="Zafiro.UI" Version="4.0.8" />
 	</ItemGroup>
 	<ItemGroup>
-		<ProjectReference Include="..\Zafiro.Avalonia.FileExplorer\Zafiro.Avalonia.FileExplorer.csproj" />
+	  <ProjectReference Include="..\Zafiro.Avalonia.FileExplorer\Zafiro.Avalonia.FileExplorer.csproj" />
 	</ItemGroup>
 </Project>

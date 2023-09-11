@@ -15,6 +15,6 @@
 				</ItemsPanelTemplate>
 			</ListBox.ItemsPanel>
 		</ListBox>
-		<avaloniaProgressRing:ProgressRing Height="100" Width="100" IsActive="{Binding IsLoadingChildren^}" />
+		<avaloniaProgressRing:ProgressRing Foreground="{DynamicResource SystemAccentColor}" Height="100" Width="100" IsActive="{Binding IsLoadingChildren^}" />
     </Panel>
 </UserControl>
