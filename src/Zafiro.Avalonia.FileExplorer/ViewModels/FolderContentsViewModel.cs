@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Zafiro.Avalonia.MigrateToZafiro;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.Mixins;
@@ -11,10 +13,11 @@ using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.ViewModels;
 
-public class FolderContentsViewModel : ViewModelBase
+public class FolderContentsViewModel : ViewModelBase, IHaveResult<ZafiroPath>
 {
     private readonly ObservableAsPropertyHelper<DetailsViewModel> details;
     private readonly ObservableAsPropertyHelper<ZafiroPath> path;
+    private TaskCompletionSource<ZafiroPath> tck = new();
 
     public FolderContentsViewModel(IFileSystem fileSystem, DirectoryListing.Strategy strategy, INotificationService notificationService)
     {
@@ -63,5 +66,12 @@ public class FolderContentsViewModel : ViewModelBase
     private static ZafiroPath GetDefaultPath()
     {
         return "/";
+    }
+
+    public Task<ZafiroPath> Result => tck.Task;
+
+    public void SetResult(ZafiroPath result)
+    {
+        tck.SetResult(result);
     }
 }
