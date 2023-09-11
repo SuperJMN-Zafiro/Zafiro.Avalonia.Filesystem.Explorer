@@ -1,32 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-  <ItemGroup>
-    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro.Avalonia.FileExplorer\src\Zafiro.Avalonia.FileExplorer\Zafiro.Avalonia.FileExplorer.csproj">
-      <Temp>Zafiro.Avalonia.FileExplorer</Temp>
-    </ProjectReference>
-    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro.Avalonia\src\Zafiro.Avalonia.Dialogs\Zafiro.Avalonia.Dialogs.csproj" Version="3.0.32">
-      <Temp>E:\Repos\SuperJMN-Zafiro\Zafiro.Avalonia\src\Zafiro.Avalonia.Dialogs\Zafiro.Avalonia.Dialogs.csproj</Temp>
-      <Name>E:\Repos\SuperJMN-Zafiro\Zafiro.Avalonia\src\Zafiro.Avalonia.Dialogs\Zafiro.Avalonia.Dialogs.csproj</Name>
-    </ProjectReference>
-    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro.UI\src\Zafiro.UI\Zafiro.UI.csproj" Version="4.0.7">
-      <Temp>E:\Repos\SuperJMN-Zafiro\Zafiro.UI\src\Zafiro.UI\Zafiro.UI.csproj</Temp>
-      <Name>E:\Repos\SuperJMN-Zafiro\Zafiro.UI\src\Zafiro.UI\Zafiro.UI.csproj</Name>
-    </ProjectReference>
-    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro.FileSystem\src\Zafiro.FileSystem\Zafiro.FileSystem.csproj">
-      <Temp>Zafiro.FileSystem</Temp>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Zafiro.Avalonia.FileExplorer\Zafiro.Avalonia.FileExplorer.csproj" />
-    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro.Avalonia\src\Zafiro.Avalonia\Zafiro.Avalonia.csproj">
-      <Temp>Zafiro.Avalonia</Temp>
-    </ProjectReference>
-    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro\src\Zafiro\Zafiro.csproj">
-      <Temp>Zafiro</Temp>
-    </ProjectReference>
-  </ItemGroup>
+	<PropertyGroup>
+		<TargetFramework>net7.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Zafiro.Avalonia.Dialogs" Version="3.0.34" />
+		<PackageReference Include="Zafiro.UI" Version="4.0.8" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Zafiro.Avalonia.FileExplorer\Zafiro.Avalonia.FileExplorer.csproj" />
+	</ItemGroup>
 </Project>
