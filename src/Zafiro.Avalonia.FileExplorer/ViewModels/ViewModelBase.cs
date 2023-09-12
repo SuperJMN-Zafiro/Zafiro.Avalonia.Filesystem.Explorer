@@ -3,6 +3,6 @@ using Zafiro.Avalonia.Misc;
 
 namespace Zafiro.Avalonia.FileExplorer.ViewModels;
 
-public class ViewModelBase : ReactiveObject, IViewModel
+public class ViewModelBase : ReactiveObject
 {
 }
