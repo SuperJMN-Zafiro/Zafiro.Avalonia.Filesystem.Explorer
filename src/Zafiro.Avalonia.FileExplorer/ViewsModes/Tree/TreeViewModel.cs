@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading;
@@ -27,7 +26,7 @@ public class TreeViewModel : ReactiveObject
     {
         this.directory = directory;
         sourceCache = new SourceCache<IEntry, string>(entry => entry.Path.Name());
-        LoadChildren = ReactiveCommand.CreateFromTask(() => GetEntries(directory));
+        LoadChildren = ReactiveCommand.CreateFromTask(() => DirectoryListing.GetAll(directory));
 
         LoadChildren.Successes().Do(entries => sourceCache.Edit(updater => updater.Load(entries))).Subscribe();
 
@@ -59,15 +58,5 @@ public class TreeViewModel : ReactiveObject
             .Map(file => (IEntry)file);
 
         return result;
-    }
-
-    private Task<Result<IEnumerable<IEntry>>> GetEntries(IZafiroDirectory directory)
-    {
-        var files = directory.GetFiles().Map(files => files.Select(file => (IEntry)new FileItemViewModel(file)));
-        var dirs = directory.GetDirectories().Map(dirs => dirs.Select(dir => (IEntry)new TreeViewModel(dir)));
-
-        return from f in files
-               from n in dirs
-               select f.Concat(n);
     }
 }

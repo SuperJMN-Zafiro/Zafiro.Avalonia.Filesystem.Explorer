@@ -7,7 +7,6 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.Avalonia.FileExplorer.Model;
-using Zafiro.Avalonia.MigrateToZafiro;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.Mixins;
