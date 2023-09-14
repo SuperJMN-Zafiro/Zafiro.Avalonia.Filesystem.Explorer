@@ -11,22 +11,24 @@ using CSharpFunctionalExtensions;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
+using Zafiro.Avalonia.FileExplorer.Items;
+using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 
-namespace Zafiro.Avalonia.FileExplorer.ViewModels;
+namespace Zafiro.Avalonia.FileExplorer.ViewsModes.Tree;
 
-public class FolderViewModel : ViewModelBase, IFolder
+public class TreeViewModel : ReactiveObject
 {
     private readonly IZafiroDirectory directory;
     private readonly SourceCache<IEntry, string> sourceCache;
 
-    public FolderViewModel(IZafiroDirectory directory)
+    public TreeViewModel(IZafiroDirectory directory)
     {
         this.directory = directory;
         sourceCache = new SourceCache<IEntry, string>(entry => entry.Path.Name());
         LoadChildren = ReactiveCommand.CreateFromTask(() => GetEntries(directory));
-        
+
         LoadChildren.Successes().Do(entries => sourceCache.Edit(updater => updater.Load(entries))).Subscribe();
 
         sourceCache
@@ -43,7 +45,7 @@ public class FolderViewModel : ViewModelBase, IFolder
     public IObservable<bool> IsLoadingChildren { get; }
 
     public ReactiveCommand<Unit, Result<IEnumerable<IEntry>>> LoadChildren { get; }
-    
+
     public ZafiroPath Path => directory.Path;
 
     public ReadOnlyObservableCollection<IEntry> Children { get; }
@@ -52,7 +54,7 @@ public class FolderViewModel : ViewModelBase, IFolder
     public async Task<Result<IEntry>> Add(string name, Stream contents, CancellationToken cancellationToken)
     {
         var result = await directory.GetFile(name)
-            .Map(file => new FileViewModel(file))
+            .Map(file => new FileItemViewModel(file))
             .Tap(f => sourceCache.AddOrUpdate(f))
             .Map(file => (IEntry)file);
 
@@ -61,11 +63,11 @@ public class FolderViewModel : ViewModelBase, IFolder
 
     private Task<Result<IEnumerable<IEntry>>> GetEntries(IZafiroDirectory directory)
     {
-        var files = directory.GetFiles().Map(files => files.Select(file => (IEntry)new FileViewModel(file)));
-        var dirs = directory.GetDirectories().Map(dirs => dirs.Select(dir => (IEntry)new FolderViewModel(dir)));
+        var files = directory.GetFiles().Map(files => files.Select(file => (IEntry)new FileItemViewModel(file)));
+        var dirs = directory.GetDirectories().Map(dirs => dirs.Select(dir => (IEntry)new TreeViewModel(dir)));
 
         return from f in files
-            from n in dirs
-            select f.Concat(n);
+               from n in dirs
+               select f.Concat(n);
     }
 }

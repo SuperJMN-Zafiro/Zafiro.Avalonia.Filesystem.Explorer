@@ -2,7 +2,7 @@
 using CSharpFunctionalExtensions;
 using ReactiveUI;
 
-namespace Zafiro.Avalonia.FileExplorer.ViewModels;
+namespace Zafiro.Avalonia.FileExplorer.Model;
 
 public interface IHistory<T>
 {

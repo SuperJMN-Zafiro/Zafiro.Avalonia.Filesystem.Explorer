@@ -5,15 +5,17 @@ using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Zafiro.Avalonia.FileExplorer.Items;
+using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.MigrateToZafiro;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.Mixins;
 using Zafiro.UI;
 
-namespace Zafiro.Avalonia.FileExplorer.ViewModels;
+namespace Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents;
 
-public class FolderContentsViewModel : ViewModelBase, IHaveResult<ZafiroPath>
+public class FolderContentsViewModel : ReactiveObject, IHaveResult<ZafiroPath>
 {
     private readonly ObservableAsPropertyHelper<DetailsViewModel> details;
     private readonly ObservableAsPropertyHelper<ZafiroPath> path;

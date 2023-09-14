@@ -2,11 +2,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.ViewModels"
              xmlns:b="clr-namespace:Zafiro.Avalonia.Behaviors;assembly=Zafiro.Avalonia"
+             xmlns:folderContents1="clr-namespace:Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Zafiro.Avalonia.FileExplorer.Views.FolderContentsView"
-             x:DataType="viewModels:FolderContentsViewModel">
+             x:Class="Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents.FolderContentsView"
+             x:DataType="folderContents1:FolderContentsViewModel">
 
 	<UserControl.Styles>
         <Style Selector="Button">

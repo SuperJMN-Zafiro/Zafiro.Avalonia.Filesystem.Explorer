@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reactive.Linq;
 
-namespace Zafiro.Avalonia.FileExplorer.ViewModels;
+namespace Zafiro.Avalonia.FileExplorer.Model;
 
 public static class ObservableExtensions
 {

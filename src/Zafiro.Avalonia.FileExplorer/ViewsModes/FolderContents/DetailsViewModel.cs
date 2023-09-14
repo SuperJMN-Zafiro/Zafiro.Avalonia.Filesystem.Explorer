@@ -8,14 +8,16 @@ using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Zafiro.Avalonia.FileExplorer.Items;
+using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.UI;
-using static Zafiro.Avalonia.FileExplorer.ViewModels.DirectoryListing;
+using static Zafiro.Avalonia.FileExplorer.Model.DirectoryListing;
 
-namespace Zafiro.Avalonia.FileExplorer.ViewModels;
+namespace Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents;
 
-public class DetailsViewModel : ViewModelBase
+public class DetailsViewModel : ReactiveObject
 {
     private readonly IZafiroDirectory directory;
 

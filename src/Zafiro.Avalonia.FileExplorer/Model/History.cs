@@ -5,7 +5,7 @@ using CSharpFunctionalExtensions;
 using ReactiveUI;
 using Zafiro.FileSystem;
 
-namespace Zafiro.Avalonia.FileExplorer.ViewModels;
+namespace Zafiro.Avalonia.FileExplorer.Model;
 
 public class History<T> : ReactiveObject, IHistory<T>
 {

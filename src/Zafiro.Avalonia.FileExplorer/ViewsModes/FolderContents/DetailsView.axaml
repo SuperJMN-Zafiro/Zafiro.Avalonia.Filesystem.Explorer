@@ -2,11 +2,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.ViewModels"
              xmlns:avaloniaProgressRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
+             xmlns:folderContents="clr-namespace:Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Zafiro.Avalonia.FileExplorer.Views.DetailsView"
-             x:DataType="viewModels:DetailsViewModel">
+             x:Class="Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents.DetailsView"
+             x:DataType="folderContents:DetailsViewModel">
 	<Panel>
 		<ListBox ItemsSource="{Binding Children}" SelectedItem="{Binding SelectedItem}">
 			<ListBox.ItemsPanel>

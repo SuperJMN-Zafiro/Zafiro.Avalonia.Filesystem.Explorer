@@ -2,7 +2,8 @@
 using CSharpFunctionalExtensions;
 using ReactiveUI;
 using Zafiro.Avalonia.Dialogs;
-using Zafiro.Avalonia.FileExplorer.ViewModels;
+using Zafiro.Avalonia.FileExplorer.Model;
+using Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents;
 using Zafiro.FileSystem;
 using Zafiro.UI;
 

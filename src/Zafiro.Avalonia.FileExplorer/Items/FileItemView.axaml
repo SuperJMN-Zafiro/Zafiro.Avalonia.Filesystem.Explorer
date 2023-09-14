@@ -2,10 +2,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.ViewModels"
+             xmlns:items1="clr-namespace:Zafiro.Avalonia.FileExplorer.Items"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Zafiro.Avalonia.FileExplorer.Views.FileView"
-             x:DataType="viewModels:FileViewModel">
+             x:Class="Zafiro.Avalonia.FileExplorer.Items.FileItemView"
+             x:DataType="items1:FileItemViewModel">
 
 	<UserControl.Resources>
 		<DrawingGroup x:Key="FileDrawing">
@@ -58,6 +58,7 @@
 		<DrawingImage Drawing="{StaticResource FileDrawing}" x:Key="FileImage"/>
 	</UserControl.Resources>
 	<DockPanel>
+		<CheckBox IsVisible="False" IsChecked="{Binding IsSelectedMutable}" />
         <Image Source="{StaticResource FileImage}" Margin="4" DockPanel.Dock="Left" Height="24" />
         <TextBlock Text="{Binding Name}" VerticalAlignment="Center"  />
     </DockPanel>

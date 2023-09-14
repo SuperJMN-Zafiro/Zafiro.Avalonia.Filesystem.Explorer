@@ -7,7 +7,7 @@ using CSharpFunctionalExtensions;
 using DynamicData;
 using Zafiro.FileSystem;
 
-namespace Zafiro.Avalonia.FileExplorer.ViewModels;
+namespace Zafiro.Avalonia.FileExplorer.Model;
 
 public interface IFolder : IEntry
 {

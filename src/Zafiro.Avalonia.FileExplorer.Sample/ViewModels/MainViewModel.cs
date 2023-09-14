@@ -5,18 +5,20 @@ using CSharpFunctionalExtensions;
 using ReactiveUI;
 using Serilog;
 using Zafiro.Avalonia.Dialogs;
+using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.Pickers;
-using Zafiro.Avalonia.FileExplorer.ViewModels;
+using Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents;
 using Zafiro.FileSystem;
 using Zafiro.FileSystem.SeaweedFS;
 using Zafiro.FileSystem.SeaweedFS.Filer.Client;
+using Zafiro.Avalonia.FileExplorer.Items;
 
 namespace Zafiro.Avalonia.FileExplorer.Sample.ViewModels;
 
-public class MainViewModel : ViewModelBase
+public class MainViewModel : ReactiveObject
 {
     private readonly SeaweedFileSystem fileSystem;
-    private readonly ObservableAsPropertyHelper<FolderViewModel> vm;
+    private readonly ObservableAsPropertyHelper<FolderItemViewModel> vm;
     private readonly ObservableAsPropertyHelper<DetailsViewModel> details;
 
     public MainViewModel()
@@ -44,5 +46,5 @@ public class MainViewModel : ViewModelBase
     
     public DetailsViewModel DetailsViewModel => details.Value;
 
-    public FolderViewModel FolderViewModel => vm.Value;
+    public FolderItemViewModel FolderViewModel => vm.Value;
 }

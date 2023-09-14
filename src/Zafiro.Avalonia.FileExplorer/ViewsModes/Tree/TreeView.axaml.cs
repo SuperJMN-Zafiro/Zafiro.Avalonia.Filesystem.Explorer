@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Zafiro.Avalonia.FileExplorer.Views
+namespace Zafiro.Avalonia.FileExplorer.ViewsModes.Tree
 {
     public partial class FolderView : UserControl
     {
