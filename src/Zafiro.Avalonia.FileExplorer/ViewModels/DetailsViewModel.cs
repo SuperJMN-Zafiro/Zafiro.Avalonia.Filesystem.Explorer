@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using DynamicData;
 using DynamicData.Binding;
@@ -30,10 +28,9 @@ public class DetailsViewModel : ViewModelBase
         LoadChildren.Successes().Do(entries => sourceCache.Edit(updater => updater.Load(entries))).Subscribe();
         LoadChildren.HandleErrorsWith(notificationService);
 
-
         sourceCache
             .Connect()
-            .Sort(SortExpressionComparer<IEntry>.Descending(p => p is IFolder)
+            .Sort(SortExpressionComparer<IEntry>.Descending(p => p is FolderItemViewModel)
                 .ThenByAscending(p => p.Path.Name()))
             .Bind(out var collection)
             .Subscribe();
@@ -57,14 +54,4 @@ public class DetailsViewModel : ViewModelBase
     [Reactive] public IEntry SelectedItem { get; set; }
 
     public string Name => Path.Name();
-
-    private Task<Result<IEnumerable<IEntry>>> GetEntries(IZafiroDirectory directory)
-    {
-        var files = directory.GetFiles().Map(files => files.Select(file => (IEntry)new FileViewModel(file)));
-        var dirs = directory.GetDirectories().Map(dirs => dirs.Select(dir => (IEntry)new FolderItemViewModel(dir)));
-
-        return from f in files
-               from n in dirs
-               select f.Concat(n);
-    }
 }
