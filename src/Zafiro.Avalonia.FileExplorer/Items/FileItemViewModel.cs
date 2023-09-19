@@ -1,5 +1,4 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using ReactiveUI;
@@ -11,26 +10,24 @@ namespace Zafiro.Avalonia.FileExplorer.Items;
 
 public class FileItemViewModel : ReactiveObject, IFile
 {
-    private readonly IZafiroFile file;
+    public IZafiroFile File { get; }
 
     public FileItemViewModel(IZafiroFile file)
     {
-        this.file = file;
-        IsSelected = this.WhenAnyValue(x => x.IsSelectedMutable);
+        File = file;
     }
 
-    [Reactive]
-    public bool IsSelectedMutable { get; set; }
-
-    public ZafiroPath Path => file.Path;
+    public ZafiroPath Path => File.Path;
 
     public Task<Result<Stream>> GetStream()
     {
-        return file.GetContents();
+        return File.GetContents();
     }
 
     public string Name => Path.Name();
 
     public long Size { get; }
-    public IObservable<bool> IsSelected { get; }
+
+    [Reactive]
+    public bool IsSelected { get; set; }
 }

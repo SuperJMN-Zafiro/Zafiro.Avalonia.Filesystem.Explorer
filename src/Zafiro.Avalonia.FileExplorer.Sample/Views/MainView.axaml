@@ -14,7 +14,8 @@
 
 	<DockPanel>
         <Button Margin="8" DockPanel.Dock="Top" Content="Browse folder" Command="{Binding Pick}" />
+        <ItemsControl DockPanel.Dock="Bottom" ItemsSource="{Binding PendingActionsManager.Entries}" />
         <ContentControl Content="{Binding Contents}" />
-	</DockPanel>
+    </DockPanel>
 
 </UserControl>

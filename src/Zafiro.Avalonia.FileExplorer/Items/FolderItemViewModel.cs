@@ -8,16 +8,16 @@ namespace Zafiro.Avalonia.FileExplorer.Items;
 
 public class FolderItemViewModel : ReactiveObject, IEntry
 {
-    private readonly IZafiroDirectory dir;
+    public IZafiroDirectory Directory { get; }
 
-    public FolderItemViewModel(IZafiroDirectory dir)
+    public FolderItemViewModel(IZafiroDirectory directory)
     {
-        this.dir = dir;
-        IsSelected = this.WhenAnyValue(x => x.IsSelectedMutable);
+        this.Directory = directory;
     }
 
-    [Reactive] public bool IsSelectedMutable { get; set; }
     public string Name => Path.Name();
-    public ZafiroPath Path => dir.Path;
-    public IObservable<bool> IsSelected { get; }
+    public ZafiroPath Path => Directory.Path;
+
+    [Reactive]
+    public bool IsSelected { get; set; }
 }

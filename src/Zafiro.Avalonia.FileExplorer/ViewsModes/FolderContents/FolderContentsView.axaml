@@ -3,21 +3,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:b="clr-namespace:Zafiro.Avalonia.Behaviors;assembly=Zafiro.Avalonia"
-             xmlns:folderContents1="clr-namespace:Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents"
+             xmlns:f="clr-namespace:Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents.FolderContentsView"
-             x:DataType="folderContents1:FolderContentsViewModel">
+             x:DataType="f:FolderContentsViewModel">
 
-	<UserControl.Styles>
-        <Style Selector="Button">
-            <Setter Property="Height" Value="32" />
-            <Setter Property="Width" Value="32" />
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-        <Style Selector="Image">
-            <Setter Property="VerticalAlignment" Value="Center" />
-        </Style>
-    </UserControl.Styles>
+
 
 	<UserControl.Resources>
         <ControlTheme TargetType="Button" x:Key="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
@@ -31,7 +22,19 @@
 	<DockPanel>
 
 		<DockPanel DockPanel.Dock="Top">
-			<Button Command="{Binding GoBack}" DockPanel.Dock="Left">
+
+            <DockPanel.Styles>
+                <Style Selector="Button">
+                    <Setter Property="Height" Value="32" />
+                    <Setter Property="Width" Value="32" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+                <Style Selector="Image">
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+            </DockPanel.Styles>
+
+            <Button Command="{Binding GoBack}" DockPanel.Dock="Left">
 				<Button.Content>
 					<Image Margin="0 2" Source="{StaticResource di_back_xaml}" />
 				</Button.Content>
@@ -53,6 +56,10 @@
                 </TextBox>
             </Panel>
 		</DockPanel>
+
+        <f:SelectionOptionsView DockPanel.Dock="Bottom" DataContext="{Binding Details}" />
+
 		<ContentControl Content="{Binding Details}" />
-	</DockPanel>
+        
+    </DockPanel>
 </UserControl>

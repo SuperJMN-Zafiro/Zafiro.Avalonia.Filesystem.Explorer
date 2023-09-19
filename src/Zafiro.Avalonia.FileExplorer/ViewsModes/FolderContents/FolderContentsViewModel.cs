@@ -20,14 +20,14 @@ public class FolderContentsViewModel : ReactiveObject, IHaveResult<ZafiroPath>
     private readonly ObservableAsPropertyHelper<ZafiroPath> path;
     private TaskCompletionSource<ZafiroPath> tck = new();
 
-    public FolderContentsViewModel(IFileSystem fileSystem, DirectoryListing.Strategy strategy, INotificationService notificationService)
+    public FolderContentsViewModel(IFileSystem fileSystem, DirectoryListing.Strategy strategy, INotificationService notificationService, IPendingActionsManager pendingActions)
     {
         History = new History<ZafiroPath>(GetDefaultPath());
 
         GoToPath = ReactiveCommand.CreateFromTask(() => fileSystem.GetDirectory(RequestedPath!), this.WhenAnyValue(x => x.RequestedPath).NotNull());
 
         details = GoToPath.Successes()
-            .Select(directory => new DetailsViewModel(directory, strategy, notificationService))
+            .Select(directory => new DetailsViewModel(directory, strategy, notificationService, pendingActions))
             .ToProperty(this, model => model.Details);
 
         path = GoToPath.Successes()
@@ -35,7 +35,7 @@ public class FolderContentsViewModel : ReactiveObject, IHaveResult<ZafiroPath>
             .ToProperty(this, model => model.Path);
 
         GoToPath.Successes().Select(x => x.Path).BindTo(this, x => x.History.CurrentFolder);
-        this.WhenAnyObservable(x => x.Details.SelectedItems).OfType<FolderItemViewModel>()
+        this.WhenAnyValue(x => x.Details.SelectedItem).OfType<FolderItemViewModel>()
             .Select(x => x.Path)
             .Merge(this.WhenAnyValue(x => x.History.CurrentFolder))
             .Do(activatedFolder => RequestedPath = activatedFolder.Path)

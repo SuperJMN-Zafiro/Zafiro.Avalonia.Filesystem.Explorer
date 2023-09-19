@@ -1,10 +1,8 @@
 ﻿using System;
-
 using Avalonia;
 using Avalonia.ReactiveUI;
-using Zafiro.Avalonia.FileExplorer.Sample;
 
-namespace Zafiro.Avalonia.FileExplorer.Desktop;
+namespace Zafiro.Avalonia.FileExplorer.Sample.Desktop;
 
 class Program
 {
