@@ -47,7 +47,7 @@ public class MainViewModel : ReactiveObject
 
     public TransferManagerViewModel TransferManager { get; set; }
 
-    public Clipboard.ClipboardViewModel ClipboardViewModel { get; set; }
+    public ClipboardViewModel ClipboardViewModel { get; set; }
 
     public ReactiveCommand<Unit, Maybe<IZafiroDirectory>> Pick { get; set; }
 

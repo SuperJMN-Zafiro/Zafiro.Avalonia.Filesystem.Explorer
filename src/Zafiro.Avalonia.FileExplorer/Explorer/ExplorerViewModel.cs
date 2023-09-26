@@ -41,7 +41,7 @@ public class ExplorerViewModel : ReactiveObject, IHaveResult<ZafiroPath>
 
         ToolBar = new ToolBarViewModel(selectedItems, Address.GoToPath.Successes(), clipboard, transferManager);
 
-        Details.Select(x => x.SelectedItem)
+        Details.Select(x => x.WhenAnyValue(x => x.SelectedItem)).Switch()
             .WhereNotNull()
             .OfType<FolderItemViewModel>()
             .Select(x => x.Path)

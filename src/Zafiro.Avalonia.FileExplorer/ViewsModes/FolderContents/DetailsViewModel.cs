@@ -34,13 +34,13 @@ public class DetailsViewModel : ReactiveObject
     public DetailsViewModel(IZafiroDirectory directory, Strategy strategy, INotificationService notificationService, IClipboard pendingActions, ITransferManager downloadManager)
     {
         this.directory = directory;
-        SourceCache<IEntry, string> sourceCache = new(entry => entry.Path.Name());
+        SourceCache<IEntry, string> entryCache = new(entry => entry.Path.Name());
         LoadChildren = ReactiveCommand.CreateFromTask(() => strategy(directory));
 
-        LoadChildren.Successes().Do(entries => sourceCache.Edit(updater => updater.Load(entries))).Subscribe();
+        LoadChildren.Successes().Do(entries => entryCache.Edit(updater => updater.Load(entries))).Subscribe();
         LoadChildren.HandleErrorsWith(notificationService);
 
-        var observable = sourceCache
+        var observable = entryCache
             .Connect();
 
         observable
