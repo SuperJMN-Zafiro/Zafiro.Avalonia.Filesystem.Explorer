@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents
 {
-    public partial class SelectionOptionsView : UserControl
+    public partial class ClipboardView : UserControl
     {
-        public SelectionOptionsView()
+        public ClipboardView()
         {
             InitializeComponent();
         }

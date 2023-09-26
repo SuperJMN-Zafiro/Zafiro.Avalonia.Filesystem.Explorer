@@ -4,7 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:folderContents="clr-namespace:Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents.SelectionOptionsView"
+             x:Class="Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents.ClipboardView"
              x:DataType="folderContents:DetailsViewModel">
-  <Button Content="Copy" IsVisible="{Binding HasSelection^}" Command="{Binding Copy}" />
+	<StackPanel>
+		<Button Content="Copy" IsVisible="{Binding HasSelection^}" Command="{Binding Copy}" />
+		<Button Content="Paste" IsVisible="{Binding HasCopiedItems^}" Command="{Binding Paste}" />
+	</StackPanel>
 </UserControl>

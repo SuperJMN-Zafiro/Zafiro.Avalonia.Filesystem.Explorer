@@ -5,7 +5,7 @@ using DynamicData;
 using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents;
 
-namespace Zafiro.Avalonia.FileExplorer.Sample.ViewModels;
+namespace Zafiro.Avalonia.FileExplorer.Clipboard;
 
 public class PendingActionsManager : IPendingActionsManager
 {
@@ -29,6 +29,6 @@ public class PendingActionsManager : IPendingActionsManager
         source.Edit(pendingActions =>
         {
             pendingActions.Load(items);
-        }); 
+        });
     }
 }

@@ -12,6 +12,9 @@ using Zafiro.FileSystem;
 using Zafiro.FileSystem.SeaweedFS;
 using Zafiro.FileSystem.SeaweedFS.Filer.Client;
 using Zafiro.Avalonia.FileExplorer.Items;
+using Zafiro.Avalonia.FileExplorer.Clipboard;
+using Zafiro.Avalonia.FileExplorer.Explorer;
+using Zafiro.Avalonia.FileExplorer.TransferManager;
 
 namespace Zafiro.Avalonia.FileExplorer.Sample.ViewModels;
 
@@ -26,8 +29,9 @@ public class MainViewModel : ReactiveObject
         fileSystem = new SeaweedFileSystem(new SeaweedFSClient(new HttpClient() { BaseAddress = new Uri("http://192.168.1.31:8888") }), Maybe<ILogger>.None);
         var notificationService = new NotificationDialog(new DesktopDialogService(Maybe<Action<ConfigureWindowContext>>.None));
         PendingActionsManager = new PendingActionsManager();
-        Contents = new FolderContentsViewModel(fileSystem, DirectoryListing.GetAll, notificationService, PendingActionsManager);
-        var picker = new FolderPicker(new DesktopDialogService(Maybe<Action<ConfigureWindowContext>>.None), fileSystem, notificationService, PendingActionsManager);
+        TransferManager = new TransferManager.TransferManagerViewModel();
+        Explorer = new ExplorerViewModel(fileSystem, DirectoryListing.GetAll, notificationService, PendingActionsManager, TransferManager);
+        var picker = new FolderPicker(new DesktopDialogService(Maybe<Action<ConfigureWindowContext>>.None), fileSystem, notificationService, PendingActionsManager, TransferManager);
         //var command = ReactiveCommand.CreateFromTask(() => fileSystem.GetDirectory("/"));
         //vm = command.Successes().Select(m => new FolderViewModel(m)).ToProperty(this, x => x.FolderViewModel);
         //command.Failures().Subscribe(s => { });
@@ -41,11 +45,13 @@ public class MainViewModel : ReactiveObject
         Pick.Subscribe(maybe => { });
     }
 
+    public TransferManagerViewModel TransferManager { get; set; }
+
     public PendingActionsManager PendingActionsManager { get; set; }
 
     public ReactiveCommand<Unit, Maybe<IZafiroDirectory>> Pick { get; set; }
 
-    public FolderContentsViewModel Contents { get; }
+    public ExplorerViewModel Explorer { get; }
     
     public DetailsViewModel DetailsViewModel => details.Value;
 

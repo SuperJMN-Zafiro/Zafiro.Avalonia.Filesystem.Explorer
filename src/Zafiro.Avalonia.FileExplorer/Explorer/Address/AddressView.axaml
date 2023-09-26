@@ -2,27 +2,12 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:b="clr-namespace:Zafiro.Avalonia.Behaviors;assembly=Zafiro.Avalonia"
-             xmlns:f="clr-namespace:Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents"
-             xmlns:transferManager="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager"
+             xmlns:behaviors="clr-namespace:Zafiro.Avalonia.Behaviors;assembly=Zafiro.Avalonia"
+             xmlns:address="clr-namespace:Zafiro.Avalonia.FileExplorer.Explorer.Address"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents.FolderContentsView"
-             x:DataType="f:FolderContentsViewModel">
-
-
-
-	<UserControl.Resources>
-        <ControlTheme TargetType="Button" x:Key="{x:Type Button}" BasedOn="{StaticResource {x:Type Button}}">
-            <Setter Property="Background" Value="Transparent" />
-            <Style Selector="^:disabled /template/ ContentPresenter#PART_ContentPresenter">
-                <Setter Property="Background" Value="Transparent" />
-            </Style>
-        </ControlTheme>
-	</UserControl.Resources>
-
-	<DockPanel>
-
-		<DockPanel DockPanel.Dock="Top">
+             x:Class="Zafiro.Avalonia.FileExplorer.Explorer.Address.AddressView"
+             x:DataType="address:AddressViewModel">
+  		<DockPanel DockPanel.Dock="Top">
 
             <DockPanel.Styles>
                 <Style Selector="Button">
@@ -49,19 +34,12 @@
 				<ProgressBar Margin="6" VerticalAlignment="Stretch" IsIndeterminate="True" IsVisible="{Binding IsNavigating^}" />
 				<TextBox AcceptsReturn="False" Text="{Binding RequestedPath}" VerticalAlignment="Center">
                     <Interaction.Behaviors>
-                        <b:TextBoxAutoSelectTextBehavior />
-                        <b:KeyDownTriggerBehavior EventRoutingStrategy="Tunnel" MarkAsHandled="True" Key="Enter">
+                        <behaviors:TextBoxAutoSelectTextBehavior />
+                        <behaviors:KeyDownTriggerBehavior EventRoutingStrategy="Tunnel" MarkAsHandled="True" Key="Enter">
                             <InvokeCommandAction Command="{Binding GoToPath}" />
-                        </b:KeyDownTriggerBehavior>
+                        </behaviors:KeyDownTriggerBehavior>
                     </Interaction.Behaviors>
                 </TextBox>
             </Panel>
 		</DockPanel>
-
-        <f:ClipboardView DockPanel.Dock="Bottom" DataContext="{Binding Details}" />
-        <transferManager:TransferManagerView DataContext="{Binding TransferManager}" />
-
-        <ContentControl Content="{Binding Details}" />
-        
-    </DockPanel>
 </UserControl>
