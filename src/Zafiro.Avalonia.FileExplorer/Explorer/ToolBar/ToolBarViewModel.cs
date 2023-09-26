@@ -17,6 +17,7 @@ using Zafiro.Avalonia.FileExplorer.TransferManager;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.FileSystem.Actions;
+using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 
@@ -24,7 +25,7 @@ public class ToolBarViewModel
 {
     private readonly BehaviorSubject<IZafiroDirectory> directory;
 
-    public ToolBarViewModel(IObservable<IChangeSet<IEntry>> selection, IObservable<IZafiroDirectory> directories, IClipboard clipboard, ITransferManager transferManager)
+    public ToolBarViewModel(IObservable<IChangeSet<IEntry>> selection, IObservable<IZafiroDirectory> directories, IClipboard clipboard, ITransferManager transferManager, INotificationService notificationService)
     {
         var canCopy = selection
             .ToCollection()
@@ -63,7 +64,9 @@ public class ToolBarViewModel
                 {
                     transferManager.Add(new FileCopyViewModel(copy));
                 }
-            });
+            }).Subscribe();
+
+        Paste.HandleErrorsWith(notificationService);
     }
 
     public ReactiveCommand<Unit, Result<IAction<LongProgress>>> Paste { get; set; }
@@ -75,24 +78,29 @@ public class ToolBarViewModel
             .SelectMany(entry => GetAction(entry));
     }
 
-    private async Task<Result<IAction<LongProgress>>> GetAction(IClipboardItem entry)
+    // TODO: Resolver este entuerto
+    private Task<Result<IAction<LongProgress>>> GetAction(IClipboardItem entry)
     {
         var action = entry switch
         {
-            FolderItemViewModel folderItemViewModel => await CreateFileTransfer(folderItemViewModel).Map(action1 => (IAction<LongProgress>)action1),
-            FileItemViewModel fileItemViewModel => await CreateDirectoryTransfer(fileItemViewModel).Map(action1 => (IAction<LongProgress>)action1),
+            ClipboardFileItemViewModel folderItemViewModel => CreateFileTransfer(folderItemViewModel).Map(action1 => (IAction<LongProgress>)action1),
+            ClipboardDirectoryItemViewModel fileItemViewModel => CreateDirectoryTransfer(fileItemViewModel).Map(action1 => (IAction<LongProgress>)action1),
             _ => throw new ArgumentOutOfRangeException(nameof(entry))
         };
         return action;
     }
-    private Task<Result<CopyFileAction>> CreateDirectoryTransfer(FileItemViewModel fileItemViewModel)
+    private Task<Result<CopyDirectoryAction>> CreateDirectoryTransfer(ClipboardDirectoryItemViewModel directoryItem)
     {
-        return directory.Value.FileSystem.GetFile(directory.Value.Path.Combine(fileItemViewModel.Name)).Bind(async dst => await CopyFileAction.Create(fileItemViewModel.File, dst));
+        return directory.Value.FileSystem
+            .GetDirectory(directory.Value.Path.Combine(directoryItem.Directory.Path.Name()))
+            .Bind(async dst => await CopyDirectoryAction.Create(directoryItem.Directory, dst));
     }
 
-    private async Task<Result<IAction<LongProgress>>> CreateFileTransfer(FolderItemViewModel folderItemViewModel)
+    private Task<Result<CopyFileAction>> CreateFileTransfer(ClipboardFileItemViewModel fileItem)
     {
-        return await CopyDirectoryAction.Create(folderItemViewModel.Directory, directory.Value).Map(action1 => (IAction<LongProgress>)action1);
+        return directory.Value.FileSystem
+            .GetFile(directory.Value.Path.Combine(fileItem.Path.Name()))
+            .Bind(async dst => await CopyFileAction.Create(fileItem.File, dst));
     }
 
     public ReactiveCommand<Unit, Unit> Copy { get; set; }

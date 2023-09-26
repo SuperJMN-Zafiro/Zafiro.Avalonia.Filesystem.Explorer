@@ -20,13 +20,13 @@ namespace Zafiro.Avalonia.FileExplorer.Explorer;
 
 public class ExplorerViewModel : ReactiveObject, IHaveResult<ZafiroPath>
 {
-    private readonly ObservableAsPropertyHelper<DetailsViewModel> details;
     private readonly TaskCompletionSource<ZafiroPath> tck = new();
 
-    public ExplorerViewModel(IFileSystem fileSystem, DirectoryListing.Strategy strategy, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
+    public ExplorerViewModel(IFileSystem fileSystem, DirectoryListing.Strategy strategy, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager, INotificationService notificationService1)
     {
         Address = new AddressViewModel(fileSystem, notificationService);
         Clipboard = new ClipboardViewModel();
+        TransferManager = transferManager;
 
         var detailsViewModels = Address.GoToPath.Successes()
             .Select(directory => new DetailsViewModel(directory, strategy, notificationService, clipboard, transferManager))
@@ -39,7 +39,7 @@ public class ExplorerViewModel : ReactiveObject, IHaveResult<ZafiroPath>
             .Select(x => x.SelectedItems.ToObservableChangeSet())
             .Switch();
 
-        ToolBar = new ToolBarViewModel(selectedItems, Address.GoToPath.Successes(), clipboard, transferManager);
+        ToolBar = new ToolBarViewModel(selectedItems, Address.GoToPath.Successes(), clipboard, transferManager, notificationService1);
 
         Details.Select(x => x.WhenAnyValue(x => x.SelectedItem)).Switch()
             .WhereNotNull()
@@ -53,6 +53,8 @@ public class ExplorerViewModel : ReactiveObject, IHaveResult<ZafiroPath>
         // TODO: Enable if needed
         //IsNavigating = Address.GoToPath.IsExecuting.CombineLatest(this.WhenAnyObservable(model => model.Details.IsLoadingChildren), (b, b1) => b || b1);
     }
+
+    public ITransferManager TransferManager { get; set; }
 
     public ToolBarViewModel ToolBar { get; }
 

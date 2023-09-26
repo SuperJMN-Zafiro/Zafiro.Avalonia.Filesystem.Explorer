@@ -4,12 +4,12 @@ namespace Zafiro.Avalonia.FileExplorer.Items;
 
 public class ClipboardDirectoryItemViewModel : IClipboardItem
 {
-    private readonly IZafiroDirectory directory;
+    public IZafiroDirectory Directory { get; }
 
     public ClipboardDirectoryItemViewModel(IZafiroDirectory directory)
     {
-        this.directory = directory;
+        this.Directory = directory;
     }
 
-    public ZafiroPath Path => directory.Path;
+    public ZafiroPath Path => Directory.Path;
 }

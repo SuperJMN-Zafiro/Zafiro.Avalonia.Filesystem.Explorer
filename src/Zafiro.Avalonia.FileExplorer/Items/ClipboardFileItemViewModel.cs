@@ -4,12 +4,11 @@ namespace Zafiro.Avalonia.FileExplorer.Items;
 
 public class ClipboardFileItemViewModel : IClipboardItem
 {
-    private readonly IZafiroFile file;
-
     public ClipboardFileItemViewModel(IZafiroFile file)
     {
-        this.file = file;
+        File = file;
     }
 
-    public ZafiroPath Path => file.Path;
+    public ZafiroPath Path => File.Path;
+    public IZafiroFile File { get; }
 }

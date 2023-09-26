@@ -10,6 +10,7 @@
 		<ContentControl Content="{Binding Address}" DockPanel.Dock="Top" />
         <ContentControl Content="{Binding ToolBar}" DockPanel.Dock="Top" />
         <ContentControl Content="{Binding Clipboard}" DockPanel.Dock="Top" />
+        <ContentControl Content="{Binding TransferManager}" DockPanel.Dock="Bottom" />
 		<ContentControl Content="{Binding Details^}" />
 	</DockPanel>
 </UserControl>

@@ -30,7 +30,7 @@ public class MainViewModel : ReactiveObject
         var notificationService = new NotificationDialog(new DesktopDialogService(Maybe<Action<ConfigureWindowContext>>.None));
         ClipboardViewModel = new Clipboard.ClipboardViewModel();
         TransferManager = new TransferManager.TransferManagerViewModel();
-        Explorer = new ExplorerViewModel(fileSystem, DirectoryListing.GetAll, notificationService, ClipboardViewModel, TransferManager);
+        Explorer = new ExplorerViewModel(fileSystem, DirectoryListing.GetAll, notificationService, ClipboardViewModel, TransferManager, notificationService);
         var picker = new FolderPicker(new DesktopDialogService(Maybe<Action<ConfigureWindowContext>>.None), fileSystem, notificationService, ClipboardViewModel, TransferManager);
         //var command = ReactiveCommand.CreateFromTask(() => fileSystem.GetDirectory("/"));
         //vm = command.Successes().Select(m => new FolderViewModel(m)).ToProperty(this, x => x.FolderViewModel);
