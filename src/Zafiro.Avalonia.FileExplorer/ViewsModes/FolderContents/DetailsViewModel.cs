@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
 using System.Reactive;
@@ -14,6 +15,7 @@ using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Zafiro.Actions;
+using Zafiro.Avalonia.FileExplorer.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
@@ -29,7 +31,7 @@ public class DetailsViewModel : ReactiveObject
 {
     private readonly IZafiroDirectory directory;
 
-    public DetailsViewModel(IZafiroDirectory directory, Strategy strategy, INotificationService notificationService, IPendingActionsManager pendingActions, ITransferManager downloadManager)
+    public DetailsViewModel(IZafiroDirectory directory, Strategy strategy, INotificationService notificationService, IClipboard pendingActions, ITransferManager downloadManager)
     {
         this.directory = directory;
         SourceCache<IEntry, string> sourceCache = new(entry => entry.Path.Name());
@@ -77,7 +79,7 @@ public class DetailsViewModel : ReactiveObject
                 };
             });
 
-            pendingActions.Copy(clipboardItems);
+            pendingActions.Add(clipboardItems);
         });
 
         HasCopiedItems = pendingActions.Entries.ToObservableChangeSet().ToCollection().Select(x => x.Any());

@@ -28,10 +28,10 @@ public class MainViewModel : ReactiveObject
     {
         fileSystem = new SeaweedFileSystem(new SeaweedFSClient(new HttpClient() { BaseAddress = new Uri("http://192.168.1.31:8888") }), Maybe<ILogger>.None);
         var notificationService = new NotificationDialog(new DesktopDialogService(Maybe<Action<ConfigureWindowContext>>.None));
-        PendingActionsManager = new PendingActionsManager();
+        ClipboardViewModel = new Clipboard.ClipboardViewModel();
         TransferManager = new TransferManager.TransferManagerViewModel();
-        Explorer = new ExplorerViewModel(fileSystem, DirectoryListing.GetAll, notificationService, PendingActionsManager, TransferManager);
-        var picker = new FolderPicker(new DesktopDialogService(Maybe<Action<ConfigureWindowContext>>.None), fileSystem, notificationService, PendingActionsManager, TransferManager);
+        Explorer = new ExplorerViewModel(fileSystem, DirectoryListing.GetAll, notificationService, ClipboardViewModel, TransferManager);
+        var picker = new FolderPicker(new DesktopDialogService(Maybe<Action<ConfigureWindowContext>>.None), fileSystem, notificationService, ClipboardViewModel, TransferManager);
         //var command = ReactiveCommand.CreateFromTask(() => fileSystem.GetDirectory("/"));
         //vm = command.Successes().Select(m => new FolderViewModel(m)).ToProperty(this, x => x.FolderViewModel);
         //command.Failures().Subscribe(s => { });
@@ -47,7 +47,7 @@ public class MainViewModel : ReactiveObject
 
     public TransferManagerViewModel TransferManager { get; set; }
 
-    public PendingActionsManager PendingActionsManager { get; set; }
+    public Clipboard.ClipboardViewModel ClipboardViewModel { get; set; }
 
     public ReactiveCommand<Unit, Maybe<IZafiroDirectory>> Pick { get; set; }
 

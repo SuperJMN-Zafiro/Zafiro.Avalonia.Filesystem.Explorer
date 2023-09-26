@@ -14,7 +14,7 @@
 
 	<DockPanel>
         <Button Margin="8" DockPanel.Dock="Top" Content="Browse folder" Command="{Binding Pick}" />
-        <ItemsControl DockPanel.Dock="Bottom" ItemsSource="{Binding PendingActionsManager.Entries}" />
+        <ItemsControl DockPanel.Dock="Bottom" ItemsSource="{Binding ClipboardViewModel.Entries}" />
         <ContentControl Content="{Binding Explorer}" />
     </DockPanel>
 

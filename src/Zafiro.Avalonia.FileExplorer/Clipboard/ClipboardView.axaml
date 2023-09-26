@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:folderContents="clr-namespace:Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents.ClipboardView"
+             x:Class="Zafiro.Avalonia.FileExplorer.Clipboard.ClipboardView"
              x:DataType="folderContents:DetailsViewModel">
 	<StackPanel>
 		<Button Content="Copy" IsVisible="{Binding HasSelection^}" Command="{Binding Copy}" />

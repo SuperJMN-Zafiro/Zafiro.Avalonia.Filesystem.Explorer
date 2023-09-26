@@ -1,8 +1,10 @@
-﻿using Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents;
+﻿using System.Collections.ObjectModel;
+using Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents;
 
 namespace Zafiro.Avalonia.FileExplorer.TransferManager;
 
 public interface ITransferManager
 {
     void Add(ITransferItem item);
+    ReadOnlyObservableCollection<ITransferItem> Transfers { get; }
 }

@@ -5,6 +5,7 @@
              xmlns:b="clr-namespace:Zafiro.Avalonia.Behaviors;assembly=Zafiro.Avalonia"
              xmlns:f="clr-namespace:Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents"
              xmlns:transferManager="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager"
+             xmlns:clipboard="clr-namespace:Zafiro.Avalonia.FileExplorer.Clipboard"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents.FolderContentsView"
              x:DataType="f:FolderContentsViewModel">
@@ -57,9 +58,6 @@
                 </TextBox>
             </Panel>
 		</DockPanel>
-
-        <f:ClipboardView DockPanel.Dock="Bottom" DataContext="{Binding Details}" />
-        <transferManager:TransferManagerView DataContext="{Binding TransferManager}" />
 
         <ContentControl Content="{Binding Details}" />
         

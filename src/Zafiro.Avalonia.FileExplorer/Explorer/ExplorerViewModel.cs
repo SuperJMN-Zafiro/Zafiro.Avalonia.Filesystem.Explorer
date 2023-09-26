@@ -1,7 +1,12 @@
-﻿using System.Reactive.Linq;
+﻿using System;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
+using DynamicData;
+using DynamicData.Binding;
 using ReactiveUI;
+using Zafiro.Avalonia.FileExplorer.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Explorer.Address;
+using Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
@@ -18,15 +23,27 @@ public class ExplorerViewModel : ReactiveObject, IHaveResult<ZafiroPath>
     private readonly ObservableAsPropertyHelper<DetailsViewModel> details;
     private readonly TaskCompletionSource<ZafiroPath> tck = new();
 
-    public ExplorerViewModel(IFileSystem fileSystem, DirectoryListing.Strategy strategy, INotificationService notificationService, IPendingActionsManager pendingActions, ITransferManager transferManager)
+    public ExplorerViewModel(IFileSystem fileSystem, DirectoryListing.Strategy strategy, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
     {
-        Address = new AddressViewModel(fileSystem, strategy, notificationService, pendingActions, transferManager);
-        
-        details = Address.GoToPath.Successes()
-            .Select(directory => new DetailsViewModel(directory, strategy, notificationService, pendingActions, transferManager))
-            .ToProperty(this, model => model.Details);
+        Address = new AddressViewModel(fileSystem, notificationService);
+        Clipboard = new ClipboardViewModel();
 
-        this.WhenAnyValue(x => x.Details.SelectedItem).OfType<FolderItemViewModel>()
+        var detailsViewModels = Address.GoToPath.Successes()
+            .Select(directory => new DetailsViewModel(directory, strategy, notificationService, clipboard, transferManager))
+            .Publish()
+            .RefCount();
+
+        Details = detailsViewModels;
+            
+        var selectedItems = Details
+            .Select(x => x.SelectedItems.ToObservableChangeSet())
+            .Switch();
+
+        ToolBar = new ToolBarViewModel(selectedItems, Address.GoToPath.Successes(), clipboard, transferManager);
+
+        Details.Select(x => x.SelectedItem)
+            .WhereNotNull()
+            .OfType<FolderItemViewModel>()
             .Select(x => x.Path)
             .Merge(this.WhenAnyValue(x => x.Address.History.CurrentFolder))
             .Do(activatedFolder => Address.RequestedPath = activatedFolder.Path)
@@ -37,9 +54,12 @@ public class ExplorerViewModel : ReactiveObject, IHaveResult<ZafiroPath>
         //IsNavigating = Address.GoToPath.IsExecuting.CombineLatest(this.WhenAnyObservable(model => model.Details.IsLoadingChildren), (b, b1) => b || b1);
     }
 
-    public AddressViewModel Address { get; set; }
+    public ToolBarViewModel ToolBar { get; }
 
-    public DetailsViewModel Details => details.Value;
+    public AddressViewModel Address { get; }
+
+    public IObservable<DetailsViewModel> Details { get; }
+    public IClipboard Clipboard { get; }
 
     // TODO: Enable if needed
     //public IObservable<bool> IsNavigating { get; }

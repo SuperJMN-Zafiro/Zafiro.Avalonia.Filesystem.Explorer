@@ -3,15 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using DynamicData;
 using Zafiro.Avalonia.FileExplorer.Items;
-using Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents;
 
 namespace Zafiro.Avalonia.FileExplorer.Clipboard;
 
-public class PendingActionsManager : IPendingActionsManager
+public class ClipboardViewModel : IClipboard
 {
     private readonly SourceCache<IClipboardItem, string> source;
 
-    public PendingActionsManager()
+    public ClipboardViewModel()
     {
         source = new SourceCache<IClipboardItem, string>(x => x.Path);
         source
@@ -24,7 +23,7 @@ public class PendingActionsManager : IPendingActionsManager
 
     public ReadOnlyObservableCollection<IClipboardItem> Entries { get; }
 
-    public void Copy(IEnumerable<IClipboardItem> items)
+    public void Add(IEnumerable<IClipboardItem> items)
     {
         source.Edit(pendingActions =>
         {

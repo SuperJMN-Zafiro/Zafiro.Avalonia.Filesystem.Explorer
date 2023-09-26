@@ -6,7 +6,7 @@ namespace Zafiro.Avalonia.FileExplorer.TransferManager;
 
 public class TransferManagerViewModel : ITransferManager
 {
-    private SourceCache<ITransferItem, TransferKey> items = new(x => x.Key);
+    private readonly SourceCache<ITransferItem, TransferKey> items = new(x => new TransferKey(x.Source, x.Destination));
 
     public TransferManagerViewModel()
     {

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Zafiro.Avalonia.FileExplorer.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
@@ -21,7 +22,7 @@ public class FolderContentsViewModel : ReactiveObject, IHaveResult<ZafiroPath>
     private readonly ObservableAsPropertyHelper<ZafiroPath> path;
     private TaskCompletionSource<ZafiroPath> tck = new();
 
-    public FolderContentsViewModel(IFileSystem fileSystem, DirectoryListing.Strategy strategy, INotificationService notificationService, IPendingActionsManager pendingActions, ITransferManager transferManager)
+    public FolderContentsViewModel(IFileSystem fileSystem, DirectoryListing.Strategy strategy, INotificationService notificationService, IClipboard pendingActions, ITransferManager transferManager)
     {
         History = new History<ZafiroPath>(GetDefaultPath());
 

@@ -1,18 +1,21 @@
 ﻿using System;
 using ReactiveUI;
 using Zafiro.Actions;
+using Zafiro.FileSystem;
 using Zafiro.FileSystem.Actions;
 
 namespace Zafiro.Avalonia.FileExplorer.TransferManager;
 
 public class FileCopyViewModel : ReactiveObject, ITransferItem
 {
-    public TransferKey Key { get; }
+    public ZafiroPath Source { get; }
+    public ZafiroPath Destination { get; }
     public IReactiveCommand Transfer { get; }
 
     public FileCopyViewModel(CopyFileAction copyAction)
     {
-        Key = new TransferKey(copyAction.Source.Path, copyAction.Destination.Path);
+        Source = copyAction.Source.Path;
+        Destination = copyAction.Destination.Path;
         Transfer = ReactiveCommand.CreateFromTask(copyAction.Execute);
         Progress = copyAction.Progress;
     }

@@ -5,8 +5,6 @@ using CSharpFunctionalExtensions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Zafiro.Avalonia.FileExplorer.Model;
-using Zafiro.Avalonia.FileExplorer.TransferManager;
-using Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.Mixins;
@@ -18,7 +16,7 @@ public class AddressViewModel : ReactiveObject
 {
     private readonly ObservableAsPropertyHelper<ZafiroPath> path;
 
-    public AddressViewModel(IFileSystem fileSystem, DirectoryListing.Strategy strategy, INotificationService notificationService, IPendingActionsManager pendingActions, ITransferManager transferManager)
+    public AddressViewModel(IFileSystem fileSystem, INotificationService notificationService)
     {
         History = new History<ZafiroPath>(GetDefaultPath());
 
@@ -35,15 +33,9 @@ public class AddressViewModel : ReactiveObject
         GoBack = History.GoBack;
         IsNavigating = GoToPath.IsExecuting;
 
-        PendingActions = pendingActions;
-        TransferManager = transferManager;
-
         RequestedPath = "/";
     }
-
-    public IPendingActionsManager PendingActions { get; }
-    public ITransferManager TransferManager { get; }
-
+    
     public ZafiroPath Path => path.Value;
 
     public ReactiveCommand<Unit, Unit> GoBack { get; set; }

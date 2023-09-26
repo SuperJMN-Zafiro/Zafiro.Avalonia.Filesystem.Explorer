@@ -20,12 +20,4 @@
 		<PackageReference Include="Zafiro.FileSystem" Version="4.0.21" />
 		<PackageReference Include="Zafiro.UI" Version="4.0.9" />
 	</ItemGroup>
-	<ItemGroup>
-	  <Compile Update="Explorer\ExplorerView.axaml.cs">
-	    <DependentUpon>ExplorerView.axaml</DependentUpon>
-	  </Compile>
-	  <Compile Update="TransferManager\TransferManagerView.axaml.cs">
-	    <DependentUpon>TransferManagerView.axaml</DependentUpon>
-	  </Compile>
-	</ItemGroup>
 </Project>

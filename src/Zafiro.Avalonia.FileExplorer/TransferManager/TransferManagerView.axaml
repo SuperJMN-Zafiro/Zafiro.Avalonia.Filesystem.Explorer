@@ -10,12 +10,14 @@
     <UserControl.DataTemplates>
         <DataTemplate DataType="transferManager:ITransferItem">
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="{Binding Key}" />
-                <Button Command="{Binding Transfer}"></Button>
+                <TextBlock Text="{Binding Source}" />
+                <TextBlock Text="{Binding Destination}" />
+                <ProgressBar Width="200" Maximum="{Binding Progress^.Total}" Value="{Binding Progress^.Value}"></ProgressBar>
+                <Button Content="Copy" Command="{Binding Transfer}" />
             </StackPanel>
             
         </DataTemplate>
     </UserControl.DataTemplates>
 
-    <ListBox ItemsSource="{Binding Transfers}"></ListBox>
+    <ListBox ItemsSource="{Binding Transfers}" />
 </UserControl>
