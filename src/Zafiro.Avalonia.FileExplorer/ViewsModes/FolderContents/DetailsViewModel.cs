@@ -55,80 +55,80 @@ public class DetailsViewModel : ReactiveObject
             .Bind(out var selectedItems)
             .Subscribe();
 
-        HasSelection = observable
-            .AutoRefresh(x => x.IsSelected)
-            .Filter(x => x.IsSelected)
-            .ToCollection()
-            .Select(x => x.Any())
-            .StartWith(false);
+        //HasSelection = observable
+        //    .AutoRefresh(x => x.IsSelected)
+        //    .Filter(x => x.IsSelected)
+        //    .ToCollection()
+        //    .Select(x => x.Any())
+        //    .StartWith(false);
 
         SelectedItems = selectedItems;
 
         Children = collection;
         IsLoadingChildren = LoadChildren.IsExecuting.DelayItem(true, TimeSpan.FromSeconds(0.5));
         LoadChildren.Execute().Subscribe();
-        Copy = ReactiveCommand.Create(() =>
-        {
-            var clipboardItems = selectedItems.Select(entry =>
-            {
-                return entry switch
-                {
-                    FolderItemViewModel di => (IClipboardItem)new ClipboardDirectoryItemViewModel(di.Directory),
-                    FileItemViewModel fi => new ClipboardFileItemViewModel(fi.File),
-                    _ => throw new ArgumentOutOfRangeException(nameof(entry))
-                };
-            });
+        //Copy = ReactiveCommand.Create(() =>
+        //{
+        //    var clipboardItems = selectedItems.Select(entry =>
+        //    {
+        //        return entry switch
+        //        {
+        //            FolderItemViewModel di => (IClipboardItem)new ClipboardDirectoryItemViewModel(di.Directory),
+        //            FileItemViewModel fi => new ClipboardFileItemViewModel(fi.File),
+        //            _ => throw new ArgumentOutOfRangeException(nameof(entry))
+        //        };
+        //    });
 
-            pendingActions.Add(clipboardItems);
-        });
+        //    pendingActions.Add(clipboardItems);
+        //});
 
-        HasCopiedItems = pendingActions.Entries.ToObservableChangeSet().ToCollection().Select(x => x.Any());
+        //HasCopiedItems = pendingActions.Entries.ToObservableChangeSet().ToCollection().Select(x => x.Any());
 
-        Paste = ReactiveCommand.CreateFromTask(() => GenerateActions(SelectedItems), HasCopiedItems);
-        Paste
-            .Successes()
-            .Do(action =>
-            {
-                if (action is CopyFileAction copy)
-                {
-                    downloadManager.Add(new FileCopyViewModel(copy));
-                }
-            })
-            .Subscribe();
+        //Paste = ReactiveCommand.CreateFromTask(() => GenerateActions(SelectedItems), HasCopiedItems);
+        //Paste
+        //    .Successes()
+        //    .Do(action =>
+        //    {
+        //        if (action is CopyFileAction copy)
+        //        {
+        //            downloadManager.Add(new FileCopyViewModel(copy));
+        //        }
+        //    })
+        //    .Subscribe();
     }
 
-    private async Task<Result<IAction<LongProgress>>> GenerateActions(IEnumerable<IEntry> selectedItems)
-    {
-        return await selectedItems
-            .ToObservable()
-            .SelectMany(entry => GetAction(entry));
-    }
+    //private async Task<Result<IAction<LongProgress>>> GenerateActions(IEnumerable<IEntry> selectedItems)
+    //{
+    //    return await selectedItems
+    //        .ToObservable()
+    //        .SelectMany(entry => GetAction(entry));
+    //}
 
-    private async Task<Result<IAction<LongProgress>>> GetAction(IEntry entry)
-    {
-        var action = entry switch
-        {
-            FolderItemViewModel folderItemViewModel => await CreateFileTransfer(folderItemViewModel).Map(action1 => (IAction<LongProgress>)action1),
-            FileItemViewModel fileItemViewModel => await CreateDirectoryTransfer(fileItemViewModel).Map(action1 => (IAction<LongProgress>)action1),
-            _ => throw new ArgumentOutOfRangeException(nameof(entry))
-        };
-        return action;
-    }
+    //private async Task<Result<IAction<LongProgress>>> GetAction(IEntry entry)
+    //{
+    //    var action = entry switch
+    //    {
+    //        FolderItemViewModel folderItemViewModel => await CreateFileTransfer(folderItemViewModel).Map(action1 => (IAction<LongProgress>)action1),
+    //        FileItemViewModel fileItemViewModel => await CreateDirectoryTransfer(fileItemViewModel).Map(action1 => (IAction<LongProgress>)action1),
+    //        _ => throw new ArgumentOutOfRangeException(nameof(entry))
+    //    };
+    //    return action;
+    //}
 
-    private Task<Result<CopyFileAction>> CreateDirectoryTransfer(FileItemViewModel fileItemViewModel)
-    {
-        return directory.FileSystem.GetFile(directory.Path.Combine(fileItemViewModel.Name)).Bind(async dst => await CopyFileAction.Create(fileItemViewModel.File, dst));
-    }
+    //private Task<Result<CopyFileAction>> CreateDirectoryTransfer(FileItemViewModel fileItemViewModel)
+    //{
+    //    return directory.FileSystem.GetFile(directory.Path.Combine(fileItemViewModel.Name)).Bind(async dst => await CopyFileAction.Create(fileItemViewModel.File, dst));
+    //}
 
-    private async Task<Result<IAction<LongProgress>>> CreateFileTransfer(FolderItemViewModel folderItemViewModel)
-    {
-        return await CopyDirectoryAction.Create(folderItemViewModel.Directory, directory).Map(action1 => (IAction<LongProgress>)action1);
-    }
+    //private async Task<Result<IAction<LongProgress>>> CreateFileTransfer(FolderItemViewModel folderItemViewModel)
+    //{
+    //    return await CopyDirectoryAction.Create(folderItemViewModel.Directory, directory).Map(action1 => (IAction<LongProgress>)action1);
+    //}
 
 
-    public ReactiveCommand<Unit, Result<IAction<LongProgress>>> Paste { get; set; }
+    //public ReactiveCommand<Unit, Result<IAction<LongProgress>>> Paste { get; set; }
 
-    public IObservable<bool> HasSelection { get; }
+    //public IObservable<bool> HasSelection { get; }
 
     public ReadOnlyObservableCollection<IEntry> SelectedItems { get; }
 
@@ -142,9 +142,9 @@ public class DetailsViewModel : ReactiveObject
 
     [Reactive] public IEntry SelectedItem { get; set; }
 
-    public string Name => Path.Name();
-    public ICommand Copy { get; }
-    public IObservable<bool> HasCopiedItems { get; }
+    //public string Name => Path.Name();
+    //public ICommand Copy { get; }
+    //public IObservable<bool> HasCopiedItems { get; }
 }
 
 

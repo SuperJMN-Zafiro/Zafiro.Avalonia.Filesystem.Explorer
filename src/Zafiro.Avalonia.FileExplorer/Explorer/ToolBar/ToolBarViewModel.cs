@@ -53,29 +53,33 @@ public class ToolBarViewModel
             clipboard.Add(clipboardItems);
         }, canCopy);
 
-        var canPaste = clipboard.Entries.ToObservableChangeSet().ToCollection().Select(x => x.Any());
+        var canPaste = clipboard.Contents.ToObservableChangeSet().ToCollection().Select(x => x.Any());
 
-        Paste = ReactiveCommand.CreateFromTask(() => GenerateActions(clipboard.Entries), canPaste);
+        Paste = ReactiveCommand.CreateFromTask(() => GenerateActions(clipboard.Contents), canPaste);
         Paste
-            .Successes()
+            .Select(x => x.Successes())
             .Do(action =>
             {
-                if (action is CopyFileAction copy)
+                foreach (var action1 in action)
                 {
-                    transferManager.Add(new FileCopyViewModel(copy));
+                    if (action1 is CopyFileAction fc)
+                    {
+                        transferManager.Add(new FileCopyViewModel(fc));
+                    }
                 }
             }).Subscribe();
-
-        Paste.HandleErrorsWith(notificationService);
     }
 
-    public ReactiveCommand<Unit, Result<IAction<LongProgress>>> Paste { get; set; }
+    public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Paste { get; set; }
 
-    private async Task<Result<IAction<LongProgress>>> GenerateActions(IEnumerable<IClipboardItem> selectedItems)
+    private async Task<IList<Result<IAction<LongProgress>>>> GenerateActions(IEnumerable<IClipboardItem> selectedItems)
     {
-        return await selectedItems
+        var results = await selectedItems
             .ToObservable()
-            .SelectMany(entry => GetAction(entry));
+            .SelectMany(entry => GetAction(entry))
+            .ToList();
+
+        return results;
     }
 
     // TODO: Resolver este entuerto

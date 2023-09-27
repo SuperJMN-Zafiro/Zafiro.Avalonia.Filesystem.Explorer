@@ -7,8 +7,8 @@ namespace Zafiro.Avalonia.FileExplorer.TransferManager;
 
 public interface ITransferItem
 {
-    ZafiroPath Source { get; }
-    ZafiroPath Destination { get; }
+    string Source { get; }
+    string Destination { get; }
     IReactiveCommand Transfer { get; }
     IObservable<LongProgress> Progress { get; }
 }

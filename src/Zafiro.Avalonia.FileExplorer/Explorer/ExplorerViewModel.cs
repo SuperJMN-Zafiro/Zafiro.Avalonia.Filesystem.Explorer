@@ -24,8 +24,8 @@ public class ExplorerViewModel : ReactiveObject, IHaveResult<ZafiroPath>
 
     public ExplorerViewModel(IFileSystem fileSystem, DirectoryListing.Strategy strategy, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager, INotificationService notificationService1)
     {
+        Clipboard = clipboard;
         Address = new AddressViewModel(fileSystem, notificationService);
-        Clipboard = new ClipboardViewModel();
         TransferManager = transferManager;
 
         var detailsViewModels = Address.GoToPath.Successes()

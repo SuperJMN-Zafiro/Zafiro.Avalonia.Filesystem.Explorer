@@ -15,19 +15,19 @@ public class ClipboardViewModel : IClipboard
         source = new SourceCache<IClipboardItem, string>(x => x.Path);
         source
             .Connect()
-            .Bind(out var pendingActions)
+            .Bind(out var contents)
             .Subscribe();
 
-        Entries = pendingActions;
+        Contents = contents;
     }
 
-    public ReadOnlyObservableCollection<IClipboardItem> Entries { get; }
+    public ReadOnlyObservableCollection<IClipboardItem> Contents { get; }
 
     public void Add(IEnumerable<IClipboardItem> items)
     {
-        source.Edit(pendingActions =>
+        source.Edit(actions =>
         {
-            pendingActions.Load(items);
+            actions.Load(items);
         });
     }
 }
