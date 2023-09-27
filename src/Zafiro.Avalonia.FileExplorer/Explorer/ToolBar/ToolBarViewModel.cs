@@ -53,6 +53,10 @@ public class ToolBarViewModel
             clipboard.Add(clipboardItems);
         }, canCopy);
 
+        Copy
+            .Do(_ => notificationService.Show("Copied"))
+            .Subscribe();
+
         var canPaste = clipboard.Contents.ToObservableChangeSet().ToCollection().Select(x => x.Any());
 
         Paste = ReactiveCommand.CreateFromTask(() => GenerateActions(clipboard.Contents), canPaste);

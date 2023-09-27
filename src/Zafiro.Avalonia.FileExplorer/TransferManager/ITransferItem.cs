@@ -1,7 +1,8 @@
 ﻿using System;
-using ReactiveUI;
+using System.Reactive;
+using CSharpFunctionalExtensions;
 using Zafiro.Actions;
-using Zafiro.FileSystem;
+using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.TransferManager;
 
@@ -9,6 +10,6 @@ public interface ITransferItem
 {
     string Source { get; }
     string Destination { get; }
-    IReactiveCommand Transfer { get; }
+    IStoppableCommand DoTransfer { get; }
     IObservable<LongProgress> Progress { get; }
 }

@@ -18,16 +18,17 @@
 		<ContentControl Content="{Binding Explorer}">
 			<ContentControl.ContentTemplate>
 				<DataTemplate DataType="explorer:ExplorerViewModel">
-					<DockPanel>
-						<ContentControl Content="{Binding ToolBar}" DockPanel.Dock="Top" />
-						<ContentControl Content="{Binding Address}" DockPanel.Dock="Top" />
-						<ContentControl Content="{Binding Clipboard}" DockPanel.Dock="Top" />
-                        <ContentControl Content="{Binding TransferManager}" DockPanel.Dock="Bottom" />
-						<!--<Expander HorizontalAlignment="Stretch" IsExpanded="{Binding TransferManager.HasTransfers}" Header="Transfers" DockPanel.Dock="Bottom">
-							
-						</Expander>-->
-						<ContentControl Content="{Binding Details^}" />
-					</DockPanel>
+					<Panel>
+						<DockPanel>
+							<ContentControl Content="{Binding ToolBar}" DockPanel.Dock="Top" />
+							<ContentControl Content="{Binding Address}" DockPanel.Dock="Top" />
+							<ContentControl Content="{Binding TransferManager}" DockPanel.Dock="Bottom" />
+							<!--<Expander HorizontalAlignment="Stretch" IsExpanded="{Binding TransferManager.HasTransfers}" Header="Transfers" DockPanel.Dock="Bottom">
+						    </Expander>-->
+							<ContentControl Content="{Binding Details^}" />
+						</DockPanel>
+						<ContentControl Width="200" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20" Content="{Binding Clipboard}" DockPanel.Dock="Top" />
+					</Panel>
 				</DataTemplate>
 			</ContentControl.ContentTemplate>
 		</ContentControl>

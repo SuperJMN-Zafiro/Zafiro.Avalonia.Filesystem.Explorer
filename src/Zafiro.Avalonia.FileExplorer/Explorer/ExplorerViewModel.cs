@@ -49,9 +49,6 @@ public class ExplorerViewModel : ReactiveObject, IHaveResult<ZafiroPath>
             .Do(activatedFolder => Address.RequestedPath = activatedFolder.Path)
             .ToSignal()
             .InvokeCommand(Address.GoToPath);
-
-        // TODO: Enable if needed
-        //IsNavigating = Address.GoToPath.IsExecuting.CombineLatest(this.WhenAnyObservable(model => model.Details.IsLoadingChildren), (b, b1) => b || b1);
     }
 
     public ITransferManager TransferManager { get; set; }
@@ -62,9 +59,6 @@ public class ExplorerViewModel : ReactiveObject, IHaveResult<ZafiroPath>
 
     public IObservable<DetailsViewModel> Details { get; }
     public IClipboard Clipboard { get; }
-
-    // TODO: Enable if needed
-    //public IObservable<bool> IsNavigating { get; }
 
     public Task<ZafiroPath> Result => tck.Task;
 
