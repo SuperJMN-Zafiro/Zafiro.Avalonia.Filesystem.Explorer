@@ -54,7 +54,7 @@ public class ToolBarViewModel
         }, canCopy);
 
         Copy
-            .Do(_ => notificationService.Show("Copied"))
+            .Do(_ => notificationService.Show("Copied to clipboard"))
             .Subscribe();
 
         var canPaste = clipboard.Contents.ToObservableChangeSet().ToCollection().Select(x => x.Any());
@@ -86,7 +86,6 @@ public class ToolBarViewModel
         return results;
     }
 
-    // TODO: Resolver este entuerto
     private Task<Result<IAction<LongProgress>>> GetAction(IClipboardItem entry)
     {
         var action = entry switch

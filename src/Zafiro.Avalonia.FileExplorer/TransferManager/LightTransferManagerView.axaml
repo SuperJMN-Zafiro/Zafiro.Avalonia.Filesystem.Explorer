@@ -3,62 +3,76 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:transferManager="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager"
-             mc:Ignorable="d" 
+             xmlns:converters="clr-namespace:Zafiro.Avalonia.Converters;assembly=Zafiro.Avalonia"
+             mc:Ignorable="d"
              x:Class="Zafiro.Avalonia.FileExplorer.TransferManager.LightTransferManagerView"
              x:DataType="transferManager:ITransferManager" ClipToBounds="False"
-             IsVisible="{Binding !HasTransfers^}">
+             Opacity="{Binding HasOngoingTransfers^, Converter={x:Static converters:BoolOpacityConverters.BoolToOpacity}}">
 
-    <UserControl.Transitions>
-        <Transitions>
-            <DoubleTransition Property="Opacity" Delay="0:0:2">
-                <DoubleTransition.Easing>
-                    <BounceEaseIn />
-                </DoubleTransition.Easing>
-            </DoubleTransition>
-        </Transitions>
-    </UserControl.Transitions>
+	<UserControl.Transitions>
+		<Transitions>
+			<DoubleTransition Property="Opacity" Duration="0:0:2">
+				<DoubleTransition.Easing>
+					<BackEaseInOut />
+				</DoubleTransition.Easing>
+			</DoubleTransition>
+		</Transitions>
+	</UserControl.Transitions>
 
-    <UserControl.Styles>
-        <Style Selector="ContentControl[IsVisible=True]">
-            <Setter Property="Opacity" Value="1" />
-        </Style>
-    </UserControl.Styles>
-
-    <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+	<Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
             Padding="10"
             BoxShadow="5 5 10 0 DarkGray" BorderBrush="Black"
             BorderThickness="1">
-        <ItemsControl ItemsSource="{Binding Transfers}">
-            <ItemsControl.Styles>
-                <Style Selector="ItemsControl:empty">
-                    <Setter Property="Template">
-                        <Setter.Value>
-                            <ControlTemplate>
-                                <TextBlock>No downloads</TextBlock>
-                            </ControlTemplate>
-                        </Setter.Value>
-                    </Setter>
-                </Style>
-            </ItemsControl.Styles>
-            <ItemsControl.ItemTemplate>
-                <DataTemplate>
-                    <DockPanel Margin="0 5">
-                        <DockPanel.Styles>
-                            <Style Selector="ProgressBar.Hidden">
-                                <Setter Property="Opacity" Value="0" />
-                            </Style>
-                            <Style Selector="ProgressBar.Visible">
-                                <Setter Property="Opacity" Value="1" />
-                            </Style>
-                        </DockPanel.Styles>
-                        <ProgressBar 
-                            Classes.Hidden="{Binding !DoTransfer.IsExecuting^}"
-                            Classes.Visible="{Binding DoTransfer.IsExecuting^}" 
-                            DockPanel.Dock="Bottom" Height="5" Maximum="{Binding Progress^.Total}" Value="{Binding Progress^.Current}" />
-                        <TextBlock Text="{Binding Destination}" />
-                    </DockPanel>
-                </DataTemplate>
-            </ItemsControl.ItemTemplate>
-        </ItemsControl>
-    </Border>
+		<StackPanel Spacing="6">
+			<TextBlock FontWeight="Bold" DockPanel.Dock="Top" Text="Copying..." />
+			<Separator />
+			<ItemsControl ItemsSource="{Binding OngoingTransfers}">
+				<ItemsControl.Styles>
+					<Style Selector="ItemsControl:empty">
+						<Setter Property="Template">
+							<Setter.Value>
+								<ControlTemplate>
+									<TextBlock>No downloads</TextBlock>
+								</ControlTemplate>
+							</Setter.Value>
+						</Setter>
+					</Style>
+				</ItemsControl.Styles>
+				<ItemsControl.ItemTemplate>
+					<DataTemplate DataType="transferManager:ITransferItem">
+						<Panel x:Name="Panel">
+							<DockPanel>
+								<DockPanel.Transitions>
+									<Transitions>
+										<DoubleTransition Property="Opacity" Duration="0:0:1">
+											<DoubleTransition.Easing>
+												<LinearEasing />
+											</DoubleTransition.Easing>
+										</DoubleTransition>
+									</Transitions>
+								</DockPanel.Transitions>
+								
+								<ProgressBar
+                                    Opacity="{Binding IsTransferring, Converter={x:Static converters:BoolOpacityConverters.BoolToOpacity}}"
+                                    DockPanel.Dock="Bottom" Height="5" Maximum="{Binding Progress^.Total}"
+                                    Value="{Binding Progress^.Current}" />
+                                <Button x:CompileBindings="False" DockPanel.Dock="Right" Content="x" Command="{Binding DoTransfer.Stop}" VerticalAlignment="Center" Theme="{StaticResource Transparent}">
+                                    <Interaction.Behaviors>
+                                        <DataTriggerBehavior Value="True" Binding="{Binding #Panel.IsPointerOver}">
+                                            <ChangeAvaloniaPropertyAction Value="1" TargetProperty="{x:Static Visual.OpacityProperty}" />
+                                        </DataTriggerBehavior>
+                                        <DataTriggerBehavior Value="False" Binding="{Binding #Panel.IsPointerOver}">
+                                            <ChangeAvaloniaPropertyAction Value="0" TargetProperty="{x:Static Visual.OpacityProperty}" />
+                                        </DataTriggerBehavior>
+                                    </Interaction.Behaviors>
+                                </Button>
+
+								<TextBlock TextWrapping="NoWrap" ToolTip.Tip="{Binding Destination}" TextTrimming="CharacterEllipsis" Text="{Binding Destination}" />
+							</DockPanel>
+                        </Panel>
+					</DataTemplate>
+				</ItemsControl.ItemTemplate>
+			</ItemsControl>
+		</StackPanel>
+	</Border>
 </UserControl>

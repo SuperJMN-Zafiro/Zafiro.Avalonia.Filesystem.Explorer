@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net.Http;
 using System.Reactive;
+using System.Reactive.Linq;
 using Avalonia.Controls.Notifications;
 using CSharpFunctionalExtensions;
 using DynamicData;
@@ -32,7 +33,7 @@ public class MainViewModel : ReactiveObject
         TransferManager
             .Transfers
             .ToObservableChangeSet()
-            .OnItemAdded(r => r.DoTransfer.Start.Execute(Unit.Default))
+            .OnItemAdded(r => r.DoTransfer.Start.Execute().Take(1).Subscribe())
             .Subscribe();
 
         Explorer = new ExplorerViewModel(fileSystem, DirectoryListing.GetAll, notificationService, ClipboardViewModel, TransferManager, notificationService);

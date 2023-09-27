@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Reactive;
 using System.Reactive.Linq;
+using CSharpFunctionalExtensions;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Zafiro.Actions;
 using Zafiro.FileSystem;
 using Zafiro.FileSystem.Actions;
@@ -14,12 +17,17 @@ public class FileCopyViewModel : ReactiveObject, ITransferItem
     {
         Source = copyAction.Source.Path;
         Destination = copyAction.Destination.Path;
-        DoTransfer = StoppableCommandFactory.CreateFromTask(copyAction.Execute, Observable.Return(true));
+        DoTransfer = StoppableCommand.CreateFromTask(copyAction.Execute, Observable.Return(true));
         Progress = copyAction.Progress;
+        DoTransfer.IsExecuting.BindTo(this, x => x.IsTransferring);
     }
 
     public ZafiroPath Source { get; }
     public ZafiroPath Destination { get; }
-    public IStoppableCommand DoTransfer { get; }
+    public IStoppableCommand<Unit, Result> DoTransfer { get; }
     public IObservable<LongProgress> Progress { get; }
+    public IObservable<bool> IsTransferringObs => DoTransfer.IsExecuting;
+
+    [Reactive]
+    public bool IsTransferring { get; private set; }
 }

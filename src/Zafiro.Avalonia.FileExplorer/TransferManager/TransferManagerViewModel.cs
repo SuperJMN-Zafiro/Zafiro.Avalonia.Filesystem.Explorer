@@ -19,9 +19,21 @@ public class TransferManagerViewModel : ITransferManager
             .Bind(out var transfers)
             .Subscribe();
 
+        var ongoingTransfers = changeStream
+            .AutoRefresh(x => x.IsTransferring)
+            .Filter(x => x.IsTransferring);
+
+        ongoingTransfers
+            .Bind(out var ongoingTransfersCollection)
+            .Subscribe();
+
         Transfers = transfers;
+        OngoingTransfers = ongoingTransfersCollection;
         HasTransfers = changeStream.ToCollection().Select(x => x.Any()).StartWith(false);
+        HasOngoingTransfers = ongoingTransfers.ToCollection().Select(x => x.Any()).StartWith(false);
     }
+
+    public IObservable<bool> HasOngoingTransfers { get; }
 
     public void Add(ITransferItem item)
     {
@@ -30,4 +42,5 @@ public class TransferManagerViewModel : ITransferManager
 
     public ReadOnlyObservableCollection<ITransferItem> Transfers { get; }
     public IObservable<bool> HasTransfers { get; }
+    public ReadOnlyObservableCollection<ITransferItem> OngoingTransfers { get; }
 }
