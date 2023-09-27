@@ -20,7 +20,7 @@ public class TransferManagerViewModel : ITransferManager
             .Subscribe();
 
         Transfers = transfers;
-        HasTransfers = changeStream.ToCollection().Select(x => x.Any());
+        HasTransfers = changeStream.ToCollection().Select(x => x.Any()).StartWith(false);
     }
 
     public void Add(ITransferItem item)

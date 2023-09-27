@@ -2,6 +2,7 @@
 using System.Reactive.Linq;
 using ReactiveUI;
 using Zafiro.Actions;
+using Zafiro.FileSystem;
 using Zafiro.FileSystem.Actions;
 using Zafiro.UI;
 
@@ -17,8 +18,8 @@ public class FileCopyViewModel : ReactiveObject, ITransferItem
         Progress = copyAction.Progress;
     }
 
-    public string Source { get; }
-    public string Destination { get; }
+    public ZafiroPath Source { get; }
+    public ZafiroPath Destination { get; }
     public IStoppableCommand DoTransfer { get; }
     public IObservable<LongProgress> Progress { get; }
 }

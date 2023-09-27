@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:transferManager="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager"
+             mc:Ignorable="d" 
+             x:Class="Zafiro.Avalonia.FileExplorer.TransferManager.LightTransferManagerView"
+             x:DataType="transferManager:ITransferManager" ClipToBounds="False"
+             IsVisible="{Binding !HasTransfers^}">
+
+    <UserControl.Transitions>
+        <Transitions>
+            <DoubleTransition Property="Opacity" Delay="0:0:2">
+                <DoubleTransition.Easing>
+                    <BounceEaseIn />
+                </DoubleTransition.Easing>
+            </DoubleTransition>
+        </Transitions>
+    </UserControl.Transitions>
+
+    <UserControl.Styles>
+        <Style Selector="ContentControl[IsVisible=True]">
+            <Setter Property="Opacity" Value="1" />
+        </Style>
+    </UserControl.Styles>
+
+    <Border Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}"
+            Padding="10"
+            BoxShadow="5 5 10 0 DarkGray" BorderBrush="Black"
+            BorderThickness="1">
+        <ItemsControl ItemsSource="{Binding Transfers}">
+            <ItemsControl.Styles>
+                <Style Selector="ItemsControl:empty">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate>
+                                <TextBlock>No downloads</TextBlock>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ItemsControl.Styles>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <DockPanel Margin="0 5">
+                        <DockPanel.Styles>
+                            <Style Selector="ProgressBar.Hidden">
+                                <Setter Property="Opacity" Value="0" />
+                            </Style>
+                            <Style Selector="ProgressBar.Visible">
+                                <Setter Property="Opacity" Value="1" />
+                            </Style>
+                        </DockPanel.Styles>
+                        <ProgressBar 
+                            Classes.Hidden="{Binding !DoTransfer.IsExecuting^}"
+                            Classes.Visible="{Binding DoTransfer.IsExecuting^}" 
+                            DockPanel.Dock="Bottom" Height="5" Maximum="{Binding Progress^.Total}" Value="{Binding Progress^.Current}" />
+                        <TextBlock Text="{Binding Destination}" />
+                    </DockPanel>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+    </Border>
+</UserControl>

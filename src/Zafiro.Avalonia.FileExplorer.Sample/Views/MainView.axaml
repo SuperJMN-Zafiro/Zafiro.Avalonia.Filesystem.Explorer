@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:Zafiro.Avalonia.FileExplorer.Sample.ViewModels"
              xmlns:explorer="clr-namespace:Zafiro.Avalonia.FileExplorer.Explorer;assembly=Zafiro.Avalonia.FileExplorer"
+             xmlns:transferManager="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager;assembly=Zafiro.Avalonia.FileExplorer"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.Sample.Views.MainView"
              x:DataType="vm:MainViewModel">
@@ -22,13 +23,10 @@
 						<DockPanel>
 							<ContentControl Content="{Binding ToolBar}" DockPanel.Dock="Top" />
 							<ContentControl Content="{Binding Address}" DockPanel.Dock="Top" />
-							<ContentControl Content="{Binding TransferManager}" DockPanel.Dock="Bottom" />
-							<!--<Expander HorizontalAlignment="Stretch" IsExpanded="{Binding TransferManager.HasTransfers}" Header="Transfers" DockPanel.Dock="Bottom">
-						    </Expander>-->
 							<ContentControl Content="{Binding Details^}" />
 						</DockPanel>
-						<ContentControl Width="200" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20" Content="{Binding Clipboard}" DockPanel.Dock="Top" />
-					</Panel>
+						<transferManager:LightTransferManagerView Width="200" VerticalAlignment="Bottom" HorizontalAlignment="Right" Margin="20" DataContext="{Binding TransferManager}" IsVisible="{Binding HasTransfers^}" />
+                    </Panel>
 				</DataTemplate>
 			</ContentControl.ContentTemplate>
 		</ContentControl>
