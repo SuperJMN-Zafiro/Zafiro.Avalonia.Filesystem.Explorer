@@ -30,7 +30,7 @@ public class ExplorerViewModel : ReactiveObject, IHaveResult<ZafiroPath>
 
         var detailsViewModels = Address.GoToPath.Successes()
             .Select(directory => new DetailsViewModel(directory, strategy, notificationService, clipboard, transferManager))
-            .Publish()
+            .Replay()
             .RefCount();
 
         Details = detailsViewModels;
@@ -58,6 +58,7 @@ public class ExplorerViewModel : ReactiveObject, IHaveResult<ZafiroPath>
     public AddressViewModel Address { get; }
 
     public IObservable<DetailsViewModel> Details { get; }
+
     public IClipboard Clipboard { get; }
 
     public Task<ZafiroPath> Result => tck.Task;

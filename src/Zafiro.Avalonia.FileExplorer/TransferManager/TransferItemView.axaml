@@ -1,0 +1,49 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="clr-namespace:Zafiro.Avalonia.Converters;assembly=Zafiro.Avalonia"
+             xmlns:transferManager="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager"
+             xmlns:designTime="clr-namespace:Zafiro.Avalonia.DesignTime;assembly=Zafiro.Avalonia"
+             xmlns:actions="clr-namespace:Zafiro.Actions;assembly=Zafiro"
+             mc:Ignorable="d"
+             x:Class="Zafiro.Avalonia.FileExplorer.TransferManager.TransferItemView"
+             x:DataType="transferManager:ITransferItem">
+
+    <Design.DataContext>
+        <transferManager:DesignTransferItem 
+            SourceString="ff" 
+            DestinationString="Flepito">
+            <transferManager:DesignTransferItem.Progress>
+                <designTime:Return>
+                    <designTime:Return.Value>
+                        <actions:LongProgress />
+                    </designTime:Return.Value>
+                </designTime:Return>
+            </transferManager:DesignTransferItem.Progress>
+        </transferManager:DesignTransferItem>
+    </Design.DataContext>
+
+    <DockPanel>
+    <DockPanel.Transitions>
+        <Transitions>
+            <DoubleTransition Property="Opacity" Duration="0:0:1">
+                <DoubleTransition.Easing>
+                    <LinearEasing />
+                </DoubleTransition.Easing>
+            </DoubleTransition>
+        </Transitions>
+    </DockPanel.Transitions>
+
+    <Button Padding="0" Margin="3" Height="20" HorizontalContentAlignment="Center"  Width="20" x:CompileBindings="False" DockPanel.Dock="Right" Content="x" Command="{Binding DoTransfer.Stop}" VerticalAlignment="Center" Theme="{StaticResource Transparent}" />
+    <Panel>
+        <ProgressBar
+            VerticalAlignment="Bottom"
+            Opacity="{Binding IsTransferring, Converter={x:Static converters:BoolOpacityConverters.BoolToOpacity}}"
+            DockPanel.Dock="Bottom" Height="5" Maximum="{Binding Progress^.Total}"
+            Value="{Binding Progress^.Current}" />
+        <TextBlock Margin="0 5" TextWrapping="NoWrap" ToolTip.Tip="{Binding Destination}"
+                   TextTrimming="CharacterEllipsis" Text="{Binding Destination}" VerticalAlignment="Center" />
+    </Panel>
+</DockPanel>
+</UserControl>

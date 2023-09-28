@@ -24,7 +24,7 @@ public class AddressViewModel : ReactiveObject
 
         path = GoToPath.Successes()
             .Select(directory => directory.Path)
-            .ToProperty(this, model => model.Path);
+            .ToProperty(this, x => x.Path);
 
         GoToPath.Successes().Select(x => x.Path).BindTo(this, x => x.History.CurrentFolder);
        

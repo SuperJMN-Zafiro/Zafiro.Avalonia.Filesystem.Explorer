@@ -19,7 +19,17 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        this.Connect(() => new MainView(), mv => new MainViewModel(new NotificationService(new WindowNotificationManager(TopLevel.GetTopLevel(mv)))));
+        this.Connect(
+            () => new MainView(), 
+            mv => new MainViewModel(new NotificationService(new WindowNotificationManager(TopLevel.GetTopLevel(mv)))),
+            () =>
+            {
+                var w = new MainWindow();
+#if DEBUG
+                w.AttachDevTools();
+#endif
+                return w;
+            });
 
         base.OnFrameworkInitializationCompleted();
     }

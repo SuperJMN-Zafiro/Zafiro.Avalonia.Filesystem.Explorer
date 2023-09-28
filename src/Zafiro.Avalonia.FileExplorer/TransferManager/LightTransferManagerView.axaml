@@ -40,27 +40,8 @@
 				</ItemsControl.Styles>
 				<ItemsControl.ItemTemplate>
 					<DataTemplate DataType="transferManager:ITransferItem">
-						<Panel x:Name="Panel">
-							<DockPanel>
-								<DockPanel.Transitions>
-									<Transitions>
-										<DoubleTransition Property="Opacity" Duration="0:0:1">
-											<DoubleTransition.Easing>
-												<LinearEasing />
-											</DoubleTransition.Easing>
-										</DoubleTransition>
-									</Transitions>
-								</DockPanel.Transitions>
-								
-								<ProgressBar
-                                    Opacity="{Binding IsTransferring, Converter={x:Static converters:BoolOpacityConverters.BoolToOpacity}}"
-                                    DockPanel.Dock="Bottom" Height="5" Maximum="{Binding Progress^.Total}"
-                                    Value="{Binding Progress^.Current}" />
-                                <Button x:CompileBindings="False" DockPanel.Dock="Right" Content="x" Command="{Binding DoTransfer.Stop}" VerticalAlignment="Center" Theme="{StaticResource Transparent}" />
-                                <TextBlock TextWrapping="NoWrap" ToolTip.Tip="{Binding Destination}" TextTrimming="CharacterEllipsis" Text="{Binding Destination}" />
-							</DockPanel>
-                        </Panel>
-					</DataTemplate>
+                        <transferManager:TransferItemView />
+                    </DataTemplate>
 				</ItemsControl.ItemTemplate>
 			</ItemsControl>
 		</StackPanel>
