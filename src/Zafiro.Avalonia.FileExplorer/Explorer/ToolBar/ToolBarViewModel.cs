@@ -70,6 +70,10 @@ public class ToolBarViewModel
                     {
                         transferManager.Add(new FileCopyViewModel(fc));
                     }
+                    if (action1 is CopyDirectoryAction dc)
+                    {
+                        transferManager.Add(new DirectoryCopyViewModel(dc));
+                    }
                 }
             }).Subscribe();
     }
