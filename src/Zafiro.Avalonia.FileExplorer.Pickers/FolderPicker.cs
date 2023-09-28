@@ -2,7 +2,10 @@
 using CSharpFunctionalExtensions;
 using ReactiveUI;
 using Zafiro.Avalonia.Dialogs;
-using Zafiro.Avalonia.FileExplorer.ViewModels;
+using Zafiro.Avalonia.FileExplorer.Clipboard;
+using Zafiro.Avalonia.FileExplorer.Model;
+using Zafiro.Avalonia.FileExplorer.TransferManager;
+using Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents;
 using Zafiro.FileSystem;
 using Zafiro.UI;
 
@@ -13,17 +16,21 @@ namespace Zafiro.Avalonia.FileExplorer.Pickers
         private readonly IDialogService dialogService;
         private readonly IFileSystem fileSystem;
         private readonly INotificationService notificationService;
+        private readonly IClipboard clipboard;
+        private readonly ITransferManager transferManager;
 
-        public FolderPicker(IDialogService dialogService, IFileSystem fileSystem, INotificationService notificationService)
+        public FolderPicker(IDialogService dialogService, IFileSystem fileSystem, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
         {
             this.dialogService = dialogService;
             this.fileSystem = fileSystem;
             this.notificationService = notificationService;
+            this.clipboard = clipboard;
+            this.transferManager = transferManager;
         }
 
         public IObservable<Maybe<IZafiroDirectory>> Pick(string title)
         {
-            var folderContentsViewModel = new FolderContentsViewModel(fileSystem, DirectoryListing.GetDirectories,notificationService);
+            var folderContentsViewModel = new FolderContentsViewModel(fileSystem, DirectoryListing.GetDirectories,notificationService, clipboard, transferManager);
             var fromAsync = Observable
                 .FromAsync(() =>
                 {

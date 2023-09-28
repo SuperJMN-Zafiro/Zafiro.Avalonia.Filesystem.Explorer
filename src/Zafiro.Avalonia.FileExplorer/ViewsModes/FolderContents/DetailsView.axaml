@@ -1,0 +1,20 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:avaloniaProgressRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
+             xmlns:folderContents="clr-namespace:Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents"
+             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             x:Class="Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents.DetailsView"
+             x:DataType="folderContents:DetailsViewModel">
+	<Panel>
+		<ListBox ItemsSource="{Binding Children}" SelectedItem="{Binding SelectedItem}">
+			<ListBox.ItemsPanel>
+				<ItemsPanelTemplate>
+					<StackPanel />
+				</ItemsPanelTemplate>
+			</ListBox.ItemsPanel>
+		</ListBox>
+		<avaloniaProgressRing:ProgressRing Foreground="{DynamicResource SystemAccentColor}" Height="100" Width="100" IsActive="{Binding IsLoadingChildren^}" />
+    </Panel>
+</UserControl>
