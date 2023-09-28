@@ -11,9 +11,9 @@
 
 	<UserControl.Transitions>
 		<Transitions>
-			<DoubleTransition Property="Opacity" Duration="0:0:2">
+			<DoubleTransition Property="Opacity" Duration="0:0:1">
 				<DoubleTransition.Easing>
-					<BackEaseInOut />
+					<LinearEasing />
 				</DoubleTransition.Easing>
 			</DoubleTransition>
 		</Transitions>
@@ -56,18 +56,8 @@
                                     Opacity="{Binding IsTransferring, Converter={x:Static converters:BoolOpacityConverters.BoolToOpacity}}"
                                     DockPanel.Dock="Bottom" Height="5" Maximum="{Binding Progress^.Total}"
                                     Value="{Binding Progress^.Current}" />
-                                <Button x:CompileBindings="False" DockPanel.Dock="Right" Content="x" Command="{Binding DoTransfer.Stop}" VerticalAlignment="Center" Theme="{StaticResource Transparent}">
-                                    <Interaction.Behaviors>
-                                        <DataTriggerBehavior Value="True" Binding="{Binding #Panel.IsPointerOver}">
-                                            <ChangeAvaloniaPropertyAction Value="1" TargetProperty="{x:Static Visual.OpacityProperty}" />
-                                        </DataTriggerBehavior>
-                                        <DataTriggerBehavior Value="False" Binding="{Binding #Panel.IsPointerOver}">
-                                            <ChangeAvaloniaPropertyAction Value="0" TargetProperty="{x:Static Visual.OpacityProperty}" />
-                                        </DataTriggerBehavior>
-                                    </Interaction.Behaviors>
-                                </Button>
-
-								<TextBlock TextWrapping="NoWrap" ToolTip.Tip="{Binding Destination}" TextTrimming="CharacterEllipsis" Text="{Binding Destination}" />
+                                <Button x:CompileBindings="False" DockPanel.Dock="Right" Content="x" Command="{Binding DoTransfer.Stop}" VerticalAlignment="Center" Theme="{StaticResource Transparent}" />
+                                <TextBlock TextWrapping="NoWrap" ToolTip.Tip="{Binding Destination}" TextTrimming="CharacterEllipsis" Text="{Binding Destination}" />
 							</DockPanel>
                         </Panel>
 					</DataTemplate>

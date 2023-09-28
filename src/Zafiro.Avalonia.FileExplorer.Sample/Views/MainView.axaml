@@ -4,29 +4,26 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:vm="clr-namespace:Zafiro.Avalonia.FileExplorer.Sample.ViewModels"
              xmlns:explorer="clr-namespace:Zafiro.Avalonia.FileExplorer.Explorer;assembly=Zafiro.Avalonia.FileExplorer"
-             xmlns:transferManager="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager;assembly=Zafiro.Avalonia.FileExplorer"
+             xmlns:tm="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager;assembly=Zafiro.Avalonia.FileExplorer"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.Sample.Views.MainView"
              x:DataType="vm:MainViewModel">
 
-    <DockPanel>
-        <Button Margin="8" DockPanel.Dock="Top" Content="Browse folder" Command="{Binding Pick}" />
-        <ContentControl Content="{Binding Explorer}">
-            <ContentControl.ContentTemplate>
-                <DataTemplate DataType="explorer:ExplorerViewModel">
-                    <Panel>
-                        <DockPanel>
-                            <ContentControl Content="{Binding ToolBar}" DockPanel.Dock="Top" />
-                            <ContentControl Content="{Binding Address}" DockPanel.Dock="Top" />
-                            <ContentControl Content="{Binding Details^}" />
-                        </DockPanel>
-                        <transferManager:LightTransferManagerView Width="400" VerticalAlignment="Bottom"
-                                                                  HorizontalAlignment="Right" Margin="20"
-                                                                  DataContext="{Binding TransferManager}" />
-                    </Panel>
-                </DataTemplate>
-            </ContentControl.ContentTemplate>
-        </ContentControl>
-    </DockPanel>
+    <ContentControl Content="{Binding Explorer}">
+        <ContentControl.ContentTemplate>
+            <DataTemplate DataType="explorer:ExplorerViewModel">
+                <Panel>
+                    <DockPanel>
+                        <ContentControl Content="{Binding ToolBar}" DockPanel.Dock="Top" />
+                        <ContentControl Content="{Binding Address}" DockPanel.Dock="Top" />
+                        <ContentControl Content="{Binding Details^}" />
+                    </DockPanel>
+                    <tm:LightTransferManagerView Width="400" VerticalAlignment="Bottom"
+                                                 HorizontalAlignment="Right" Margin="20"
+                                                 DataContext="{Binding TransferManager}" />
+                </Panel>
+            </DataTemplate>
+        </ContentControl.ContentTemplate>
+    </ContentControl>
 
 </UserControl>

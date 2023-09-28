@@ -29,8 +29,8 @@ public class TransferManagerViewModel : ITransferManager
 
         Transfers = transfers;
         OngoingTransfers = ongoingTransfersCollection;
-        HasTransfers = changeStream.ToCollection().Select(x => x.Any()).StartWith(false);
-        HasOngoingTransfers = ongoingTransfers.ToCollection().Select(x => x.Any()).StartWith(false);
+        HasTransfers = changeStream.ToCollection().StartWithEmpty().Select(x => x.Any());
+        HasOngoingTransfers = ongoingTransfers.StartWithEmpty().ToCollection().Select(x => x.Any());
     }
 
     public IObservable<bool> HasOngoingTransfers { get; }
