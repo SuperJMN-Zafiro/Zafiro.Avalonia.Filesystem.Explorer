@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
 using DynamicData;
@@ -18,11 +19,11 @@ using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer;
 
-public class ExplorerViewModel : ReactiveObject, IHaveResult<ZafiroPath>
+public class FileSystemFileSystemExplorer : ReactiveObject, IFileSystemExplorer
 {
     private readonly TaskCompletionSource<ZafiroPath> tck = new();
 
-    public ExplorerViewModel(IFileSystem fileSystem, DirectoryListing.Strategy strategy, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager, INotificationService notificationService1)
+    public FileSystemFileSystemExplorer(IFileSystem fileSystem, DirectoryListing.Strategy strategy, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
     {
         Clipboard = clipboard;
         Address = new AddressViewModel(fileSystem, notificationService);
@@ -39,7 +40,7 @@ public class ExplorerViewModel : ReactiveObject, IHaveResult<ZafiroPath>
             .Select(x => x.SelectedItems.ToObservableChangeSet())
             .Switch();
 
-        ToolBar = new ToolBarViewModel(selectedItems, Address.GoToPath.Successes(), clipboard, transferManager, notificationService1);
+        ToolBar = new ToolBarViewModel(selectedItems, Address.GoToPath.Successes(), clipboard, transferManager, notificationService);
 
         Details.Select(x => x.WhenAnyValue(x => x.SelectedItem)).Switch()
             .WhereNotNull()

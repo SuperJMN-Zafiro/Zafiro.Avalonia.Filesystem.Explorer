@@ -9,9 +9,9 @@
              x:Class="Zafiro.Avalonia.FileExplorer.Sample.Views.MainView"
              x:DataType="vm:MainViewModel">
 
-    <ContentControl Content="{Binding Explorer}">
+    <ContentControl Content="{Binding FileSystemExplorer}">
         <ContentControl.ContentTemplate>
-            <DataTemplate DataType="explorer:ExplorerViewModel">
+            <DataTemplate DataType="explorer:FileSystemFileSystemExplorer">
                 <Panel>
                     <DockPanel>
                         <ContentControl Content="{Binding ToolBar}" DockPanel.Dock="Top" />

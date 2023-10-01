@@ -3,6 +3,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive.Linq;
 using DynamicData;
+using DynamicData.Binding;
 
 namespace Zafiro.Avalonia.FileExplorer.TransferManager;
 
@@ -31,7 +32,20 @@ public class TransferManagerViewModel : ITransferManager
         OngoingTransfers = ongoingTransfersCollection;
         HasTransfers = changeStream.ToCollection().StartWithEmpty().Select(x => x.Any());
         HasOngoingTransfers = ongoingTransfers.StartWithEmpty().ToCollection().Select(x => x.Any());
+
+        Transfers
+            .ToObservableChangeSet()
+            .OnItemAdded(r =>
+            {
+                if (AutoStartOnAdd)
+                {
+                    r.DoTransfer.Start.Execute().Take(1).Subscribe();
+                }
+            })
+            .Subscribe();
     }
+
+    public bool AutoStartOnAdd { get; set; }
 
     public IObservable<bool> HasOngoingTransfers { get; }
 
