@@ -19,11 +19,11 @@ using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer;
 
-public class FileSystemFileSystemExplorer : ReactiveObject, IFileSystemExplorer
+public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
 {
     private readonly TaskCompletionSource<ZafiroPath> tck = new();
 
-    public FileSystemFileSystemExplorer(IFileSystem fileSystem, DirectoryListing.Strategy strategy, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
+    public FileSystemExplorer(IFileSystem fileSystem, DirectoryListing.Strategy strategy, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
     {
         Clipboard = clipboard;
         Address = new AddressViewModel(fileSystem, notificationService);
