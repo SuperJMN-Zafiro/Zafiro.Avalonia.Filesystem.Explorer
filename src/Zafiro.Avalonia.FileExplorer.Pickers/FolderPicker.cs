@@ -30,7 +30,7 @@ namespace Zafiro.Avalonia.FileExplorer.Pickers
 
         public IObservable<Maybe<IZafiroDirectory>> Pick(string title)
         {
-            var folderContentsViewModel = new FolderContentsViewModel(fileSystem, DirectoryListing.GetDirectories,notificationService, clipboard, transferManager);
+            var folderContentsViewModel = new FolderContentsViewModel(fileSystem, new DirectoriesEntryFactory(),notificationService, clipboard, transferManager);
             var fromAsync = Observable
                 .FromAsync(() =>
                 {

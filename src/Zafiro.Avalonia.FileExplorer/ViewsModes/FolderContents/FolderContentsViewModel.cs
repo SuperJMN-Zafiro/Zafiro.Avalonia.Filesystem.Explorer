@@ -22,7 +22,7 @@ public class FolderContentsViewModel : ReactiveObject, IHaveResult<ZafiroPath>
     private readonly ObservableAsPropertyHelper<ZafiroPath> path;
     private TaskCompletionSource<ZafiroPath> tck = new();
 
-    public FolderContentsViewModel(IFileSystem fileSystem, DirectoryListing.Strategy strategy, INotificationService notificationService, IClipboard pendingActions, ITransferManager transferManager)
+    public FolderContentsViewModel(IFileSystem fileSystem, IDirectoriesEntryFactory strategy, INotificationService notificationService, IClipboard pendingActions, ITransferManager transferManager)
     {
         History = new History<ZafiroPath>(GetDefaultPath());
 

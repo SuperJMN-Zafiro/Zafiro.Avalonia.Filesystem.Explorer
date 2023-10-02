@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:items="clr-namespace:Zafiro.Avalonia.FileExplorer.Items"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Zafiro.Avalonia.FileExplorer.Items.FolderItemView"
+             x:Class="Zafiro.Avalonia.FileExplorer.Items.DirectoryItemView"
              x:DataType="items:DirectoryItemViewModel">
 	<UserControl.Resources>
 

@@ -23,7 +23,7 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
 {
     private readonly TaskCompletionSource<ZafiroPath> tck = new();
 
-    public FileSystemExplorer(IFileSystem fileSystem, DirectoryListing.Strategy strategy, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
+    public FileSystemExplorer(IFileSystem fileSystem, IDirectoriesEntryFactory strategy, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
     {
         Clipboard = clipboard;
         Address = new AddressViewModel(fileSystem, notificationService);

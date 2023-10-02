@@ -26,7 +26,7 @@ public class TreeViewModel : ReactiveObject
     {
         this.directory = directory;
         sourceCache = new SourceCache<IEntry, string>(entry => entry.Path.Name());
-        LoadChildren = ReactiveCommand.CreateFromTask(() => DirectoryListing.GetAll(directory));
+        LoadChildren = ReactiveCommand.CreateFromTask(() => new DirectoriesEntryFactory().Get(directory));
 
         LoadChildren.Successes().Do(entries => sourceCache.Edit(updater => updater.Load(entries))).Subscribe();
 

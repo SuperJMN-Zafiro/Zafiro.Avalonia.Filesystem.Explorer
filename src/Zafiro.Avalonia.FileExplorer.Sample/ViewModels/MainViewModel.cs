@@ -34,7 +34,7 @@ public class MainViewModel : ReactiveObject
             .OnItemAdded(r => r.DoTransfer.Start.Execute().Take(1).Subscribe())
             .Subscribe();
 
-        FileSystemExplorer = new FileSystemExplorer(fileSystem, DirectoryListing.GetAll, notificationService, ClipboardViewModel, TransferManager);
+        FileSystemExplorer = new FileSystemExplorer(fileSystem, new FilesAndDirectoriesEntryFactory(), notificationService, ClipboardViewModel, TransferManager);
         var picker = new FolderPicker(new DesktopDialogService(Maybe<Action<ConfigureWindowContext>>.None), fileSystem, notificationService, ClipboardViewModel, TransferManager);
         Pick = ReactiveCommand.CreateFromObservable(() => picker.Pick("Pick a folder"));
         Pick.Subscribe(maybe => { });

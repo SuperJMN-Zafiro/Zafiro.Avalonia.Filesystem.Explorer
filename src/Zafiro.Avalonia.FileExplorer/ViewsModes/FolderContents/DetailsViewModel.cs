@@ -17,7 +17,7 @@ using Zafiro.Avalonia.FileExplorer.TransferManager;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.UI;
-using static Zafiro.Avalonia.FileExplorer.Model.DirectoryListing;
+using static Zafiro.Avalonia.FileExplorer.Model.FilesAndDirectoriesEntryFactory;
 
 namespace Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents;
 
@@ -25,11 +25,11 @@ public class DetailsViewModel : ReactiveObject
 {
     private readonly IZafiroDirectory directory;
 
-    public DetailsViewModel(IZafiroDirectory directory, Strategy strategy, INotificationService notificationService, IClipboard pendingActions, ITransferManager downloadManager)
+    public DetailsViewModel(IZafiroDirectory directory, IDirectoriesEntryFactory strategy, INotificationService notificationService, IClipboard pendingActions, ITransferManager downloadManager)
     {
         this.directory = directory;
         SourceCache<IEntry, string> entryCache = new(entry => entry.Path.Name());
-        LoadChildren = ReactiveCommand.CreateFromTask(() => strategy(directory));
+        LoadChildren = ReactiveCommand.CreateFromTask(() => strategy.Get(directory));
 
         LoadChildren.Successes().Do(entries => entryCache.Edit(updater => updater.Load(entries))).Subscribe();
         LoadChildren.HandleErrorsWith(notificationService);

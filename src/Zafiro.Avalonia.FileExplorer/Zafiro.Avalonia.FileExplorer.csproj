@@ -21,4 +21,9 @@
 		<PackageReference Include="Zafiro.FileSystem" Version="4.0.23" />
 		<PackageReference Include="Zafiro.UI" Version="4.0.10" />
 	</ItemGroup>
+	<ItemGroup>
+	  <Compile Update="Items\DirectoryItemView.axaml.cs">
+	    <DependentUpon>DirectoryItemView.axaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
 </Project>
