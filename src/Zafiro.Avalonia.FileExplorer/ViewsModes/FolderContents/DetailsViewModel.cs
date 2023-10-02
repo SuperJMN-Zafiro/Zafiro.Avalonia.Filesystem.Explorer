@@ -38,7 +38,7 @@ public class DetailsViewModel : ReactiveObject
             .Connect();
 
         observable
-            .Sort(SortExpressionComparer<IEntry>.Descending(p => p is FolderItemViewModel)
+            .Sort(SortExpressionComparer<IEntry>.Descending(p => p is DirectoryItemViewModel)
                 .ThenByAscending(p => p.Path.Name()))
             .Bind(out var collection)
             .Subscribe();

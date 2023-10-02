@@ -37,7 +37,7 @@ public class FolderContentsViewModel : ReactiveObject, IHaveResult<ZafiroPath>
             .ToProperty(this, model => model.Path);
 
         GoToPath.Successes().Select(x => x.Path).BindTo(this, x => x.History.CurrentFolder);
-        this.WhenAnyValue(x => x.Details.SelectedItem).OfType<FolderItemViewModel>()
+        this.WhenAnyValue(x => x.Details.SelectedItem).OfType<DirectoryItemViewModel>()
             .Select(x => x.Path)
             .Merge(this.WhenAnyValue(x => x.History.CurrentFolder))
             .Do(activatedFolder => RequestedPath = activatedFolder.Path)

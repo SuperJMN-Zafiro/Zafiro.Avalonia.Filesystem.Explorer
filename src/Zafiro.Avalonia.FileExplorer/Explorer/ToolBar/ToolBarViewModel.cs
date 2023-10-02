@@ -42,7 +42,7 @@ public class ToolBarViewModel
             {
                 return entry switch
                 {
-                    FolderItemViewModel di => (IClipboardItem)new ClipboardDirectoryItemViewModel(di.Directory),
+                    DirectoryItemViewModel di => (IClipboardItem)new ClipboardDirectoryItemViewModel(di.Directory),
                     FileItemViewModel fi => new ClipboardFileItemViewModel(fi.File),
                     _ => throw new ArgumentOutOfRangeException(nameof(entry))
                 };

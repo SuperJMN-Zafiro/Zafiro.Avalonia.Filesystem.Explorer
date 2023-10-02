@@ -1,18 +1,17 @@
-﻿using System;
-using ReactiveUI;
+﻿using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.FileSystem;
 
 namespace Zafiro.Avalonia.FileExplorer.Items;
 
-public class FolderItemViewModel : ReactiveObject, IEntry
+public class DirectoryItemViewModel : ReactiveObject, IEntry
 {
     public IZafiroDirectory Directory { get; }
 
-    public FolderItemViewModel(IZafiroDirectory directory)
+    public DirectoryItemViewModel(IZafiroDirectory directory)
     {
-        this.Directory = directory;
+        Directory = directory;
     }
 
     public string Name => Path.Name();

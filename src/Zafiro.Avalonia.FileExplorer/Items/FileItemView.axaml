@@ -58,7 +58,6 @@
 		<DrawingImage Drawing="{StaticResource FileDrawing}" x:Key="FileImage"/>
 	</UserControl.Resources>
 	<DockPanel>
-		<CheckBox IsChecked="{Binding IsSelected}" />
         <Image Source="{StaticResource FileImage}" Margin="4" DockPanel.Dock="Left" Height="24" />
         <TextBlock Text="{Binding Name}" VerticalAlignment="Center"  />
     </DockPanel>

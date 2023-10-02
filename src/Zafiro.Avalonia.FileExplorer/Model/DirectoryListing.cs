@@ -21,7 +21,7 @@ public class DirectoryListing
 
     public static Task<Result<IEnumerable<IEntry>>> GetDirectories(IZafiroDirectory directory)
     {
-        return directory.GetDirectories().Map(dirs => dirs.Select(dir => (IEntry)new FolderItemViewModel(dir)));
+        return directory.GetDirectories().Map(dirs => dirs.Select(dir => (IEntry)new DirectoryItemViewModel(dir)));
     }
 
     public delegate Task<Result<IEnumerable<IEntry>>> Strategy(IZafiroDirectory directory);
