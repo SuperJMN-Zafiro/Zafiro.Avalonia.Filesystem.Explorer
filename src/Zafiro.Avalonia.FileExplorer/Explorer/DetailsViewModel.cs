@@ -10,22 +10,20 @@ using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Zafiro.Avalonia.FileExplorer.Clipboard;
-using Zafiro.Avalonia.FileExplorer.Explorer;
 using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.UI;
-using static Zafiro.Avalonia.FileExplorer.Model.FilesAndDirectoriesEntryFactory;
 
-namespace Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents;
+namespace Zafiro.Avalonia.FileExplorer.Explorer;
 
 public class DetailsViewModel : ReactiveObject
 {
     private readonly IZafiroDirectory directory;
 
-    public DetailsViewModel(IZafiroDirectory directory, IDirectoriesEntryFactory strategy, INotificationService notificationService, IClipboard pendingActions, ITransferManager downloadManager)
+    public DetailsViewModel(IZafiroDirectory directory, IEntryFactory strategy, INotificationService notificationService, IClipboard pendingActions, ITransferManager downloadManager)
     {
         this.directory = directory;
         SourceCache<IEntry, string> entryCache = new(entry => entry.Path.Name());
@@ -42,7 +40,7 @@ public class DetailsViewModel : ReactiveObject
                 .ThenByAscending(p => p.Path.Name()))
             .Bind(out var collection)
             .Subscribe();
-        
+
         Children = collection;
         IsLoadingChildren = LoadChildren.IsExecuting.DelayItem(true, TimeSpan.FromSeconds(0.5));
         LoadChildren.Execute().Subscribe();
@@ -50,7 +48,7 @@ public class DetailsViewModel : ReactiveObject
         changes.Bind(out var selectedItems).Subscribe();
         SelectedItems = selectedItems;
     }
-    
+
     public ReadOnlyObservableCollection<IEntry> SelectedItems { get; }
 
     public IObservable<bool> IsLoadingChildren { get; }
@@ -63,5 +61,5 @@ public class DetailsViewModel : ReactiveObject
 
     [Reactive] public IEntry SelectedItem { get; set; }
 
-    public SelectionModel<IEntry> Selection { get; } = new(){ SingleSelect = false };
+    public SelectionModel<IEntry> Selection { get; } = new() { SingleSelect = false };
 }

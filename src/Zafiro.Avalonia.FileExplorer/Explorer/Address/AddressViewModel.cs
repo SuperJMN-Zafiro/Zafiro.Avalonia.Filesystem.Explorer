@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
@@ -12,15 +13,17 @@ using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer.Address;
 
-public class AddressViewModel : ReactiveObject
+public class AddressViewModel : ReactiveObject, IAddress
 {
+    private readonly IFileSystem fileSystem;
     private readonly ObservableAsPropertyHelper<ZafiroPath> path;
 
     public AddressViewModel(IFileSystem fileSystem, INotificationService notificationService)
     {
-        History = new History<ZafiroPath>(GetDefaultPath());
+        this.fileSystem = fileSystem;
+        History = new History(GetDefaultPath());
 
-        GoToPath = ReactiveCommand.CreateFromTask(() => fileSystem.GetDirectory(RequestedPath!), this.WhenAnyValue(x => x.RequestedPath).NotNull());
+        GoToPath = ReactiveCommand.CreateFromTask(() => GoTo(RequestedPath!), this.WhenAnyValue(x => x.RequestedPath).NotNull());
 
         path = GoToPath.Successes()
             .Select(directory => directory.Path)
@@ -35,14 +38,23 @@ public class AddressViewModel : ReactiveObject
 
         RequestedPath = "/";
     }
-    
+
+    private Task<Result<IZafiroDirectory>> GoTo(string requestedPath)
+    {
+        return fileSystem.GetDirectory(requestedPath)
+            .Tap(e => CurrentDirectory = e);
+    }
+
+    [Reactive]
+    public IZafiroDirectory CurrentDirectory { get; private set; }
+
     public ZafiroPath Path => path.Value;
 
     public ReactiveCommand<Unit, Unit> GoBack { get; set; }
 
     [Reactive] public string RequestedPath { get; set; }
 
-    public History<ZafiroPath> History { get; }
+    public History History { get; }
 
     public ReactiveCommand<Unit, Result<IZafiroDirectory>> GoToPath { get; }
 
@@ -51,5 +63,10 @@ public class AddressViewModel : ReactiveObject
     private static ZafiroPath GetDefaultPath()
     {
         return "/";
+    }
+
+    public Task<Result<IZafiroDirectory>> SetDirectory(ZafiroPath requestedPath)
+    {
+        return GoTo(requestedPath);
     }
 }

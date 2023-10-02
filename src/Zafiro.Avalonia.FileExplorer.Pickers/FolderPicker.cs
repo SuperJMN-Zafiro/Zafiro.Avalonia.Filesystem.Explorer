@@ -3,9 +3,8 @@ using CSharpFunctionalExtensions;
 using ReactiveUI;
 using Zafiro.Avalonia.Dialogs;
 using Zafiro.Avalonia.FileExplorer.Clipboard;
-using Zafiro.Avalonia.FileExplorer.Model;
+using Zafiro.Avalonia.FileExplorer.Explorer;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
-using Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents;
 using Zafiro.FileSystem;
 using Zafiro.UI;
 
@@ -30,13 +29,17 @@ namespace Zafiro.Avalonia.FileExplorer.Pickers
 
         public IObservable<Maybe<IZafiroDirectory>> Pick(string title)
         {
-            var folderContentsViewModel = new FolderContentsViewModel(fileSystem, new DirectoriesEntryFactory(),notificationService, clipboard, transferManager);
+            var folderContentsViewModel = new FileSystemExplorer(fileSystem, notificationService, clipboard, transferManager);
             var fromAsync = Observable
                 .FromAsync(() =>
                 {
                     var pickAFolder = title;
                     var okTitle = "Select";
-                    return dialogService.ShowDialog(folderContentsViewModel, pickAFolder, model => Observable.FromAsync(() => model.Result), new OptionConfiguration<FolderContentsViewModel, ZafiroPath>("OK", x => ReactiveCommand.Create(() => x.SetResult(x.Path))));
+                    return dialogService.ShowDialog(
+                        folderContentsViewModel, 
+                        pickAFolder, 
+                        model => Observable.FromAsync(() => model.Result), 
+                        new OptionConfiguration<FileSystemExplorer, ZafiroPath>("OK", explorer => ReactiveCommand.Create(() => explorer.SetResult(explorer.AddressViewModel.Path))));
                 })
                 .SelectMany(path =>
                 {

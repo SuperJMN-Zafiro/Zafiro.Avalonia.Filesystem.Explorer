@@ -7,6 +7,18 @@ using Zafiro.FileSystem;
 
 namespace Zafiro.Avalonia.FileExplorer.Model;
 
+public interface IHistory
+{
+    ZafiroPath CurrentFolder { get; set; }
+}
+
+public class History : History<ZafiroPath>, IHistory
+{
+    public History(ZafiroPath initial) : base(initial)
+    {
+    }
+}
+
 public class History<T> : ReactiveObject, IHistory<T>
 {
     private readonly Stack<T> currentFolderStack;
@@ -47,12 +59,5 @@ public class History<T> : ReactiveObject, IHistory<T>
         this.RaisePropertyChanged(nameof(CurrentFolder));
         this.RaisePropertyChanged(nameof(PreviousFolder));
         this.RaisePropertyChanged(nameof(CanGoBack));
-    }
-}
-
-public class History
-{
-    public History(ZafiroPath getDefaultPath)
-    {
     }
 }

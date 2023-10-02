@@ -8,11 +8,9 @@ using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using Zafiro.Avalonia.FileExplorer.Clipboard;
-using Zafiro.Avalonia.FileExplorer.Explorer.Address;
 using Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
-using Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.UI;
@@ -23,14 +21,14 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
 {
     private readonly TaskCompletionSource<ZafiroPath> tck = new();
 
-    public FileSystemExplorer(IFileSystem fileSystem, IDirectoriesEntryFactory strategy, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
+    public FileSystemExplorer(IFileSystem fileSystem, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
     {
         Clipboard = clipboard;
-        Address = new AddressViewModel(fileSystem, notificationService);
+        AddressViewModel = new Address.AddressViewModel(fileSystem, notificationService);
         TransferManager = transferManager;
 
-        var detailsViewModels = Address.GoToPath.Successes()
-            .Select(directory => new DetailsViewModel(directory, strategy, notificationService, clipboard, transferManager))
+        var detailsViewModels = AddressViewModel.GoToPath.Successes()
+            .Select(directory => new DetailsViewModel(directory, new EverythingEntryFactory(AddressViewModel), notificationService, clipboard, transferManager))
             .Replay()
             .RefCount();
 
@@ -39,16 +37,16 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
         var source = detailsViewModels.Select(x => x.SelectedItems.ToObservableChangeSet()).Switch();
         source.Bind(out var collection).Subscribe();
 
-        ToolBar = new ToolBarViewModel(collection, Address.GoToPath.Successes(), clipboard, transferManager, notificationService);
+        ToolBar = new ToolBarViewModel(collection, AddressViewModel.GoToPath.Successes(), clipboard, transferManager, notificationService);
 
-        Address.GoToPath.Execute().Take(1).Subscribe();
+        AddressViewModel.GoToPath.Execute().Take(1).Subscribe();
     }
 
     public ITransferManager TransferManager { get; }
 
     public ToolBarViewModel ToolBar { get; }
 
-    public AddressViewModel Address { get; }
+    public Address.AddressViewModel AddressViewModel { get; }
 
     public IObservable<DetailsViewModel> Details { get; }
 
@@ -60,8 +58,6 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
     {
         tck.SetResult(result);
     }
-
-    
 }
 
 public static class SelectionMixin

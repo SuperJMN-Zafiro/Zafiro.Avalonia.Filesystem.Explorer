@@ -8,17 +8,22 @@ using Zafiro.FileSystem;
 
 namespace Zafiro.Avalonia.FileExplorer.Model;
 
-public class DirectoriesEntryFactory : IEntryFactory
+public class EverythingEntryFactory : IEntryFactory
 {
     private readonly IAddress address;
 
-    public DirectoriesEntryFactory(IAddress address)
+    public EverythingEntryFactory(IAddress address)
     {
         this.address = address;
     }
-
+    
     public Task<Result<IEnumerable<IEntry>>> Get(IZafiroDirectory directory)
     {
-        return directory.GetDirectories().Map(dirs => dirs.Select(dir => (IEntry)new DirectoryItemViewModel(dir, address)));
+        var files = directory.GetFiles().Map(files => files.Select(file => (IEntry) new FileItemViewModel(file)));
+        var dirs = directory.GetDirectories().Map(dirs => dirs.Select(dir => (IEntry) new DirectoryItemViewModel(dir, address)));
+
+        return from f in files
+            from n in dirs
+            select f.Concat(n);
     }
 }
