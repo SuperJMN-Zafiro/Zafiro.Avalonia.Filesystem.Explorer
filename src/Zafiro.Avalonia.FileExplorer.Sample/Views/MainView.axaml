@@ -11,7 +11,7 @@
 
     <ContentControl Content="{Binding FileSystemExplorer}">
         <ContentControl.ContentTemplate>
-            <DataTemplate DataType="explorer:FileSystemFileSystemExplorer">
+            <DataTemplate DataType="explorer:FileSystemExplorer">
                 <Panel>
                     <DockPanel>
                         <ContentControl Content="{Binding ToolBar}" DockPanel.Dock="Top" />

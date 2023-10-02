@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
@@ -25,22 +26,19 @@ public class ToolBarViewModel
 {
     private readonly BehaviorSubject<IZafiroDirectory> directory;
 
-    public ToolBarViewModel(IObservable<IChangeSet<IEntry>> selection, IObservable<IZafiroDirectory> directories, IClipboard clipboard, ITransferManager transferManager, INotificationService notificationService)
+    public ToolBarViewModel(ReadOnlyObservableCollection<IEntry> selection, IObservable<IZafiroDirectory> directories, IClipboard clipboard, ITransferManager transferManager, INotificationService notificationService)
     {
         var canCopy = selection
+            .ToObservableChangeSet(x => x.Path)
             .ToCollection()
             .Select(x => x.Any());
-
-        selection
-            .Bind(out var items)
-            .Subscribe();
-
+        
         directory = new BehaviorSubject<IZafiroDirectory>(null);
         directories.Subscribe(directory);
         
         Copy = ReactiveCommand.Create(() =>
         {
-            var clipboardItems = items.Select(entry =>
+            var clipboardItems = selection.Select(entry =>
             {
                 return entry switch
                 {

@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Linq;
+using Avalonia.Controls.Selection;
 using CSharpFunctionalExtensions;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Zafiro.Avalonia.FileExplorer.Clipboard;
+using Zafiro.Avalonia.FileExplorer.Explorer;
 using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
@@ -40,21 +42,15 @@ public class DetailsViewModel : ReactiveObject
                 .ThenByAscending(p => p.Path.Name()))
             .Bind(out var collection)
             .Subscribe();
-
-        observable
-            .AutoRefresh(x => x.IsSelected)
-            .Filter(x => x.IsSelected)
-            .Bind(out var selectedItems)
-            .Subscribe();
-
-        SelectedItems = selectedItems;
-
+        
         Children = collection;
         IsLoadingChildren = LoadChildren.IsExecuting.DelayItem(true, TimeSpan.FromSeconds(0.5));
         LoadChildren.Execute().Subscribe();
+        var changes = Selection.ToObservable(x => x.Path);
+        changes.Bind(out var selectedItems).Subscribe();
+        SelectedItems = selectedItems;
     }
-
-
+    
     public ReadOnlyObservableCollection<IEntry> SelectedItems { get; }
 
     public IObservable<bool> IsLoadingChildren { get; }
@@ -66,4 +62,6 @@ public class DetailsViewModel : ReactiveObject
     public ReadOnlyObservableCollection<IEntry> Children { get; }
 
     [Reactive] public IEntry SelectedItem { get; set; }
+
+    public SelectionModel<IEntry> Selection { get; } = new(){ SingleSelect = false };
 }

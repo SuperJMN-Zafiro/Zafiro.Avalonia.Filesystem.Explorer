@@ -8,7 +8,7 @@
              x:Class="Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents.DetailsView"
              x:DataType="folderContents:DetailsViewModel">
 	<Panel>
-		<ListBox ItemsSource="{Binding Children}" SelectedItem="{Binding SelectedItem}">
+		<ListBox Selection="{Binding Selection}" ItemsSource="{Binding Children}" SelectedItem="{Binding SelectedItem}">
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
 					<StackPanel />

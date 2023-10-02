@@ -11,7 +11,7 @@ namespace Zafiro.Avalonia.FileExplorer.Explorer;
 
 public interface IFileSystemExplorer : IHaveResult<ZafiroPath>
 {
-    ITransferManager TransferManager { get; set; }
+    ITransferManager TransferManager { get; }
     ToolBarViewModel ToolBar { get; }
     AddressViewModel Address { get; }
     IObservable<DetailsViewModel> Details { get; }
