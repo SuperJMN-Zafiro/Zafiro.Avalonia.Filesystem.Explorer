@@ -37,4 +37,5 @@ public class DesignTransferItem : ReactiveObject, ITransferItem
     public IObservable<LongProgress> Progress { get; set; }
     public IObservable<bool> IsTransferringObs { get; }
     public bool IsTransferring { get; }
+    public IObservable<string> Errors => Observable.Never<string>();
 }

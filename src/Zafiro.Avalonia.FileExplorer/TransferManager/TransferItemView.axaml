@@ -44,6 +44,8 @@
             Value="{Binding Progress^.Current}" />
         <TextBlock Margin="0 5" TextWrapping="NoWrap" ToolTip.Tip="{Binding Destination}"
                    TextTrimming="CharacterEllipsis" Text="{Binding Destination}" VerticalAlignment="Center" />
+        <TextBlock TextAlignment="Right" TextWrapping="NoWrap" Foreground="Red" ToolTip.Tip="{Binding Errors^}"
+                   TextTrimming="CharacterEllipsis" Text="{Binding Errors^}" VerticalAlignment="Center" />
     </Panel>
 </DockPanel>
 </UserControl>
