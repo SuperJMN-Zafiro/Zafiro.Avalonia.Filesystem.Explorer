@@ -25,7 +25,7 @@
 					<Image Margin="0 2" Source="{StaticResource di_back_xaml}" />
 				</Button.Content>
 			</Button>
-			<Button Command="{Binding GoToPath}"  DockPanel.Dock="Right">
+			<Button Command="{Binding LoadRequestedPath}"  DockPanel.Dock="Right">
 				<Button.Content>
 					<Image Source="{StaticResource di_reload_xaml}"  />
 				</Button.Content>
@@ -36,7 +36,7 @@
                     <Interaction.Behaviors>
                         <behaviors:TextBoxAutoSelectTextBehavior />
                         <behaviors:KeyDownTriggerBehavior EventRoutingStrategy="Tunnel" MarkAsHandled="True" Key="Enter">
-                            <InvokeCommandAction Command="{Binding GoToPath}" />
+                            <InvokeCommandAction Command="{Binding LoadRequestedPath}" />
                         </behaviors:KeyDownTriggerBehavior>
                     </Interaction.Behaviors>
                 </TextBox>

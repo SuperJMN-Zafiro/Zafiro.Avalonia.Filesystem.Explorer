@@ -27,7 +27,7 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
         AddressViewModel = new Address.AddressViewModel(fileSystem, notificationService);
         TransferManager = transferManager;
 
-        var detailsViewModels = AddressViewModel.GoToPath.Successes()
+        var detailsViewModels = AddressViewModel.LoadRequestedPath.Successes()
             .Select(directory => new DetailsViewModel(directory, new EverythingEntryFactory(AddressViewModel), notificationService, clipboard, transferManager))
             .Replay()
             .RefCount();
@@ -37,9 +37,9 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
         var source = detailsViewModels.Select(x => x.SelectedItems.ToObservableChangeSet()).Switch();
         source.Bind(out var collection).Subscribe();
 
-        ToolBar = new ToolBarViewModel(collection, AddressViewModel.GoToPath.Successes(), clipboard, transferManager, notificationService);
+        ToolBar = new ToolBarViewModel(collection, AddressViewModel.LoadRequestedPath.Successes(), clipboard, transferManager, notificationService);
 
-        AddressViewModel.GoToPath.Execute().Take(1).Subscribe();
+        AddressViewModel.LoadRequestedPath.Execute().Take(1).Subscribe();
     }
 
     public ITransferManager TransferManager { get; }

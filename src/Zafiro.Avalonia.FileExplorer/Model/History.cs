@@ -10,6 +10,7 @@ namespace Zafiro.Avalonia.FileExplorer.Model;
 public interface IHistory
 {
     ZafiroPath CurrentFolder { get; set; }
+    Maybe<ZafiroPath> PreviousFolder { get; }
 }
 
 public class History : History<ZafiroPath>, IHistory

@@ -13,12 +13,12 @@ public class DirectoryItemViewModel : ReactiveObject, IEntry
     public DirectoryItemViewModel(IZafiroDirectory directory, IAddress address)
     {
         Directory = directory;
-        Navigate = ReactiveCommand.CreateFromTask(() => address.SetDirectory(directory.Path));
+        Navigate = ReactiveCommand.Create(() => address.SetRequestedPath(directory.Path));
     }
 
     public IZafiroDirectory Directory { get; }
 
-    public ReactiveCommand<Unit, Result<IZafiroDirectory>> Navigate { get; }
+    public ReactiveCommand<Unit, Unit> Navigate { get; }
 
     public string Name => Path.Name();
     public ZafiroPath Path => Directory.Path;
