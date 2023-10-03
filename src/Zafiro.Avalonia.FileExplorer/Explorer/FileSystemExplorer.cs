@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Reactive;
 using System.Reactive.Linq;
 using System.Threading.Tasks;
-using Avalonia.Controls.Selection;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
@@ -58,20 +55,4 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
     {
         tck.SetResult(result);
     }
-}
-
-public static class SelectionMixin
-{
-    public static  IObservable<IChangeSet<TObject, TKey>> ToObservable<TObject, TKey>(this SelectionModel<TObject> selection, Func<TObject, TKey> selector) where TKey : notnull
-    {
-        return Observable
-            .FromEventPattern<SelectionModelSelectionChangedEventArgs<TObject>>(handler => selection.SelectionChanged += handler, handler => selection.SelectionChanged -= handler)
-            .SelectMany(data => GenerateChanges(selection.SelectedItems!, data, selector));
-    }
-
-    public static IObservable<IChangeSet<TObject, TKey>> GenerateChanges<TObject, TKey>(IEnumerable<TObject> selectionSelectedItems, EventPattern<SelectionModelSelectionChangedEventArgs<TObject>> data, Func<TObject, TKey> selector) where TKey : notnull
-    {
-        return selectionSelectedItems.AsObservableChangeSet(selector).StartWithEmpty();
-    }
-
 }

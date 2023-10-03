@@ -21,7 +21,6 @@ namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 
 public class ToolBarViewModel
 {
-
     public ToolBarViewModel(ReadOnlyObservableCollection<IEntry> selection, IObservable<IZafiroDirectory> directories, IClipboard clipboard, ITransferManager transferManager, INotificationService notificationService)
     {
         var canCopy = selection

@@ -44,11 +44,11 @@ public class DetailsViewModel : ReactiveObject
         Children = collection;
         IsLoadingChildren = LoadChildren.IsExecuting.DelayItem(true, TimeSpan.FromSeconds(0.5));
         LoadChildren.Execute().Subscribe();
-        var changes = Selection.ToObservable(x => x.Path);
-        changes.Bind(out var selectedItems).Subscribe();
+        var tracker = new SelectionTracker<IEntry, ZafiroPath>(Selection, entry => entry.Path);
+        tracker.Changes.Bind(out var selectedItems).Subscribe();
         SelectedItems = selectedItems;
     }
-
+    
     public ReadOnlyObservableCollection<IEntry> SelectedItems { get; }
 
     public IObservable<bool> IsLoadingChildren { get; }
