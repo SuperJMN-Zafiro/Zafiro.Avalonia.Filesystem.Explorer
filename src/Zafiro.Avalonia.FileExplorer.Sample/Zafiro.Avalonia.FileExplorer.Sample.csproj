@@ -7,7 +7,6 @@
 		<IsPackable>False</IsPackable>
 	</PropertyGroup>
 
-
 	<ItemGroup>
 		<AvaloniaResource Include="Assets\**" />
 	</ItemGroup>
