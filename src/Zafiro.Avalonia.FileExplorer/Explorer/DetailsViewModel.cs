@@ -13,6 +13,7 @@ using Zafiro.Avalonia.FileExplorer.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
+using Zafiro.Avalonia.Mixins;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.UI;
