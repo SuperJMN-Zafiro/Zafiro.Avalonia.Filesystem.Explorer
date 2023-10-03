@@ -8,7 +8,7 @@ using Zafiro.Actions;
 using Zafiro.FileSystem;
 using Zafiro.UI;
 
-namespace Zafiro.Avalonia.FileExplorer.TransferManager;
+namespace Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 
 public class DesignTransferItem : ReactiveObject, ITransferItem
 {

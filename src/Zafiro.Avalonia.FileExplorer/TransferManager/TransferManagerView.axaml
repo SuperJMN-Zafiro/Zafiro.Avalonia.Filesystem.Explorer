@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:transferManager="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager"
              xmlns:controls="clr-namespace:Zafiro.Avalonia.Controls;assembly=Zafiro.Avalonia"
+             xmlns:items="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager.Items"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.TransferManager.TransferManagerView"
              x:DataType="transferManager:ITransferManager">
@@ -14,14 +15,14 @@
             <DataGridTextColumn Header="To" Binding="{Binding Destination}" />
             <DataGridTemplateColumn Header="%">
                 <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate DataType="transferManager:ITransferItem">
+                    <DataTemplate DataType="items:ITransferItem">
                         <ProgressBar Width="200" Maximum="{Binding Progress^.Total}" Value="{Binding Progress^.Current}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
             </DataGridTemplateColumn>
             <DataGridTemplateColumn>
                 <DataGridTemplateColumn.CellTemplate>
-                    <DataTemplate DataType="transferManager:ITransferItem">
+                    <DataTemplate DataType="items:ITransferItem">
                         <controls:StoppableControl Content="Start" Command="{Binding DoTransfer}" />
                     </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>

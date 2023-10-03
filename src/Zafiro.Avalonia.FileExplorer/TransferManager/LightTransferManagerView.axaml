@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:transferManager="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager"
              xmlns:converters="clr-namespace:Zafiro.Avalonia.Converters;assembly=Zafiro.Avalonia"
+             xmlns:items="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager.Items"
              mc:Ignorable="d"
              x:Class="Zafiro.Avalonia.FileExplorer.TransferManager.LightTransferManagerView"
              x:DataType="transferManager:ITransferManager" ClipToBounds="False"
@@ -39,7 +40,7 @@
 					</Style>
 				</ItemsControl.Styles>
 				<ItemsControl.ItemTemplate>
-					<DataTemplate DataType="transferManager:ITransferItem">
+					<DataTemplate DataType="items:ITransferItem">
                         <transferManager:TransferItemView />
                     </DataTemplate>
 				</ItemsControl.ItemTemplate>

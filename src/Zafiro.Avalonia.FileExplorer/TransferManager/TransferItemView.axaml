@@ -6,22 +6,23 @@
              xmlns:transferManager="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager"
              xmlns:designTime="clr-namespace:Zafiro.Avalonia.DesignTime;assembly=Zafiro.Avalonia"
              xmlns:actions="clr-namespace:Zafiro.Actions;assembly=Zafiro"
+             xmlns:items="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager.Items"
              mc:Ignorable="d"
              x:Class="Zafiro.Avalonia.FileExplorer.TransferManager.TransferItemView"
-             x:DataType="transferManager:ITransferItem">
+             x:DataType="items:ITransferItem">
 
     <Design.DataContext>
-        <transferManager:DesignTransferItem 
+        <items:DesignTransferItem 
             SourceString="ff" 
             DestinationString="Flepito">
-            <transferManager:DesignTransferItem.Progress>
+            <items:DesignTransferItem.Progress>
                 <designTime:Return>
                     <designTime:Return.Value>
                         <actions:LongProgress />
                     </designTime:Return.Value>
                 </designTime:Return>
-            </transferManager:DesignTransferItem.Progress>
-        </transferManager:DesignTransferItem>
+            </items:DesignTransferItem.Progress>
+        </items:DesignTransferItem>
     </Design.DataContext>
 
     <DockPanel>

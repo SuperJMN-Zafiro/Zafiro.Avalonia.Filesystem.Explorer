@@ -6,7 +6,6 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using CSharpFunctionalExtensions;
-using System.Threading.Tasks;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
@@ -15,16 +14,13 @@ using Zafiro.Avalonia.FileExplorer.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
-using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
-using Zafiro.FileSystem.Actions;
 using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 
 public class ToolBarViewModel
 {
-    private readonly BehaviorSubject<IZafiroDirectory> directory;
 
     public ToolBarViewModel(ReadOnlyObservableCollection<IEntry> selection, IObservable<IZafiroDirectory> directories, IClipboard clipboard, ITransferManager transferManager, INotificationService notificationService)
     {
@@ -33,7 +29,7 @@ public class ToolBarViewModel
             .ToCollection()
             .Select(x => x.Any());
         
-        directory = new BehaviorSubject<IZafiroDirectory>(null);
+        var directory = new BehaviorSubject<IZafiroDirectory>(null);
         directories.Subscribe(directory);
         
         Copy = ReactiveCommand.Create(() =>
@@ -55,62 +51,16 @@ public class ToolBarViewModel
             .Do(_ => notificationService.Show("Copied to clipboard"))
             .Subscribe();
 
-        var canPaste = clipboard.Contents.ToObservableChangeSet().ToCollection().Select(x => x.Any());
+        var paste = new PasteViewModel(clipboard, directory, transferManager);
+        Paste = paste.Paste;
 
-        Paste = ReactiveCommand.CreateFromTask(() => GenerateActions(clipboard.Contents), canPaste);
-        Paste
-            .Select(x => x.Successes())
-            .Do(action =>
-            {
-                foreach (var action1 in action)
-                {
-                    if (action1 is CopyFileAction fc)
-                    {
-                        transferManager.Add(new FileCopyViewModel(fc));
-                    }
-                    if (action1 is CopyDirectoryAction dc)
-                    {
-                        transferManager.Add(new DirectoryCopyViewModel(dc));
-                    }
-                }
-            }).Subscribe();
+        var delete = new DeleteViewModel(selection, directory, transferManager);
+        Delete = delete.Delete;
     }
 
-    public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Paste { get; set; }
-
-    private async Task<IList<Result<IAction<LongProgress>>>> GenerateActions(IEnumerable<IClipboardItem> selectedItems)
-    {
-        var results = await selectedItems
-            .ToObservable()
-            .SelectMany(entry => GetAction(entry))
-            .ToList();
-
-        return results;
-    }
-
-    private Task<Result<IAction<LongProgress>>> GetAction(IClipboardItem entry)
-    {
-        var action = entry switch
-        {
-            ClipboardFileItemViewModel folderItemViewModel => CreateFileTransfer(folderItemViewModel).Map(action1 => (IAction<LongProgress>)action1),
-            ClipboardDirectoryItemViewModel fileItemViewModel => CreateDirectoryTransfer(fileItemViewModel).Map(action1 => (IAction<LongProgress>)action1),
-            _ => throw new ArgumentOutOfRangeException(nameof(entry))
-        };
-        return action;
-    }
-    private Task<Result<CopyDirectoryAction>> CreateDirectoryTransfer(ClipboardDirectoryItemViewModel directoryItem)
-    {
-        return directory.Value.FileSystem
-            .GetDirectory(directory.Value.Path.Combine(directoryItem.Directory.Path.Name()))
-            .Bind(async dst => await CopyDirectoryAction.Create(directoryItem.Directory, dst));
-    }
-
-    private Task<Result<CopyFileAction>> CreateFileTransfer(ClipboardFileItemViewModel fileItem)
-    {
-        return directory.Value.FileSystem
-            .GetFile(directory.Value.Path.Combine(fileItem.Path.Name()))
-            .Bind(async dst => await CopyFileAction.Create(fileItem.File, dst));
-    }
+    public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Delete { get; set; }
+    
+    public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Paste { get; }
 
     public ReactiveCommand<Unit, Unit> Copy { get; set; }
 }

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Reactive.Linq;
 using DynamicData;
 using DynamicData.Binding;
+using Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 
 namespace Zafiro.Avalonia.FileExplorer.TransferManager;
 

@@ -11,16 +11,15 @@ using Zafiro.FileSystem;
 using Zafiro.FileSystem.Actions;
 using Zafiro.UI;
 
-namespace Zafiro.Avalonia.FileExplorer.TransferManager;
+namespace Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 
-public class DirectoryCopyViewModel : ReactiveObject, ITransferItem
+public class DirectoryDeleteViewModel : ReactiveObject, ITransferItem
 {
-    public DirectoryCopyViewModel(CopyDirectoryAction copyAction)
+    public DirectoryDeleteViewModel(DeleteDirectoryAction deleteDirectoryAction)
     {
-        Source = copyAction.Source.Path;
-        Destination = copyAction.Destination.Path;
-        DoTransfer = StoppableCommand.CreateFromTask(copyAction.Execute, Observable.Return(true));
-        Progress = copyAction.Progress;
+        Source = deleteDirectoryAction.Source.Path;
+        DoTransfer = StoppableCommand.CreateFromTask(deleteDirectoryAction.Execute, Observable.Return(true));
+        Progress = deleteDirectoryAction.Progress;
         DoTransfer.IsExecuting.DelayItem(false, TimeSpan.FromSeconds(5)).BindTo(this, x => x.IsTransferring);
         Errors = DoTransfer.Start.Failures();
     }
