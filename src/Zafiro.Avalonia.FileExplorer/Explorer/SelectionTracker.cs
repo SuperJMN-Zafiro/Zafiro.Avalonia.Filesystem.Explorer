@@ -21,7 +21,7 @@ public class SelectionTracker<T, TKey> where TKey : notnull
         Changes = cache.Connect();
     }
 
-    public IObservable<IChangeSet<T, TKey>> Changes { get; set; }
+    public IObservable<IChangeSet<T, TKey>> Changes { get; }
     
     private void Sync(SelectionModelSelectionChangedEventArgs<T> pattern, SourceCache<T, TKey> sourceCache)
     {
