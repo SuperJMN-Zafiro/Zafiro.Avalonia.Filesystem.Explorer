@@ -4,7 +4,6 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Reactive;
 using System.Reactive.Linq;
-using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using DynamicData;
@@ -16,14 +15,13 @@ using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
 using Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 using Zafiro.CSharpFunctionalExtensions;
-using Zafiro.FileSystem;
 using Zafiro.FileSystem.Actions;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 
 public class DeleteViewModel
 {
-    public DeleteViewModel(ReadOnlyObservableCollection<IEntry> selectedItems, BehaviorSubject<IZafiroDirectory> directory, ITransferManager transferManager)
+    public DeleteViewModel(ReadOnlyObservableCollection<IEntry> selectedItems, ITransferManager transferManager)
     {
         var canDelete = selectedItems.ToObservableChangeSet().ToCollection().Select(x => x.Any());
 

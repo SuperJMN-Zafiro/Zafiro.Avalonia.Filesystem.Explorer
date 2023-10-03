@@ -54,7 +54,7 @@ public class ToolBarViewModel
         var paste = new PasteViewModel(clipboard, directory, transferManager);
         Paste = paste.Paste;
 
-        var delete = new DeleteViewModel(selection, directory, transferManager);
+        var delete = new DeleteViewModel(selection, transferManager);
         Delete = delete.Delete;
     }
 
