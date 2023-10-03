@@ -6,8 +6,130 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.Explorer.ToolBar.ToolBarView"
              x:DataType="toolBar:ToolBarViewModel">
-  <StackPanel Orientation="Horizontal">
-	<Button Content="Copy" Command="{Binding Copy}" />
-	<Button Content="Paste" Command="{Binding Paste}" />
-</StackPanel>
+
+	<UserControl.Resources>
+		<DrawingGroup x:Key="copy_xaml">
+			<DrawingGroup.ClipGeometry>
+				<RectangleGeometry Rect="0.0,0.0,1920.0,1920.0"/>
+			</DrawingGroup.ClipGeometry>
+			<GeometryDrawing Brush="#ff000000">
+				<GeometryDrawing.Geometry>
+					<PathGeometry Figures="M 0 1919.89 h 1467.88 V 452.008 H 0 v 1467.88 Z M 1354.96 564.922 v 1242.05 H 112.914 V 564.922 h 1242.05 Z M 1920 0 v 1467.99 h -338.741 v -113.027 h 225.827 V 112.914 H 565.035 V 338.74 H 452.008 V 0 H 1920 Z M 338.741 1016.93 h 790.397 V 904.016 H 338.74 v 112.914 Z m 0 451.062 h 790.397 v -113.027 H 338.74 v 113.027 Z m 0 -225.588 h 564.57 v -112.913 H 338.74 v 112.913 Z"/>
+				</GeometryDrawing.Geometry>
+			</GeometryDrawing>
+		</DrawingGroup>
+		<DrawingImage Drawing="{StaticResource copy_xaml}" x:Key="di_copy_xaml"/>
+
+		<DrawingGroup x:Key="delete_xaml">
+			<DrawingGroup.ClipGeometry>
+				<RectangleGeometry Rect="0.0,0.0,24.0,24.0"/>
+			</DrawingGroup.ClipGeometry>
+			<GeometryDrawing>
+				<GeometryDrawing.Pen>
+					<Pen Brush="#ff000000" LineJoin="Round" Thickness="2.0" LineCap="Round"/>
+				</GeometryDrawing.Pen>
+				<GeometryDrawing.Geometry>
+					<PathGeometry Figures="M 10 12 V 17" FillRule="NonZero"/>
+				</GeometryDrawing.Geometry>
+			</GeometryDrawing>
+			<GeometryDrawing>
+				<GeometryDrawing.Pen>
+					<Pen Brush="#ff000000" LineJoin="Round" Thickness="2.0" LineCap="Round"/>
+				</GeometryDrawing.Pen>
+				<GeometryDrawing.Geometry>
+					<PathGeometry Figures="M 14 12 V 17" FillRule="NonZero"/>
+				</GeometryDrawing.Geometry>
+			</GeometryDrawing>
+			<GeometryDrawing>
+				<GeometryDrawing.Pen>
+					<Pen Brush="#ff000000" LineJoin="Round" Thickness="2.0" LineCap="Round"/>
+				</GeometryDrawing.Pen>
+				<GeometryDrawing.Geometry>
+					<PathGeometry Figures="M 4 7 H 20" FillRule="NonZero"/>
+				</GeometryDrawing.Geometry>
+			</GeometryDrawing>
+			<GeometryDrawing>
+				<GeometryDrawing.Pen>
+					<Pen Brush="#ff000000" LineJoin="Round" Thickness="2.0" LineCap="Round"/>
+				</GeometryDrawing.Pen>
+				<GeometryDrawing.Geometry>
+					<PathGeometry Figures="M 6 10 V 18 C 6 19.6569 7.34315 21 9 21 H 15 C 16.6569 21 18 19.6569 18 18 V 10" FillRule="NonZero"/>
+				</GeometryDrawing.Geometry>
+			</GeometryDrawing>
+			<GeometryDrawing>
+				<GeometryDrawing.Pen>
+					<Pen Brush="#ff000000" LineJoin="Round" Thickness="2.0" LineCap="Round"/>
+				</GeometryDrawing.Pen>
+				<GeometryDrawing.Geometry>
+					<PathGeometry Figures="M 9 5 C 9 3.89543 9.89543 3 11 3 H 13 C 14.1046 3 15 3.89543 15 5 V 7 H 9 V 5 Z" FillRule="NonZero"/>
+				</GeometryDrawing.Geometry>
+			</GeometryDrawing>
+		</DrawingGroup>
+		<DrawingImage Drawing="{StaticResource delete_xaml}" x:Key="di_delete_xaml"/>
+
+		<DrawingGroup x:Key="paste_xaml">
+			<DrawingGroup.ClipGeometry>
+				<RectangleGeometry Rect="0.0,0.0,24.0,24.0"/>
+			</DrawingGroup.ClipGeometry>
+			<GeometryDrawing Brush="#ff000000">
+				<GeometryDrawing.Geometry>
+					<PathGeometry Figures="M 3 21 h 5 v -1 H 4 V 4 h 2 v 2 h 10 V 4 h 2 v 3 h 0.4 a 0.989 0.989 0 0 1 0.6 0.221 V 3 h -3 V 2 h -3 a 2 2 0 0 0 -4 0 H 6 v 1 H 3 z M 7 3 h 3 V 1.615 A 0.615 0.615 0 0 1 10.614 1 h 0.771 a 0.615 0.615 0 0 1 0.615 0.615 V 3 h 3 v 2 H 7 z m 4 14 h 9 v 1 h -9 z M 9 8 v 16 h 13 V 11.6 L 18.4 8 z m 12 15 H 10 V 9 h 7 v 4 h 4 z m 0 -11 h -3 V 9 h 0.31 L 21 11.69 z m -10 2 h 9 v 1 h -9 z m 0 6 h 7 v 1 h -7 z" FillRule="NonZero"/>
+				</GeometryDrawing.Geometry>
+			</GeometryDrawing>
+			<GeometryDrawing>
+				<GeometryDrawing.Geometry>
+					<PathGeometry Figures="M 0 0 h 24 v 24 H 0 z" FillRule="NonZero"/>
+				</GeometryDrawing.Geometry>
+			</GeometryDrawing>
+		</DrawingGroup>
+		<DrawingImage Drawing="{StaticResource paste_xaml}" x:Key="di_paste_xaml"/>
+
+	</UserControl.Resources>
+
+	<UserControl.Styles>
+		<Style Selector="Button">
+			<Setter Property="VerticalAlignment" Value="Center" />
+			<Setter Property="Padding" Value="4" />
+		</Style>
+		<Style Selector="Image">
+			<Setter Property="Height" Value="20" />
+			<Setter Property="VerticalAlignment" Value="Center" />
+		</Style>
+		<Style Selector="TextBlock">
+			<Setter Property="VerticalAlignment" Value="Center" />
+			<Setter Property="Margin" Value="4" />
+		</Style>
+	</UserControl.Styles>
+
+	<StackPanel Orientation="Horizontal">
+		<Button Command="{Binding Copy}">
+			<Button.Content>
+				<DockPanel>
+					<Image Source="{StaticResource di_copy_xaml}" />
+					<TextBlock>Copy</TextBlock>
+				</DockPanel>
+			</Button.Content>
+		</Button>
+		<Button Command="{Binding Paste}">
+			<Button.Content>
+                <Panel>
+                    <DockPanel>
+                        <Image Source="{StaticResource di_copy_xaml}" />
+                        <TextBlock>Paste</TextBlock>
+                    
+                    </DockPanel>
+                    <ProgressBar Margin="0 0 0 -3" IsIndeterminate="True" IsVisible="{Binding IsPasting^}"
+                                 MinWidth="0" VerticalAlignment="Bottom" />
+                </Panel>
+			</Button.Content>
+		</Button>
+		<Button Command="{Binding Delete}">
+            <Button.Content>
+                <DockPanel>
+                    <Image Source="{StaticResource di_delete_xaml}" />
+                    <TextBlock>Delete</TextBlock>
+                </DockPanel>
+            </Button.Content>
+        </Button>
+    </StackPanel>
 </UserControl>

@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:transferManager="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager"
              xmlns:converters="clr-namespace:Zafiro.Avalonia.Converters;assembly=Zafiro.Avalonia"
+             xmlns:items="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager.Items"
              mc:Ignorable="d"
              x:Class="Zafiro.Avalonia.FileExplorer.TransferManager.LightTransferManagerView"
              x:DataType="transferManager:ITransferManager" ClipToBounds="False"
@@ -24,7 +25,7 @@
             BoxShadow="5 5 10 0 DarkGray" BorderBrush="Black"
             BorderThickness="1">
 		<StackPanel Spacing="6">
-			<TextBlock FontWeight="Bold" DockPanel.Dock="Top" Text="Copying..." />
+			<TextBlock FontWeight="Bold" DockPanel.Dock="Top" Text="Processing actions" />
 			<Separator />
 			<ItemsControl ItemsSource="{Binding OngoingTransfers}">
 				<ItemsControl.Styles>
@@ -32,14 +33,14 @@
 						<Setter Property="Template">
 							<Setter.Value>
 								<ControlTemplate>
-									<TextBlock>No downloads</TextBlock>
+									<TextBlock>...</TextBlock>
 								</ControlTemplate>
 							</Setter.Value>
 						</Setter>
 					</Style>
 				</ItemsControl.Styles>
 				<ItemsControl.ItemTemplate>
-					<DataTemplate DataType="transferManager:ITransferItem">
+					<DataTemplate DataType="items:ITransferItem">
                         <transferManager:TransferItemView />
                     </DataTemplate>
 				</ItemsControl.ItemTemplate>

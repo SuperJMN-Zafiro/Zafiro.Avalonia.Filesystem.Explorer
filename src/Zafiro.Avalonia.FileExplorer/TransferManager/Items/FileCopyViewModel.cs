@@ -5,11 +5,12 @@ using CSharpFunctionalExtensions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Zafiro.Actions;
+using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.FileSystem.Actions;
 using Zafiro.UI;
 
-namespace Zafiro.Avalonia.FileExplorer.TransferManager;
+namespace Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 
 public class FileCopyViewModel : ReactiveObject, ITransferItem
 {
@@ -20,14 +21,17 @@ public class FileCopyViewModel : ReactiveObject, ITransferItem
         DoTransfer = StoppableCommand.CreateFromTask(copyAction.Execute, Observable.Return(true));
         Progress = copyAction.Progress;
         DoTransfer.IsExecuting.BindTo(this, x => x.IsTransferring);
+        Errors = DoTransfer.Start.Failures();
     }
 
+    public string Description => $"Copy {Source} to {Destination}";
     public ZafiroPath Source { get; }
     public ZafiroPath Destination { get; }
     public IStoppableCommand<Unit, Result> DoTransfer { get; }
     public IObservable<LongProgress> Progress { get; }
     public IObservable<bool> IsTransferringObs => DoTransfer.IsExecuting;
 
-    [Reactive]
-    public bool IsTransferring { get; private set; }
+    [Reactive] public bool IsTransferring { get; private set; }
+
+    public IObservable<string> Errors { get; }
 }

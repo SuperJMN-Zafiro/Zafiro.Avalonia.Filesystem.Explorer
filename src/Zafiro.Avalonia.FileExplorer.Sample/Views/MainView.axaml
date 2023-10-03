@@ -11,11 +11,11 @@
 
     <ContentControl Content="{Binding FileSystemExplorer}">
         <ContentControl.ContentTemplate>
-            <DataTemplate DataType="explorer:FileSystemFileSystemExplorer">
+            <DataTemplate DataType="explorer:FileSystemExplorer">
                 <Panel>
                     <DockPanel>
                         <ContentControl Content="{Binding ToolBar}" DockPanel.Dock="Top" />
-                        <ContentControl Content="{Binding Address}" DockPanel.Dock="Top" />
+                        <ContentControl Content="{Binding AddressViewModel}" DockPanel.Dock="Top" />
                         <ContentControl Content="{Binding Details^}" />
                     </DockPanel>
                     <tm:LightTransferManagerView Width="400" VerticalAlignment="Bottom"

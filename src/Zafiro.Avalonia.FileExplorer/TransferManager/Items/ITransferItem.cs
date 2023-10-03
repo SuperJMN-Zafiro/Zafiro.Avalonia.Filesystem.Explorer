@@ -6,14 +6,15 @@ using Zafiro.Actions;
 using Zafiro.FileSystem;
 using Zafiro.UI;
 
-namespace Zafiro.Avalonia.FileExplorer.TransferManager;
+namespace Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 
 public interface ITransferItem : INotifyPropertyChanged
 {
+    public string Description { get; }
     ZafiroPath Source { get; }
     ZafiroPath Destination { get; }
     IStoppableCommand<Unit, Result> DoTransfer { get; }
     IObservable<LongProgress> Progress { get; }
-    public IObservable<bool> IsTransferringObs { get; }
     public bool IsTransferring { get; }
+    public IObservable<string> Errors { get; }
 }

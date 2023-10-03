@@ -8,7 +8,7 @@ using Zafiro.Actions;
 using Zafiro.FileSystem;
 using Zafiro.UI;
 
-namespace Zafiro.Avalonia.FileExplorer.TransferManager;
+namespace Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 
 public class DesignTransferItem : ReactiveObject, ITransferItem
 {
@@ -20,6 +20,8 @@ public class DesignTransferItem : ReactiveObject, ITransferItem
         IsTransferring = true;
         DoTransfer = new StoppableCommand<Unit, Result>(_ => Observable.Return(Result.Success()), Observable.Return(false));
     }
+
+    public string Description => "Design-time";
 
     [Reactive]
     public ZafiroPath Source { get; set; }
@@ -37,4 +39,5 @@ public class DesignTransferItem : ReactiveObject, ITransferItem
     public IObservable<LongProgress> Progress { get; set; }
     public IObservable<bool> IsTransferringObs { get; }
     public bool IsTransferring { get; }
+    public IObservable<string> Errors => Observable.Never<string>();
 }

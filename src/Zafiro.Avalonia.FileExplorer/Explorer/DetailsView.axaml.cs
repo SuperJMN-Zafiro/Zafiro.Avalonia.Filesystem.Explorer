@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents
+namespace Zafiro.Avalonia.FileExplorer.Explorer
 {
     public partial class DetailsView : UserControl
     {

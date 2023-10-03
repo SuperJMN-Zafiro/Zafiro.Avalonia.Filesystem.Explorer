@@ -3,12 +3,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:avaloniaProgressRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
-             xmlns:folderContents="clr-namespace:Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents"
+             xmlns:explorer="clr-namespace:Zafiro.Avalonia.FileExplorer.Explorer"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Zafiro.Avalonia.FileExplorer.ViewsModes.FolderContents.DetailsView"
-             x:DataType="folderContents:DetailsViewModel">
+             x:Class="Zafiro.Avalonia.FileExplorer.Explorer.DetailsView"
+             x:DataType="explorer:DetailsViewModel">
 	<Panel>
-		<ListBox ItemsSource="{Binding Children}" SelectedItem="{Binding SelectedItem}">
+		<ListBox Selection="{Binding Selection}" ItemsSource="{Binding Children}" SelectedItem="{Binding SelectedItem}">
 			<ListBox.ItemsPanel>
 				<ItemsPanelTemplate>
 					<StackPanel />

@@ -4,8 +4,8 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:items="clr-namespace:Zafiro.Avalonia.FileExplorer.Items"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Zafiro.Avalonia.FileExplorer.Items.FolderItemView"
-             x:DataType="items:FolderItemViewModel">
+             x:Class="Zafiro.Avalonia.FileExplorer.Items.DirectoryItemView"
+             x:DataType="items:DirectoryItemViewModel">
 	<UserControl.Resources>
 
 		<ResourceDictionary>
@@ -39,13 +39,14 @@
 
 	</UserControl.Resources>
 
-    <DockPanel>
-        <CheckBox IsChecked="{Binding IsSelected}" DockPanel.Dock="Left" />
-        <Image Margin="4" DockPanel.Dock="Left" Height="24">
-            <Image.Source>
-                <DrawingImage Drawing="{StaticResource Folder}" />
-            </Image.Source>
-        </Image>
-        <TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
-    </DockPanel>
+	<Button Theme="{StaticResource Transparent}" Command="{Binding Navigate}">
+		<DockPanel>
+			<Image Margin="4" DockPanel.Dock="Left" Height="24">
+				<Image.Source>
+					<DrawingImage Drawing="{StaticResource Folder}" />
+				</Image.Source>
+			</Image>
+			<TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+		</DockPanel>
+	</Button>
 </UserControl>
