@@ -21,6 +21,8 @@ public class DesignTransferItem : ReactiveObject, ITransferItem
         DoTransfer = new StoppableCommand<Unit, Result>(_ => Observable.Return(Result.Success()), Observable.Return(false));
     }
 
+    public string Description => "Design-time";
+
     [Reactive]
     public ZafiroPath Source { get; set; }
 

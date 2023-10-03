@@ -54,9 +54,13 @@ public class ToolBarViewModel
         var paste = new PasteViewModel(clipboard, directory, transferManager);
         Paste = paste.Paste;
 
+        IsPasting = Paste.IsExecuting;
+
         var delete = new DeleteViewModel(selection, transferManager);
         Delete = delete.Delete;
     }
+
+    public IObservable<bool> IsPasting { get; }
 
     public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Delete { get; set; }
     

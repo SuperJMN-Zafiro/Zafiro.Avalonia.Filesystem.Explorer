@@ -25,7 +25,7 @@
             BoxShadow="5 5 10 0 DarkGray" BorderBrush="Black"
             BorderThickness="1">
 		<StackPanel Spacing="6">
-			<TextBlock FontWeight="Bold" DockPanel.Dock="Top" Text="Copying..." />
+			<TextBlock FontWeight="Bold" DockPanel.Dock="Top" Text="Processing actions" />
 			<Separator />
 			<ItemsControl ItemsSource="{Binding OngoingTransfers}">
 				<ItemsControl.Styles>
@@ -33,7 +33,7 @@
 						<Setter Property="Template">
 							<Setter.Value>
 								<ControlTemplate>
-									<TextBlock>No downloads</TextBlock>
+									<TextBlock>...</TextBlock>
 								</ControlTemplate>
 							</Setter.Value>
 						</Setter>

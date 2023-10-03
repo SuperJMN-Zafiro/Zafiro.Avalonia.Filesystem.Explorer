@@ -17,13 +17,14 @@ public class DirectoryDeleteViewModel : ReactiveObject, ITransferItem
 {
     public DirectoryDeleteViewModel(DeleteDirectoryAction deleteDirectoryAction)
     {
-        Source = deleteDirectoryAction.Source.Path;
+        Source = deleteDirectoryAction.Directory.Path;
         DoTransfer = StoppableCommand.CreateFromTask(deleteDirectoryAction.Execute, Observable.Return(true));
         Progress = deleteDirectoryAction.Progress;
         DoTransfer.IsExecuting.DelayItem(false, TimeSpan.FromSeconds(5)).BindTo(this, x => x.IsTransferring);
         Errors = DoTransfer.Start.Failures();
     }
 
+    public string Description => $"Delete {Source}";
     public ZafiroPath Source { get; }
     public ZafiroPath Destination { get; }
     public IStoppableCommand<Unit, Result> DoTransfer { get; }

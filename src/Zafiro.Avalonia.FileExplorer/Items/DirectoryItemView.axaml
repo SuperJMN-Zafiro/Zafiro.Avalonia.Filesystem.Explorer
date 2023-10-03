@@ -39,7 +39,7 @@
 
 	</UserControl.Resources>
 
-	<Button Command="{Binding Navigate}">
+	<Button Theme="{StaticResource Transparent}" Command="{Binding Navigate}">
 		<DockPanel>
 			<Image Margin="4" DockPanel.Dock="Left" Height="24">
 				<Image.Source>

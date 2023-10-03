@@ -8,7 +8,14 @@
              x:DataType="toolBar:ToolBarViewModel">
   <StackPanel Orientation="Horizontal">
 	<Button Content="Copy" Command="{Binding Copy}" />
-	<Button Content="Paste" Command="{Binding Paste}" />
+	<Button Command="{Binding Paste}">
+        <Button.Content>
+            <Panel>
+                <TextBlock>Paste</TextBlock>
+                <ProgressBar Margin="0 0 0 -4" IsIndeterminate="True" IsVisible="{Binding IsPasting^}"  MinWidth="0" VerticalAlignment="Bottom" />
+            </Panel>
+        </Button.Content>
+    </Button>
     <Button Content="Delete" Command="{Binding Delete}" />
 </StackPanel>
 </UserControl>

@@ -25,6 +25,7 @@ public class DirectoryCopyViewModel : ReactiveObject, ITransferItem
         Errors = DoTransfer.Start.Failures();
     }
 
+    public string Description => $"Copy of {Source}";
     public ZafiroPath Source { get; }
     public ZafiroPath Destination { get; }
     public IStoppableCommand<Unit, Result> DoTransfer { get; }

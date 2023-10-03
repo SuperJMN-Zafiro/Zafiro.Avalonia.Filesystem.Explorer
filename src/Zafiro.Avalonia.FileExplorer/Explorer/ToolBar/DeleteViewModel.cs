@@ -68,7 +68,7 @@ public class DeleteViewModel
     }
     private Task<Result<DeleteDirectoryAction>> CreateDirectoryTransfer(DirectoryItemViewModel directoryItem)
     {
-        return DeleteDirectoryAction.Create(directoryItem.Directory);
+        return Task.FromResult(Result.Success(new DeleteDirectoryAction(directoryItem.Directory)));
     }
 
     private Task<Result<DeleteFileAction>> CreateFileTransfer(FileItemViewModel fileItem)

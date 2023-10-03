@@ -3,7 +3,6 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:converters="clr-namespace:Zafiro.Avalonia.Converters;assembly=Zafiro.Avalonia"
-             xmlns:transferManager="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager"
              xmlns:designTime="clr-namespace:Zafiro.Avalonia.DesignTime;assembly=Zafiro.Avalonia"
              xmlns:actions="clr-namespace:Zafiro.Actions;assembly=Zafiro"
              xmlns:items="clr-namespace:Zafiro.Avalonia.FileExplorer.TransferManager.Items"
@@ -41,10 +40,10 @@
         <ProgressBar
             VerticalAlignment="Bottom"
             Opacity="{Binding IsTransferring, Converter={x:Static converters:BoolOpacityConverters.BoolToOpacity}}"
-            DockPanel.Dock="Bottom" Height="5" Maximum="{Binding Progress^.Total}"
+            DockPanel.Dock="Bottom" Maximum="{Binding Progress^.Total}"
             Value="{Binding Progress^.Current}" />
-        <TextBlock Margin="0 5" TextWrapping="NoWrap" ToolTip.Tip="{Binding Destination}"
-                   TextTrimming="CharacterEllipsis" Text="{Binding Destination}" VerticalAlignment="Center" />
+        <TextBlock Margin="0 0 0 3" TextWrapping="NoWrap" ToolTip.Tip="{Binding Destination}"
+                   TextTrimming="CharacterEllipsis" Text="{Binding Description}" VerticalAlignment="Center" />
         <TextBlock TextAlignment="Right" TextWrapping="NoWrap" Foreground="Red" ToolTip.Tip="{Binding Errors^}"
                    TextTrimming="CharacterEllipsis" Text="{Binding Errors^}" VerticalAlignment="Center" />
     </Panel>

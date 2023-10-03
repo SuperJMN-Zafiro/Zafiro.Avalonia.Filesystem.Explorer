@@ -10,6 +10,7 @@ namespace Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 
 public interface ITransferItem : INotifyPropertyChanged
 {
+    public string Description { get; }
     ZafiroPath Source { get; }
     ZafiroPath Destination { get; }
     IStoppableCommand<Unit, Result> DoTransfer { get; }

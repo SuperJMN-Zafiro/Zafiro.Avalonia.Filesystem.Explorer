@@ -23,6 +23,7 @@ public class FileDeleteViewModel : ReactiveObject, ITransferItem
         Errors = DoTransfer.Start.Failures();
     }
 
+    public string Description => $"Deleting {Source}";
     public ZafiroPath Source { get; }
     public ZafiroPath Destination { get; }
     public IStoppableCommand<Unit, Result> DoTransfer { get; }
