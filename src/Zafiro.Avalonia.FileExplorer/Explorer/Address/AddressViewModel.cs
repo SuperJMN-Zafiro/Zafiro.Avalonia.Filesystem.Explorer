@@ -16,15 +16,16 @@ public class AddressViewModel : ReactiveObject, IAddress
 {
     public AddressViewModel(IFileSystem fileSystem, INotificationService notificationService)
     {
-        LoadRequestedPath = ReactiveCommand.CreateFromTask(() => fileSystem.GetDirectory(RequestedPath!), this.WhenAnyValue(x => x.RequestedPath).NotNull());
+        LoadRequestedPath = ReactiveCommand.CreateFromTask(() => ZafiroPath.Create(RequestedPath!).Bind(fileSystem.GetDirectory), this.WhenAnyValue(x => x.RequestedPath).NotNull());
         LoadRequestedPath.HandleErrorsWith(notificationService);
         LoadRequestedPath.Successes().BindTo(this, x => x.CurrentDirectory);
         IsNavigating = LoadRequestedPath.IsExecuting;
-        History = new History("/");
+        var root = fileSystem.GetRoot();
+        History = new History(root);
         LoadRequestedPath.Successes().Select(x => x.Path).BindTo(this, x => x.History.CurrentFolder);
         GoBack = History.GoBack;
         this.WhenAnyValue(x => x.History.CurrentFolder).Do(SetRequestedPath).Subscribe();
-        RequestedPath = "/";
+        RequestedPath = root;
     }
 
     public ReactiveCommand<Unit, Result<IZafiroDirectory>> LoadRequestedPath { get; set; }
