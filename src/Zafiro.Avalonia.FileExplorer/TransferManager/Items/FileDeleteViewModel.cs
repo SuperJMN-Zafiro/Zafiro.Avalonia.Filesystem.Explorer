@@ -8,6 +8,7 @@ using Zafiro.Actions;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.FileSystem.Actions;
+using Zafiro.Mixins;
 using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.TransferManager.Items;
@@ -21,8 +22,10 @@ public class FileDeleteViewModel : ReactiveObject, ITransferItem
         Progress = deleteFileAction.Progress;
         DoTransfer.IsExecuting.BindTo(this, x => x.IsTransferring);
         Errors = DoTransfer.Start.Failures();
+        EstimatedCompletion = Observable.Return(Maybe<TimeSpan>.None);
     }
 
+    public IObservable<Maybe<TimeSpan>> EstimatedCompletion { get; }
     public string Description => $"Deleting {Source}";
     public ZafiroPath Source { get; }
     public ZafiroPath Destination { get; }

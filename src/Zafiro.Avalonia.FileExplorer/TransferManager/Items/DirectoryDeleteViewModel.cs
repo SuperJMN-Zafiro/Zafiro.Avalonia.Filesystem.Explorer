@@ -22,7 +22,10 @@ public class DirectoryDeleteViewModel : ReactiveObject, ITransferItem
         Progress = deleteDirectoryAction.Progress;
         DoTransfer.IsExecuting.DelayItem(false, TimeSpan.FromSeconds(5)).BindTo(this, x => x.IsTransferring);
         Errors = DoTransfer.Start.Failures();
+        EstimatedCompletion = Observable.Return(Maybe<TimeSpan>.None);
     }
+
+    public IObservable<Maybe<TimeSpan>> EstimatedCompletion { get; }
 
     public string Description => $"Delete {Source}";
     public ZafiroPath Source { get; }

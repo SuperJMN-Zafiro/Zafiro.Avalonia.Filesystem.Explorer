@@ -16,9 +16,9 @@ public class DesignTransferItem : ReactiveObject, ITransferItem
     {
         this.WhenAnyValue(x => x.SourceString).Select(s => (ZafiroPath)s).BindTo(this, x => x.Source);
         this.WhenAnyValue(x => x.DestinationString).Select(s => (ZafiroPath)s).BindTo(this, x => x.Destination);
-        IsTransferringObs = Observable.Return(true);
         IsTransferring = true;
         DoTransfer = new StoppableCommand<Unit, Result>(_ => Observable.Return(Result.Success()), Observable.Return(false));
+        EstimatedCompletion = Observable.Return(Maybe<TimeSpan>.From(TimeSpan.FromMinutes(1)));
     }
 
     public string Description => "Design-time";
@@ -37,7 +37,7 @@ public class DesignTransferItem : ReactiveObject, ITransferItem
 
     public IStoppableCommand<Unit, Result> DoTransfer { get; }
     public IObservable<LongProgress> Progress { get; set; }
-    public IObservable<bool> IsTransferringObs { get; }
     public bool IsTransferring { get; }
     public IObservable<string> Errors => Observable.Never<string>();
+    public IObservable<Maybe<TimeSpan>> EstimatedCompletion { get; }
 }

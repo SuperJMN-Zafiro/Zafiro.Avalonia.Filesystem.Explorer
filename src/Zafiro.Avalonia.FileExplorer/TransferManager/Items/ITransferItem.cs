@@ -17,4 +17,5 @@ public interface ITransferItem : INotifyPropertyChanged
     IObservable<LongProgress> Progress { get; }
     public bool IsTransferring { get; }
     public IObservable<string> Errors { get; }
+    public IObservable<Maybe<TimeSpan>> EstimatedCompletion { get; }
 }
