@@ -24,7 +24,7 @@ public class DirectoryCopyViewModel : ReactiveObject, ITransferItem
         Progress = copyAction.Progress;
         DoTransfer.IsExecuting.DelayItem(false, TimeSpan.FromSeconds(5)).BindTo(this, x => x.IsTransferring);
         Errors = DoTransfer.Start.Failures();
-        EstimatedCompletion = Progress.Select(progress => progress.Value).EstimatedCompletion().Throttle(TimeSpan.FromMicroseconds(2), RxApp.MainThreadScheduler).Select(Maybe.From);
+        EstimatedCompletion = Progress.Select(progress => progress.Value).EstimatedCompletion().Select(Maybe.From);
     }
 
     public IObservable<Maybe<TimeSpan>> EstimatedCompletion { get; }
