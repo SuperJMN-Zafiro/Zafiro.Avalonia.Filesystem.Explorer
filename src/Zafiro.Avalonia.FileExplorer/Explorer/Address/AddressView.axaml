@@ -32,7 +32,7 @@
 			</Button>
 			<Panel>
 				<ProgressBar Margin="6" VerticalAlignment="Stretch" IsIndeterminate="True" IsVisible="{Binding IsNavigating^}" />
-				<TextBox AcceptsReturn="False" Text="{Binding RequestedPath}" VerticalAlignment="Center">
+				<TextBox AcceptsReturn="False" Text="{Binding RequestedPathString}" VerticalAlignment="Center">
                     <Interaction.Behaviors>
                         <behaviors:TextBoxAutoSelectTextBehavior />
                         <behaviors:KeyDownTriggerBehavior EventRoutingStrategy="Tunnel" MarkAsHandled="True" Key="Enter">

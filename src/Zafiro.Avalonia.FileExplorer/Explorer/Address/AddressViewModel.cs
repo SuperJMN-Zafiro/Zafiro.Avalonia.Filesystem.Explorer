@@ -16,7 +16,7 @@ public class AddressViewModel : ReactiveObject, IAddress
 {
     public AddressViewModel(IFileSystem fileSystem, INotificationService notificationService)
     {
-        LoadRequestedPath = ReactiveCommand.CreateFromTask(() => ZafiroPath.Create(RequestedPath!).Bind(fileSystem.GetDirectory), this.WhenAnyValue(x => x.RequestedPath).NotNull());
+        LoadRequestedPath = ReactiveCommand.CreateFromTask(() => RequestedPath.Bind(fileSystem.GetDirectory), this.WhenAnyValue(x => x.RequestedPathString).NotNull());
         LoadRequestedPath.HandleErrorsWith(notificationService);
         LoadRequestedPath.Successes().BindTo(this, x => x.CurrentDirectory);
         IsNavigating = LoadRequestedPath.IsExecuting;
@@ -25,25 +25,26 @@ public class AddressViewModel : ReactiveObject, IAddress
         LoadRequestedPath.Successes().Select(x => x.Path).BindTo(this, x => x.History.CurrentFolder);
         GoBack = History.GoBack;
         this.WhenAnyValue(x => x.History.CurrentFolder).Do(SetRequestedPath).Subscribe();
-        RequestedPath = root;
+        RequestedPathString = root;
     }
+
+    private Result<ZafiroPath> RequestedPath => RequestedPathString?.Trim() == "" ? Result.Success(ZafiroPath.Empty) : ZafiroPath.Create(RequestedPathString!);
 
     public ReactiveCommand<Unit, Result<IZafiroDirectory>> LoadRequestedPath { get; set; }
 
-    [Reactive]
-    public IZafiroDirectory CurrentDirectory { get; private set; }
-    
+    [Reactive] public IZafiroDirectory CurrentDirectory { get; private set; }
+
     public ReactiveCommand<Unit, Unit> GoBack { get; set; }
 
-    [Reactive] public string? RequestedPath { get; set; }
+    [Reactive] public string? RequestedPathString { get; set; }
 
     private History History { get; }
-    
+
     public IObservable<bool> IsNavigating { get; }
 
     public void SetRequestedPath(ZafiroPath requestedPath)
     {
-        RequestedPath = requestedPath;
+        RequestedPathString = requestedPath;
         LoadRequestedPath.Execute().Take(1).Subscribe();
     }
 }
