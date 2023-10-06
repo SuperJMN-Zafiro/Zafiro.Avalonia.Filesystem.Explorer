@@ -21,11 +21,11 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
     public FileSystemExplorer(IFileSystem fileSystem, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
     {
         Clipboard = clipboard;
-        AddressViewModel = new Address.AddressViewModel(fileSystem, notificationService);
+        Address = new Address.AddressViewModel(fileSystem, notificationService);
         TransferManager = transferManager;
 
-        var detailsViewModels = AddressViewModel.LoadRequestedPath.Successes()
-            .Select(directory => new DetailsViewModel(directory, new EverythingEntryFactory(AddressViewModel), notificationService, clipboard, transferManager))
+        var detailsViewModels = Address.LoadRequestedPath.Successes()
+            .Select(directory => new DetailsViewModel(directory, new EverythingEntryFactory(Address), notificationService, clipboard, transferManager))
             .Replay()
             .RefCount();
 
@@ -34,16 +34,16 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
         var source = detailsViewModels.Select(x => x.SelectedItems.ToObservableChangeSet()).Switch();
         source.Bind(out var collection).Subscribe();
 
-        ToolBar = new ToolBarViewModel(collection, AddressViewModel.LoadRequestedPath.Successes(), clipboard, transferManager, notificationService);
+        ToolBar = new ToolBarViewModel(collection, Address.LoadRequestedPath.Successes(), clipboard, transferManager, notificationService);
 
-        AddressViewModel.LoadRequestedPath.Execute().Take(1).Subscribe();
+        Address.LoadRequestedPath.Execute().Take(1).Subscribe();
     }
 
     public ITransferManager TransferManager { get; }
 
     public ToolBarViewModel ToolBar { get; }
 
-    public Address.AddressViewModel AddressViewModel { get; }
+    public Address.AddressViewModel Address { get; }
 
     public IObservable<DetailsViewModel> Details { get; }
 

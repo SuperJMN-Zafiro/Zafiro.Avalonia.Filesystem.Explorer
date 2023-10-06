@@ -39,7 +39,7 @@ namespace Zafiro.Avalonia.FileExplorer.Pickers
                         folderContentsViewModel, 
                         pickAFolder, 
                         model => Observable.FromAsync(() => model.Result), 
-                        new OptionConfiguration<FileSystemExplorer, ZafiroPath>("OK", explorer => ReactiveCommand.Create(() => explorer.SetResult(explorer.AddressViewModel.CurrentDirectory.Path))));
+                        new OptionConfiguration<FileSystemExplorer, ZafiroPath>("OK", explorer => ReactiveCommand.Create(() => explorer.SetResult(explorer.Address.CurrentDirectory.Path))));
                 })
                 .SelectMany(path =>
                 {

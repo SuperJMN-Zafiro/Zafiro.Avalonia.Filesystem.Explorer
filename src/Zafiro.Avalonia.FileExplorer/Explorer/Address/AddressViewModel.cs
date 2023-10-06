@@ -32,7 +32,7 @@ public class AddressViewModel : ReactiveObject, IAddress
 
     public ReactiveCommand<Unit, Result<IZafiroDirectory>> LoadRequestedPath { get; set; }
 
-    [Reactive] public IZafiroDirectory CurrentDirectory { get; private set; }
+    [Reactive] public IZafiroDirectory CurrentDirectory { get; set; }
 
     public ReactiveCommand<Unit, Unit> GoBack { get; set; }
 
