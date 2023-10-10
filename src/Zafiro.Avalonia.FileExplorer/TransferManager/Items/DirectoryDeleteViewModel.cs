@@ -18,7 +18,7 @@ public class DirectoryDeleteViewModel : ReactiveObject, ITransferItem
     public DirectoryDeleteViewModel(DeleteDirectoryAction deleteDirectoryAction)
     {
         Source = deleteDirectoryAction.Directory.Path;
-        DoTransfer = StoppableCommand.CreateFromTask(deleteDirectoryAction.Execute, Observable.Return(true));
+        DoTransfer = StoppableCommand.CreateFromTask(deleteDirectoryAction.Execute, Maybe<IObservable<bool>>.None);
         Progress = deleteDirectoryAction.Progress;
         DoTransfer.IsExecuting.DelayItem(false, TimeSpan.FromSeconds(5)).BindTo(this, x => x.IsTransferring);
         Errors = DoTransfer.Start.Failures();

@@ -17,7 +17,7 @@ public class DesignTransferItem : ReactiveObject, ITransferItem
         this.WhenAnyValue(x => x.SourceString).Select(s => (ZafiroPath)s).BindTo(this, x => x.Source);
         this.WhenAnyValue(x => x.DestinationString).Select(s => (ZafiroPath)s).BindTo(this, x => x.Destination);
         IsTransferring = true;
-        DoTransfer = new StoppableCommand<Unit, Result>(_ => Observable.Return(Result.Success()), Observable.Return(false));
+        DoTransfer = new StoppableCommand<Unit, Result>(_ => Observable.Return(Result.Success()), Maybe<IObservable<bool>>.None);
         EstimatedCompletion = Observable.Return(Maybe<TimeSpan>.From(TimeSpan.FromMinutes(1)));
     }
 

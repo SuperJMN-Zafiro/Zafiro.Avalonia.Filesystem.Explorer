@@ -20,7 +20,7 @@ public class DirectoryCopyViewModel : ReactiveObject, ITransferItem
     {
         Source = copyAction.Source.Path;
         Destination = copyAction.Destination.Path;
-        DoTransfer = StoppableCommand.CreateFromTask(copyAction.Execute, Observable.Return(true));
+        DoTransfer = StoppableCommand.CreateFromTask(copyAction.Execute, Maybe<IObservable<bool>>.None);
         Progress = copyAction.Progress;
         DoTransfer.IsExecuting.DelayItem(false, TimeSpan.FromSeconds(5)).BindTo(this, x => x.IsTransferring);
         Errors = DoTransfer.Start.Failures();
