@@ -62,5 +62,5 @@ public class DetailsViewModel : ReactiveObject
 
     [Reactive] public IEntry SelectedItem { get; set; }
 
-    public SelectionModel<IEntry> Selection { get; } = new() { SingleSelect = false };
+    public SelectionModel<IEntry> Selection { get; } = new() {  SingleSelect = false };
 }

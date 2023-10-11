@@ -58,7 +58,7 @@
 		<DrawingImage Drawing="{StaticResource FileDrawing}" x:Key="FileImage"/>
 	</UserControl.Resources>
 	<DockPanel>
-        <Image Source="{StaticResource FileImage}" Margin="4" DockPanel.Dock="Left" Height="24" />
-        <TextBlock Text="{Binding Name}" VerticalAlignment="Center"  />
+        <Image Source="{StaticResource FileImage}" Margin="4" DockPanel.Dock="Left" Height="20" />
+        <TextBlock FontSize="12" Text="{Binding Name}" VerticalAlignment="Center"  />
     </DockPanel>
 </UserControl>
