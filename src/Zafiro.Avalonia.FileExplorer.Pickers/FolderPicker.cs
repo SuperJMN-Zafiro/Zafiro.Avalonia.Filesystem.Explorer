@@ -29,25 +29,27 @@ namespace Zafiro.Avalonia.FileExplorer.Pickers
 
         public IObservable<Maybe<IZafiroDirectory>> Pick(string title)
         {
-            var folderContentsViewModel = new FileSystemExplorer(fileSystem, notificationService, clipboard, transferManager);
-            var fromAsync = Observable
-                .FromAsync(() =>
-                {
-                    var pickAFolder = title;
-                    var okTitle = "Select";
-                    return dialogService.ShowDialog(
-                        folderContentsViewModel, 
-                        pickAFolder, 
-                        model => Observable.FromAsync(() => model.Result), 
-                        new OptionConfiguration<FileSystemExplorer, ZafiroPath>("OK", explorer => ReactiveCommand.Create(() => explorer.SetResult(explorer.Address.CurrentDirectory.Path))));
-                })
-                .SelectMany(path =>
-                {
-                    return path.Map(zafiroPath => fileSystem.GetDirectory(zafiroPath));
-                })
-                .Select(maybe => maybe.Where(result => result.IsSuccess).Select(x => x.Value));
+            // TODO: Implement this
+            //var folderContentsViewModel = new FileSystemExplorer(fileSystem, notificationService, clipboard, transferManager);
+            //var fromAsync = Observable
+            //    .FromAsync(() =>
+            //    {
+            //        var pickAFolder = title;
+            //        var okTitle = "Select";
+            //        return dialogService.ShowDialog(
+            //            folderContentsViewModel, 
+            //            pickAFolder, 
+            //            model => Observable.FromAsync(() => model.Result), 
+            //            new OptionConfiguration<FileSystemExplorer, ZafiroPath>("OK", explorer => ReactiveCommand.Create(() => explorer.SetResult(explorer.Address.CurrentDirectory.Path))));
+            //    })
+            //    .SelectMany(path =>
+            //    {
+            //        return path.Map(zafiroPath => fileSystem.GetDirectory(zafiroPath));
+            //    })
+            //    .Select(maybe => maybe.Where(result => result.IsSuccess).Select(x => x.Value));
 
-            return fromAsync;
+            //return fromAsync;
+            throw new NotImplementedException("TODO: Implement this");
         }
     }
 }
