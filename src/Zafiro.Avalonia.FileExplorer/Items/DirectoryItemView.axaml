@@ -39,14 +39,14 @@
 
 	</UserControl.Resources>
 
-	<Button Theme="{StaticResource Transparent}" Command="{Binding Navigate}">
+	<Button Padding="0" Theme="{StaticResource Transparent}" Command="{Binding Navigate}">
 		<DockPanel>
-			<Image Margin="4" DockPanel.Dock="Left" Height="24">
+			<Image Margin="4" DockPanel.Dock="Left" Height="20">
 				<Image.Source>
 					<DrawingImage Drawing="{StaticResource Folder}" />
 				</Image.Source>
 			</Image>
-			<TextBlock Text="{Binding Name}" VerticalAlignment="Center" />
+			<TextBlock FontSize="12" Text="{Binding Name}" VerticalAlignment="Center" />
 		</DockPanel>
 	</Button>
 </UserControl>

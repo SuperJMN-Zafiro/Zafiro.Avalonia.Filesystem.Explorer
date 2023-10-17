@@ -20,7 +20,7 @@ public class MainViewModel : ReactiveObject
 {
     public MainViewModel(INotificationService notificationService)
     {
-        var fileSystem = new SeaweedFileSystem(new SeaweedFSClient(new HttpClient { BaseAddress = new Uri("http://192.168.1.31:8888") }), Maybe<ILogger>.None);
+        var fileSystem = new SeaweedFileSystem(new SeaweedFSClient(new HttpClient { BaseAddress = new Uri("http://192.168.1.29:8888") }), Maybe<ILogger>.None);
         
         ClipboardViewModel = new ClipboardViewModel();
         TransferManager = new TransferManagerViewModel { AutoStartOnAdd = true };

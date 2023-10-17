@@ -9,11 +9,11 @@
              x:DataType="explorer:DetailsViewModel">
 	<Panel>
 		<ListBox Selection="{Binding Selection}" ItemsSource="{Binding Children}" SelectedItem="{Binding SelectedItem}">
-			<ListBox.ItemsPanel>
-				<ItemsPanelTemplate>
-					<StackPanel />
-				</ItemsPanelTemplate>
-			</ListBox.ItemsPanel>
+            <ListBox.ItemContainerTheme>
+                <ControlTheme TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
+                    <Setter Property="Padding" Value="0" />
+                </ControlTheme>
+            </ListBox.ItemContainerTheme>
 		</ListBox>
 		<avaloniaProgressRing:ProgressRing Foreground="{DynamicResource SystemAccentColor}" Height="100" Width="100" IsActive="{Binding IsLoadingChildren^}" />
     </Panel>

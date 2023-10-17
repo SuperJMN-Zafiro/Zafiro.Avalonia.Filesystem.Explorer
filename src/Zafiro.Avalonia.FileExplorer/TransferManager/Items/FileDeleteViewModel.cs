@@ -18,7 +18,7 @@ public class FileDeleteViewModel : ReactiveObject, ITransferItem
     public FileDeleteViewModel(DeleteFileAction deleteFileAction)
     {
         Source = deleteFileAction.Source.Path;
-        DoTransfer = StoppableCommand.CreateFromTask(deleteFileAction.Execute, Observable.Return(true));
+        DoTransfer = StoppableCommand.CreateFromTask(deleteFileAction.Execute, Maybe<IObservable<bool>>.None);
         Progress = deleteFileAction.Progress;
         DoTransfer.IsExecuting.BindTo(this, x => x.IsTransferring);
         Errors = DoTransfer.Start.Failures();
