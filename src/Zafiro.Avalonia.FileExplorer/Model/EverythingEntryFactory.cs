@@ -2,7 +2,6 @@
 using System.Linq;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
-using Zafiro.Avalonia.FileExplorer.Explorer.Address;
 using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.FileSystem;
 

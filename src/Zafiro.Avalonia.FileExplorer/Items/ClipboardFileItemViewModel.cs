@@ -1,4 +1,5 @@
-﻿using Zafiro.FileSystem;
+﻿using Zafiro.Avalonia.FileExplorer.Model;
+using Zafiro.FileSystem;
 
 namespace Zafiro.Avalonia.FileExplorer.Items;
 

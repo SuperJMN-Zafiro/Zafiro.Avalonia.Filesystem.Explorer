@@ -19,7 +19,7 @@ using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 
-public class ToolBarViewModel
+public class ToolBarViewModel : IToolBar
 {
     public ToolBarViewModel(ReadOnlyObservableCollection<IEntry> selection, IObservable<IZafiroDirectory> directories, IClipboard clipboard, ITransferManager transferManager, INotificationService notificationService)
     {

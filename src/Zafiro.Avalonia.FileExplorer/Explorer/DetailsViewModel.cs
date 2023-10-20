@@ -28,7 +28,11 @@ public class DetailsViewModel : ReactiveObject
     {
         this.directory = directory;
         SourceCache<IEntry, string> entryCache = new(entry => entry.Path.Name());
-        LoadChildren = ReactiveCommand.CreateFromTask(() => strategy.Get(directory));
+        LoadChildren = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var result = await strategy.Get(directory);
+            return result;
+        });
 
         LoadChildren.Successes().Do(entries => entryCache.Edit(updater => updater.Load(entries))).Subscribe();
         LoadChildren.HandleErrorsWith(notificationService);
