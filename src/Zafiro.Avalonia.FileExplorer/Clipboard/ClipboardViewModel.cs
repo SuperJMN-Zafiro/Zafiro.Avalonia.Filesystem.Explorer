@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using DynamicData;
-using Zafiro.Avalonia.FileExplorer.Items;
+using Zafiro.Avalonia.FileExplorer.Model;
 
 namespace Zafiro.Avalonia.FileExplorer.Clipboard;
 

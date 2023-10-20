@@ -1,6 +1,6 @@
 ﻿using Zafiro.FileSystem;
 
-namespace Zafiro.Avalonia.FileExplorer.Items;
+namespace Zafiro.Avalonia.FileExplorer.Model;
 
 public interface IClipboardItem
 {

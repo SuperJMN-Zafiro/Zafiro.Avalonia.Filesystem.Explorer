@@ -3,30 +3,21 @@ using System.Linq;
 using System.Reactive;
 using CSharpFunctionalExtensions;
 using ReactiveUI;
+using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.FileSystem;
 
-namespace Zafiro.Avalonia.FileExplorer.Model;
+namespace Zafiro.Avalonia.FileExplorer.Explorer.Address;
 
-public interface IHistory
+public class History : History<ZafiroPath>
 {
-    ZafiroPath CurrentFolder { get; set; }
-    Maybe<ZafiroPath> PreviousFolder { get; }
-}
-
-public class History : History<ZafiroPath>, IHistory
-{
-    public History(ZafiroPath initial) : base(initial)
-    {
-    }
 }
 
 public class History<T> : ReactiveObject, IHistory<T>
 {
-    private readonly Stack<T> currentFolderStack;
+    private readonly Stack<T> currentFolderStack = new();
 
-    public History(T initial)
+    public History()
     {
-        currentFolderStack = new Stack<T>(new[] { initial });
         var whenAnyValue = this.WhenAnyValue(x => x.CanGoBack);
         GoBack = ReactiveCommand.Create(OnBack, whenAnyValue);
     }
@@ -35,17 +26,25 @@ public class History<T> : ReactiveObject, IHistory<T>
 
     public ReactiveCommand<Unit, Unit> GoBack { get; }
 
-    public T CurrentFolder
+    public Maybe<T> CurrentFolder
     {
-        get => currentFolderStack.Peek();
+        get
+        {
+            if (currentFolderStack.Any())
+            {
+                return currentFolderStack.Peek();
+            }
+
+            return Maybe<T>.None;
+        }
         set
         {
-            if (Equals(value, currentFolderStack.Peek()))
+            if (currentFolderStack.Any() && Equals(value, currentFolderStack.Peek()))
             {
                 return;
             }
 
-            currentFolderStack.Push(value);
+            currentFolderStack.Push(value.GetValueOrThrow("The current folder should not be set to <none>"));
             this.RaisePropertyChanged(nameof(CanGoBack));
             this.RaisePropertyChanged(nameof(PreviousFolder));
             this.RaisePropertyChanged();

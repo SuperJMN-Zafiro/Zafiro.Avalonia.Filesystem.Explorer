@@ -2,7 +2,6 @@
 using CSharpFunctionalExtensions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Zafiro.Avalonia.FileExplorer.Explorer.Address;
 using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.FileSystem;
 
@@ -13,7 +12,7 @@ public class DirectoryItemViewModel : ReactiveObject, IEntry
     public DirectoryItemViewModel(IZafiroDirectory directory, IAddress address)
     {
         Directory = directory;
-        Navigate = ReactiveCommand.Create(() => address.SetRequestedPath(directory.Path));
+        Navigate = ReactiveCommand.Create(() => address.SetAndLoad(directory.Path));
     }
 
     public IZafiroDirectory Directory { get; }

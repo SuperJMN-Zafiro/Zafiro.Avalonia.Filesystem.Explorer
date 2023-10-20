@@ -9,21 +9,24 @@
              x:Class="Zafiro.Avalonia.FileExplorer.Sample.Views.MainView"
              x:DataType="vm:MainViewModel">
 
-    <ContentControl Content="{Binding FileSystemExplorer}">
-        <ContentControl.ContentTemplate>
-            <DataTemplate DataType="explorer:FileSystemExplorer">
-                <Panel>
-                    <DockPanel>
-                        <ContentControl Content="{Binding ToolBar}" DockPanel.Dock="Top" />
-                        <ContentControl Content="{Binding Address}" DockPanel.Dock="Top" />
-                        <ContentControl Content="{Binding Details^}" />
-                    </DockPanel>
-                    <tm:LightTransferManagerView Width="400" VerticalAlignment="Bottom"
-                                                 HorizontalAlignment="Right" Margin="20"
-                                                 DataContext="{Binding TransferManager}" />
-                </Panel>
-            </DataTemplate>
-        </ContentControl.ContentTemplate>
-    </ContentControl>
+	<DockPanel>
+		<TextBlock DockPanel.Dock="Top" Text="{Binding CurrentAddress^}" />
+        <ContentControl Content="{Binding FileSystemExplorer}">
+			<ContentControl.ContentTemplate>
+				<DataTemplate DataType="explorer:FileSystemExplorer">
+					<Panel>
+						<DockPanel>
+							<ContentControl Content="{Binding ToolBar}" DockPanel.Dock="Top" />
+							<ContentControl Content="{Binding Address}" DockPanel.Dock="Top" />
+							<ContentControl Content="{Binding Details^}" />
+						</DockPanel>
+						<tm:LightTransferManagerView Width="400" VerticalAlignment="Bottom"
+                                                     HorizontalAlignment="Right" Margin="20"
+                                                     DataContext="{Binding TransferManager}" />
+					</Panel>
+				</DataTemplate>
+			</ContentControl.ContentTemplate>
+		</ContentControl>
+	</DockPanel>
 
 </UserControl>
