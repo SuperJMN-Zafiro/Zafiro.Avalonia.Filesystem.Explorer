@@ -34,7 +34,7 @@ public class AddressViewModel : ReactiveObject, IAddress
 
     public ReactiveCommand<Unit, Unit> GoBack { get; set; }
 
-    [Reactive] public string? RequestedPathString { get; private set; }
+    [Reactive] public string? RequestedPathString { get; set; }
 
     private History History { get; }
 
