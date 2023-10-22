@@ -3,7 +3,6 @@ using System.Net.Http;
 using System.Reactive.Linq;
 using CSharpFunctionalExtensions;
 using ReactiveUI;
-using Zafiro.FileSystem;
 using Zafiro.FileSystem.SeaweedFS;
 using Zafiro.FileSystem.SeaweedFS.Filer.Client;
 using Zafiro.Avalonia.FileExplorer.Clipboard;
@@ -25,7 +24,6 @@ public class MainViewModel : ReactiveObject
         ClipboardViewModel = new ClipboardViewModel();
         TransferManager = new TransferManagerViewModel { AutoStartOnAdd = true };
         FileSystemExplorer = new FileSystemExplorer(fileSystem, notificationService, ClipboardViewModel, TransferManager);
-        FileSystemExplorer.GoTo(ZafiroPath.Empty);
         CurrentAddress = FileSystemExplorer.CurrentDirectory.Values().Select(path => path.ToString()!);
     }
 

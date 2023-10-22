@@ -66,6 +66,7 @@ class Build : NukeBuild
     Target Publish => _ => _
         .DependsOn(Pack)
         .Requires(() => NuGetApiKey)
+        .OnlyWhenStatic(() => Configuration == "Release")
         .Executes(() =>
         {
             DotNetNuGetPush(settings => settings
