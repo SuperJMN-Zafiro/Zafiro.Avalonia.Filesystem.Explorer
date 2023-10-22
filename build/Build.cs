@@ -1,14 +1,17 @@
 using System.Linq;
 using Nuke.Common;
 using Nuke.Common.CI.AzurePipelines;
+using Nuke.Common.Git;
 using Nuke.Common.IO;
 using Nuke.Common.ProjectModel;
 using Nuke.Common.Tooling;
 using Nuke.Common.Tools.DotNet;
 using Nuke.Common.Tools.GitVersion;
+using Octokit;
 using Serilog;
 using static Nuke.Common.Tools.DotNet.DotNetTasks;
 using static Nuke.Common.Tooling.ProcessTasks;
+using Project = Nuke.Common.ProjectModel.Project;
 
 
 [AzurePipelines(AzurePipelinesImage.WindowsLatest, ImportSecrets = new[] { nameof(NuGetApiKey) }, AutoGenerate = false)]
@@ -31,6 +34,8 @@ class Build : NukeBuild
     [Parameter("publish-self-contained")] public bool PublishSelfContained { get; set; } = true;
 
     [GitVersion] readonly GitVersion GitVersion;
+
+    [GitRepository] readonly GitRepository Repository;
 
     AbsolutePath OutputDirectory => RootDirectory / "output";
 
@@ -66,7 +71,7 @@ class Build : NukeBuild
     Target Publish => _ => _
         .DependsOn(Pack)
         .Requires(() => NuGetApiKey)
-        .OnlyWhenStatic(() => Configuration == "Release")
+        .OnlyWhenStatic(() => Repository.IsOnMainBranch())
         .Executes(() =>
         {
             DotNetNuGetPush(settings => settings
