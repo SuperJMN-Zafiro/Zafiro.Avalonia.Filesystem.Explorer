@@ -24,6 +24,7 @@ public class AddressViewModel : ReactiveObject, IAddress
         GoBack = History.GoBack;
         this.WhenAnyValue(x => x.History.CurrentFolder).Values().Do(SetAndLoad).Subscribe();
         CurrentDirectory = LoadRequestedPath.Successes().Select(Maybe.From);
+        RequestedPathString = string.Empty;
     }
 
     private Result<ZafiroPath> RequestedPath => RequestedPathString?.Trim() == "" ? Result.Success(ZafiroPath.Empty) : ZafiroPath.Create(RequestedPathString!);
@@ -34,7 +35,7 @@ public class AddressViewModel : ReactiveObject, IAddress
 
     public ReactiveCommand<Unit, Unit> GoBack { get; set; }
 
-    [Reactive] public string? RequestedPathString { get; set; }
+    [Reactive] public string RequestedPathString { get; set; }
 
     private History History { get; }
 

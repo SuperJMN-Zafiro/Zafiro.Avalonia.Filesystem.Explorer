@@ -34,7 +34,10 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
         source.Bind(out var collection).Subscribe();
 
         ToolBar = new ToolBarViewModel(collection, Address.LoadRequestedPath.Successes(), clipboard, transferManager, notificationService);
+        InitialPath.Or(ZafiroPath.Empty).Execute(GoTo);
     }
+
+    public Maybe<ZafiroPath> InitialPath { get; init; }
 
     public IObservable<Maybe<IZafiroDirectory>> CurrentDirectory => Address.CurrentDirectory;
 
