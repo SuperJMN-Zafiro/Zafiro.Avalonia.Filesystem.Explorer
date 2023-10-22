@@ -21,8 +21,6 @@ class Build : NukeBuild
 
     [Solution] readonly Solution Solution;
 
-    [Parameter("configuration")] public string Configuration { get; set; }
-
     [Parameter("version-suffix")] public string VersionSuffix { get; set; }
 
     [Parameter("publish-framework")] public string PublishFramework { get; set; }
@@ -36,6 +34,11 @@ class Build : NukeBuild
     [GitVersion] readonly GitVersion GitVersion;
 
     [GitRepository] readonly GitRepository Repository;
+
+    [Parameter]
+    readonly Configuration Configuration = IsServerBuild
+        ? Configuration.Release
+        : Configuration.Debug;
 
     AbsolutePath OutputDirectory => RootDirectory / "output";
 
@@ -83,8 +86,6 @@ class Build : NukeBuild
         });
 
     public static int Main() => Execute<Build>(x => x.Publish);
-
-    protected override void OnBuildInitialized() => Configuration ??= "Release";
 
     void RestoreProjectWorkload(Project project) => StartShell($@"dotnet workload restore --project {project.Path}").AssertZeroExitCode();
 }
