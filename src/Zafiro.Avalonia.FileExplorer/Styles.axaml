@@ -46,6 +46,12 @@
             </DrawingGroup>
         </DrawingGroup>
         <DrawingImage Drawing="{StaticResource reload_xaml}" x:Key="di_reload_xaml"/>
+
+
+        <ControlTheme x:Key="TransparentListBox" TargetType="ListBox" BasedOn="{StaticResource {x:Type ListBox}}">
+            <Setter Property="Background" Value="Transparent" />
+        </ControlTheme>
+
     </Styles.Resources>
 
 </Styles>

@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:behaviors="clr-namespace:Zafiro.Avalonia.Behaviors;assembly=Zafiro.Avalonia"
              xmlns:address="clr-namespace:Zafiro.Avalonia.FileExplorer.Explorer.Address"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="400" 
              x:Class="Zafiro.Avalonia.FileExplorer.Explorer.Address.AddressView"
              x:DataType="address:AddressViewModel">
   		<DockPanel DockPanel.Dock="Top">
@@ -20,12 +20,12 @@
                 </Style>
             </DockPanel.Styles>
 
-            <Button Command="{Binding GoBack}" DockPanel.Dock="Left">
+            <Button Theme="{StaticResource TransparentButton}" Command="{Binding GoBack}" DockPanel.Dock="Left">
 				<Button.Content>
 					<Image Margin="0 2" Source="{StaticResource di_back_xaml}" />
 				</Button.Content>
 			</Button>
-			<Button Command="{Binding LoadRequestedPath}"  DockPanel.Dock="Right">
+			<Button Theme="{StaticResource TransparentButton}" Command="{Binding LoadRequestedPath}"  DockPanel.Dock="Right">
 				<Button.Content>
 					<Image Source="{StaticResource di_reload_xaml}"  />
 				</Button.Content>

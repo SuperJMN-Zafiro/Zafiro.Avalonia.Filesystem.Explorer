@@ -6,10 +6,10 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.Explorer.ExplorerView"
              x:DataType="model:IFileSystemExplorer">
-	<DockPanel>
-		<ContentControl Content="{Binding Address}" DockPanel.Dock="Top" />
+    <DockPanel>
+        <ContentControl Content="{Binding Address}" DockPanel.Dock="Top" />
         <ContentControl Content="{Binding ToolBar}" DockPanel.Dock="Top" />
-        <ContentControl Content="{Binding Clipboard}" DockPanel.Dock="Top" />
-		<ContentControl Content="{Binding Details^}" />
-	</DockPanel>
+        <HeaderedContentControl IsVisible="{Binding !!Clipboard.Contents.Count}" Header="Clipboard" Content="{Binding Clipboard}" DockPanel.Dock="Bottom" />
+        <ContentControl Content="{Binding Details^}" />
+    </DockPanel>
 </UserControl>

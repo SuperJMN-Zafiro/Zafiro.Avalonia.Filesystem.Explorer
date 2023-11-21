@@ -27,10 +27,10 @@ public class ToolBarViewModel : IToolBar
             .ToObservableChangeSet(x => x.Path)
             .ToCollection()
             .Select(x => x.Any());
-        
+
         var directory = new BehaviorSubject<IZafiroDirectory>(null);
         directories.Subscribe(directory);
-        
+
         Copy = ReactiveCommand.Create(() =>
         {
             var clipboardItems = selection.Select(entry =>
@@ -41,13 +41,14 @@ public class ToolBarViewModel : IToolBar
                     FileItemViewModel fi => new ClipboardFileItemViewModel(fi.File),
                     _ => throw new ArgumentOutOfRangeException(nameof(entry))
                 };
-            });
+            }).ToList();
 
             clipboard.Add(clipboardItems);
+            return clipboardItems;
         }, canCopy);
 
         Copy
-            .Do(_ => notificationService.Show("Copied to clipboard"))
+            .Do(items => notificationService.Show(string.Join("\n", items.Count <= 3 ? items.Take(3).Select(x => x.Path.ToString()) : items.Take(3).Select(x => x.Path.ToString()).Concat(new[] { "..." })), "Copied to clipboard"))
             .Subscribe();
 
         var paste = new PasteViewModel(clipboard, directory, transferManager);
@@ -62,8 +63,8 @@ public class ToolBarViewModel : IToolBar
     public IObservable<bool> IsPasting { get; }
 
     public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Delete { get; set; }
-    
+
     public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Paste { get; }
 
-    public ReactiveCommand<Unit, Unit> Copy { get; set; }
+    public ReactiveCommand<Unit, List<IClipboardItem>> Copy { get; set; }
 }

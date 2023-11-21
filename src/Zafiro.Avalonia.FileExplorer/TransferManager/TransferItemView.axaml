@@ -38,7 +38,7 @@
 
         <Button Padding="0" Margin="3" Height="20" HorizontalContentAlignment="Center" Width="20"
                 x:CompileBindings="False" DockPanel.Dock="Right" Content="x" Command="{Binding DoTransfer.Stop}"
-                VerticalAlignment="Center" Theme="{StaticResource Transparent}" />
+                VerticalAlignment="Center" Theme="{StaticResource TransparentButton}" />
         <Expander HorizontalAlignment="Stretch">
             <Expander.Header>
                 <Panel>

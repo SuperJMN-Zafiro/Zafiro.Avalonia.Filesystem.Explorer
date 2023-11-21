@@ -11,7 +11,6 @@ namespace Zafiro.Avalonia.FileExplorer.Model;
 
 public interface IFolder : IEntry
 {
-    ZafiroPath Path { get; }
     ReadOnlyObservableCollection<IEntry> Children { get; }
     //Task<Result> DeleteFile(string name);
     Task<Result<IEntry>> Add(string name, Stream contents, CancellationToken cancellationToken);
