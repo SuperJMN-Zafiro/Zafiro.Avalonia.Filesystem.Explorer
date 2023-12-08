@@ -17,7 +17,7 @@ namespace Zafiro.Avalonia.FileExplorer.Explorer;
 
 public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
 {
-    public FileSystemExplorer(IFileSystem fileSystem, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
+    public FileSystemExplorer(IFileSystemRoot fileSystem, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
     {
         Clipboard = clipboard;
         Address = new AddressViewModel(fileSystem, notificationService);

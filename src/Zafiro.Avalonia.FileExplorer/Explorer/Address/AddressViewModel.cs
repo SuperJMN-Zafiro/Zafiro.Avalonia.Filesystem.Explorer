@@ -14,9 +14,9 @@ namespace Zafiro.Avalonia.FileExplorer.Explorer.Address;
 
 public class AddressViewModel : ReactiveObject, IAddress
 {
-    public AddressViewModel(IFileSystem fileSystem, INotificationService notificationService)
+    public AddressViewModel(IFileSystemRoot fileSystem, INotificationService notificationService)
     {
-        LoadRequestedPath = ReactiveCommand.CreateFromTask(() => RequestedPath.Bind(fileSystem.GetDirectory), this.WhenAnyValue(x => x.RequestedPathString).NotNull());
+        LoadRequestedPath = ReactiveCommand.Create(() => RequestedPath.Map(fileSystem.GetDirectory), this.WhenAnyValue(x => x.RequestedPathString).NotNull());
         LoadRequestedPath.HandleErrorsWith(notificationService);
         IsNavigating = LoadRequestedPath.IsExecuting;
         History = new History();

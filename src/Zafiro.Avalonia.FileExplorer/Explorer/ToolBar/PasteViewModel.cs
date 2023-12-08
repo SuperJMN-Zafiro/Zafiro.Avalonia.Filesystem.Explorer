@@ -74,15 +74,15 @@ public class PasteViewModel
     }
     private Task<Result<CopyDirectoryAction>> CreateDirectoryTransfer(ClipboardDirectoryItemViewModel directoryItem)
     {
-        return directory.Value.FileSystem
-            .GetDirectory(directory.Value.Path.Combine(directoryItem.Directory.Path.Name()))
+        return Result.Success(directory.Value.FileSystem
+            .GetDirectory(directory.Value.Path.Combine(directoryItem.Directory.Path.Name())))
             .Bind(async dst => await CopyDirectoryAction.Create(directoryItem.Directory, dst));
     }
 
     private Task<Result<CopyFileAction>> CreateFileTransfer(ClipboardFileItemViewModel fileItem)
     {
-        return directory.Value.FileSystem
-            .GetFile(directory.Value.Path.Combine(fileItem.Path.Name()))
+        return Result.Success(directory.Value.FileSystem
+            .GetFile(directory.Value.Path.Combine(fileItem.Path.Name())))
             .Bind(async dst => await CopyFileAction.Create(fileItem.File, dst));
     }
 }

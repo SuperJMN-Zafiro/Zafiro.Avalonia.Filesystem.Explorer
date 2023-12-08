@@ -8,7 +8,7 @@
              x:Class="Zafiro.Avalonia.FileExplorer.Explorer.DetailsView"
              x:DataType="explorer:DetailsViewModel">
 	<Panel>
-		<ListBox Theme="{StaticResource TransparentListBox}" Selection="{Binding Selection}" ItemsSource="{Binding Children}" SelectedItem="{Binding SelectedItem}">
+		<ListBox Theme="{StaticResource TransparentListBox}" Selection="{Binding Selection}" ItemsSource="{Binding Children}">
             <ListBox.ItemContainerTheme>
                 <ControlTheme TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                     <Setter Property="Padding" Value="0" />

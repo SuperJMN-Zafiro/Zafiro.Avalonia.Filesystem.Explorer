@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using Zafiro.Avalonia.FileExplorer.Items;
@@ -15,14 +16,52 @@ public class EverythingEntryFactory : IEntryFactory
     {
         this.address = address;
     }
-    
+
     public Task<Result<IEnumerable<IEntry>>> Get(IZafiroDirectory directory)
     {
-        var files = directory.GetFiles().Map(files => files.Where(x => !x.IsHidden).Select(file => (IEntry) new FileItemViewModel(file)));
-        var dirs = directory.GetDirectories().Map(dirs => dirs.Where(x => !x.IsHidden).Select(dir => (IEntry) new DirectoryItemViewModel(dir, address)));
+        var filesWithProperties = WithProperties(directory.GetFiles());
+        var dirsWithProperties = WithProperties(directory.GetDirectories());
+        
+        var files = filesWithProperties
+            .Map(files => files.Where(x => !x.Item2.IsHidden)
+                .Select(file => (IEntry) new FileItemViewModel(file.Item1)));
+
+        var dirs = dirsWithProperties.Map(dirs => dirs.Where(x => !x.Item2.IsHidden).Select(dir => (IEntry) new DirectoryItemViewModel(dir.Item1, address)));
 
         return from f in files
             from n in dirs
             select f.Concat(n);
+    }
+
+    private async Task<Result<IEnumerable<(IZafiroFile, FileProperties)>>> WithProperties(Task<Result<IEnumerable<IZafiroFile>>> files)
+    {
+        var withProperties = await files.Bind(async zafiroFiles =>
+        {
+            var results = await Task.WhenAll(zafiroFiles.Select(async file =>
+            {
+                var fileProperties = await file.Properties;
+                return fileProperties.Map(p => (file, p));
+            }));
+
+            return results.Combine();
+        });
+
+        return withProperties;
+    }
+
+    private async Task<Result<IEnumerable<(IZafiroDirectory, DirectoryProperties)>>> WithProperties(Task<Result<IEnumerable<IZafiroDirectory>>> dirs)
+    {
+        var withProperties = await dirs.Bind(async enumerable =>
+        {
+            var whenAll = await Task.WhenAll(enumerable.Select(async dir =>
+            {
+                var fileProperties = await dir.Properties;
+                return fileProperties.Map(p => (file: dir, p));
+            }));
+
+            return whenAll.Combine();
+        });
+
+        return withProperties;
     }
 }

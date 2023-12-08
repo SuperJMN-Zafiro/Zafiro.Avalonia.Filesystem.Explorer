@@ -64,7 +64,5 @@ public class DetailsViewModel : ReactiveObject
 
     public ReadOnlyObservableCollection<IEntry> Children { get; }
 
-    [Reactive] public IEntry SelectedItem { get; set; }
-
     public SelectionModel<IEntry> Selection { get; } = new() {  SingleSelect = false };
 }

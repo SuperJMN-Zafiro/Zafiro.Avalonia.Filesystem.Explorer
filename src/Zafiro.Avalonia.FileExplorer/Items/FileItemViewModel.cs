@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using ReactiveUI;
@@ -19,9 +20,9 @@ public class FileItemViewModel : ReactiveObject, IFile
 
     public ZafiroPath Path => File.Path;
 
-    public Task<Result<Stream>> GetStream()
+    public IObservable<byte> GetStream()
     {
-        return File.GetContents();
+        return File.Contents;
     }
 
     public string Name => Path.Name();
