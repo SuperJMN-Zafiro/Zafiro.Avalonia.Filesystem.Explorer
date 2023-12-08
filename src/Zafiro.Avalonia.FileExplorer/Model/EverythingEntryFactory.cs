@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Reactive.Linq;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using Zafiro.Avalonia.FileExplorer.Items;
@@ -26,7 +25,9 @@ public class EverythingEntryFactory : IEntryFactory
             .Map(files => files.Where(x => !x.Item2.IsHidden)
                 .Select(file => (IEntry) new FileItemViewModel(file.Item1)));
 
-        var dirs = dirsWithProperties.Map(dirs => dirs.Where(x => !x.Item2.IsHidden).Select(dir => (IEntry) new DirectoryItemViewModel(dir.Item1, address)));
+        var dirs = dirsWithProperties
+            .Map(dirs => dirs.Where(x => !x.Item2.IsHidden)
+                .Select(dir => (IEntry) new DirectoryItemViewModel(dir.Item1, address)));
 
         return from f in files
             from n in dirs
@@ -41,10 +42,10 @@ public class EverythingEntryFactory : IEntryFactory
             {
                 var fileProperties = await file.Properties;
                 return fileProperties.Map(p => (file, p));
-            }));
+            })).ConfigureAwait(false);
 
             return results.Combine();
-        });
+        }).ConfigureAwait(false);
 
         return withProperties;
     }
@@ -57,10 +58,10 @@ public class EverythingEntryFactory : IEntryFactory
             {
                 var fileProperties = await dir.Properties;
                 return fileProperties.Map(p => (file: dir, p));
-            }));
+            })).ConfigureAwait(false);
 
             return whenAll.Combine();
-        });
+        }).ConfigureAwait(false);
 
         return withProperties;
     }
