@@ -8,7 +8,6 @@ using CSharpFunctionalExtensions;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 using Zafiro.Avalonia.FileExplorer.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.Avalonia.FileExplorer.Model;
@@ -23,21 +22,27 @@ namespace Zafiro.Avalonia.FileExplorer.Explorer;
 public class DetailsViewModel : ReactiveObject
 {
     private readonly IZafiroDirectory directory;
+    private readonly SourceCache<IEntry, string> contentsCache = new(entry => entry.Path.Name());
 
     public DetailsViewModel(IZafiroDirectory directory, IEntryFactory strategy, INotificationService notificationService, IClipboard pendingActions, ITransferManager downloadManager)
     {
         this.directory = directory;
-        SourceCache<IEntry, string> entryCache = new(entry => entry.Path.Name());
         LoadChildren = ReactiveCommand.CreateFromTask(async () =>
         {
             var result = await strategy.Get(directory);
             return result;
         });
 
-        LoadChildren.Successes().Do(entries => entryCache.Edit(updater => updater.Load(entries))).Subscribe();
+        directory.Changed.Subscribe(change => { });
+
+        directory.Changed
+            .Do(UpdateFrom)
+            .Subscribe();
+
+        LoadChildren.Successes().Do(entries => contentsCache.Edit(updater => updater.Load(entries))).Subscribe();
         LoadChildren.HandleErrorsWith(notificationService);
 
-        var observable = entryCache
+        var observable = contentsCache
             .Connect();
 
         observable
@@ -53,7 +58,20 @@ public class DetailsViewModel : ReactiveObject
         tracker.Changes.Bind(out var selectedItems).Subscribe();
         SelectedItems = selectedItems;
     }
-    
+
+    private void UpdateFrom(FileSystemChange change)
+    {
+        var file = directory.GetSingleFile(change.Path);
+        if (change.Change == Change.FileCreated)
+        {
+            contentsCache.AddOrUpdate(new FileItemViewModel(file));
+        }
+        if (change.Change == Change.FileDeleted)
+        {
+            contentsCache.RemoveKey(file.Path.Name());
+        }
+    }
+
     public ReadOnlyObservableCollection<IEntry> SelectedItems { get; }
 
     public IObservable<bool> IsLoadingChildren { get; }
