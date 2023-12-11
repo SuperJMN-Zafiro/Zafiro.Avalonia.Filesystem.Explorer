@@ -5,8 +5,8 @@
              xmlns:avaloniaProgressRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
              xmlns:explorer="clr-namespace:Zafiro.Avalonia.FileExplorer.Explorer"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Zafiro.Avalonia.FileExplorer.Explorer.DetailsView"
-             x:DataType="explorer:DetailsViewModel">
+             x:Class="Zafiro.Avalonia.FileExplorer.Explorer.DirectoryContentsView"
+             x:DataType="explorer:DirectoryContentsViewModel">
 	<Panel>
 		<ListBox Theme="{StaticResource TransparentListBox}" Selection="{Binding Selection}" ItemsSource="{Binding Children}">
             <ListBox.ItemContainerTheme>

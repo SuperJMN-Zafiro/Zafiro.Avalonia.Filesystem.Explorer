@@ -24,7 +24,7 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
         TransferManager = transferManager;
 
         var detailsViewModels = Address.LoadRequestedPath.Successes()
-            .Select(directory => new DetailsViewModel(directory, new EverythingEntryFactory(Address), notificationService, clipboard, transferManager))
+            .Select(directory => new DirectoryContentsViewModel(directory, new EverythingEntryFactory(Address), notificationService, clipboard, transferManager))
             .Replay()
             .RefCount();
 
@@ -47,7 +47,7 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
 
     public IAddress Address { get; }
 
-    public IObservable<DetailsViewModel> Details { get; }
+    public IObservable<DirectoryContentsViewModel> Details { get; }
 
     public IClipboard Clipboard { get; }
 

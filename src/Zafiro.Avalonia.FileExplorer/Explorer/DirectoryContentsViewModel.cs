@@ -19,12 +19,12 @@ using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer;
 
-public class DetailsViewModel : ReactiveObject
+public class DirectoryContentsViewModel : ReactiveObject
 {
     private readonly IZafiroDirectory directory;
     private readonly SourceCache<IEntry, string> contentsCache = new(entry => entry.Path.Name());
 
-    public DetailsViewModel(IZafiroDirectory directory, IEntryFactory strategy, INotificationService notificationService, IClipboard pendingActions, ITransferManager downloadManager)
+    public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, INotificationService notificationService, IClipboard pendingActions, ITransferManager downloadManager)
     {
         this.directory = directory;
         LoadChildren = ReactiveCommand.CreateFromTask(async () =>

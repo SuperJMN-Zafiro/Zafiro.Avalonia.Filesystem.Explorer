@@ -35,4 +35,9 @@
       <Temp>Zafiro</Temp>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Update="Explorer\DirectoryContentsView.axaml.cs">
+      <DependentUpon>DirectoryContentsView.axaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
 </Project>
