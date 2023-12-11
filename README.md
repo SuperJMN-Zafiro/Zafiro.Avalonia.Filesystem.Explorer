@@ -16,15 +16,15 @@ To use this library, simply add the NuGet package to your project.
 
 I want to express my gratitude to the following individuals and projects:
 
-- **DynamicData**: For their valuable contribution to reactive data management. \[Link\]\(https://github.com/reactiveui/DynamicData\)
+- **DynamicData**: For their valuable contribution to reactive data management. [Link](https://github.com/reactiveui/DynamicData)
 
-- **Darrin Cullop \(member of the DynamicData maintainers\)**: For their dedication and significant contributions. \[Profile\]\(https://github.com/dazinator\)
+- **Darrin Cullop \(member of the DynamicData maintainers\)**: For their dedication and significant contributions. [Profile](https://github.com/dwcullop)
 
-- **ReactiveUI**: For being an essential part of reactive development on the .NET platform. \[Link\]\(https://reactiveui.net/\)
+- **ReactiveUI**: For being an essential part of reactive development on the .NET platform. [Link](https://reactiveui.net)
 
-- **AvaloniaUI**: For providing an open-source, cross-platform UI framework. \[Link\]\(https://avaloniaui.net/\)
+- **AvaloniaUI**: For providing an open-source, cross-platform UI framework. [Link](https://avaloniaui.net)
 
-- **The community of the Reactive Inc. Slack channel**: For ongoing support and enriching discussions. \[Reactive Inc. Slack\]\(https://reactiveui.net/slack\)
+- **The community of the Reactive Inc. Slack channel**: For ongoing support and enriching discussions. [Reactive Inc. Slack](https://reactiveui.net/slack)
 
 ## Contribution
 
