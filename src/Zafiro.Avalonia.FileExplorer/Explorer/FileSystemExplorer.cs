@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using CSharpFunctionalExtensions;
 using DynamicData;
@@ -17,9 +18,11 @@ using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer;
 
-public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
+public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposable
 {
     private readonly ObservableAsPropertyHelper<DirectoryContentsViewModel> details;
+    private readonly SerialDisposable serialDisposable = new();
+    private readonly CompositeDisposable disposable = new();
 
     public FileSystemExplorer(IFileSystemRoot fileSystem, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
     {
@@ -31,9 +34,17 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
             .Select(directory => new DirectoryContentsViewModel(directory, new EverythingEntryFactory(Address), notificationService, clipboard, transferManager))
             .ReplayLastActive();
 
-        details = detailsViewModels.ToProperty(this, explorer => explorer.Details);
+        details = detailsViewModels.ToProperty(this, explorer => explorer.Details)
+            .DisposeWith(disposable);
 
-        this.WhenAnyValue(x => x.Details.SelectedItems).Bind(out var selectedItems);
+        this.WhenAnyValue(x => x.Details)
+            .Do(d => serialDisposable.Disposable = d)
+            .Subscribe()
+            .DisposeWith(disposable);
+
+        this.WhenAnyValue(x => x.Details.SelectedItems)
+            .Bind(out var selectedItems)
+            .DisposeWith(disposable);
         
         ToolBar = new ToolBarViewModel(selectedItems, Address.LoadRequestedPath.Successes(), clipboard, transferManager, notificationService);
         InitialPath.Or(ZafiroPath.Empty).Execute(GoTo);
@@ -56,5 +67,11 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
     public void GoTo(ZafiroPath path)
     {
         Address.SetAndLoad(path);
+    }
+
+    public void Dispose()
+    {
+        details.Dispose();
+        serialDisposable.Dispose();
     }
 }

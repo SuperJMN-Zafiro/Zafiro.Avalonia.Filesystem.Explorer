@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Avalonia.Controls.Selection;
 using CSharpFunctionalExtensions;
@@ -19,10 +20,11 @@ using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer;
 
-public class DirectoryContentsViewModel : ReactiveObject
+public class DirectoryContentsViewModel : ReactiveObject, IDisposable
 {
     private readonly IZafiroDirectory directory;
     private readonly SourceCache<IEntry, string> contentsCache = new(entry => entry.Path.Name());
+    private CompositeDisposable disposable = new();
 
     public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, INotificationService notificationService, IClipboard pendingActions, ITransferManager downloadManager)
     {
@@ -31,13 +33,12 @@ public class DirectoryContentsViewModel : ReactiveObject
         {
             var result = await strategy.Get(directory);
             return result;
-        });
-
-        directory.Changed.Subscribe(change => { });
+        }).DisposeWith(disposable);
 
         directory.Changed
             .Do(UpdateFrom)
-            .Subscribe();
+            .Subscribe()
+            .DisposeWith(disposable);
 
         LoadChildren.Successes().Do(entries => contentsCache.Edit(updater => updater.Load(entries))).Subscribe();
         LoadChildren.HandleErrorsWith(notificationService);
@@ -49,13 +50,14 @@ public class DirectoryContentsViewModel : ReactiveObject
             .Sort(SortExpressionComparer<IEntry>.Descending(p => p is DirectoryItemViewModel)
                 .ThenByAscending(p => p.Path.Name()))
             .Bind(out var collection)
-            .Subscribe();
+            .Subscribe()
+            .DisposeWith(disposable);
 
         Children = collection;
-        IsLoadingChildren = LoadChildren.IsExecuting.DelayItem(true, TimeSpan.FromSeconds(0.5));
-        LoadChildren.Execute().Subscribe();
+        IsLoadingChildren = LoadChildren.IsExecuting.DelayItem(true, TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler);
+        LoadChildren.Execute().Subscribe().DisposeWith(disposable);
         var tracker = new SelectionTracker<IEntry, ZafiroPath>(Selection, entry => entry.Path);
-        tracker.Changes.Bind(out var selectedItems).Subscribe();
+        tracker.Changes.Bind(out var selectedItems).Subscribe().DisposeWith(disposable);
         SelectedItems = selectedItems;
     }
 
@@ -83,4 +85,10 @@ public class DirectoryContentsViewModel : ReactiveObject
     public ReadOnlyObservableCollection<IEntry> Children { get; }
 
     public SelectionModel<IEntry> Selection { get; } = new() {  SingleSelect = false };
+
+    public void Dispose()
+    {
+        contentsCache.Dispose();
+        LoadChildren.Dispose();
+    }
 }
