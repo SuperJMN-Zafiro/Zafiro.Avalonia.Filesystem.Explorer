@@ -21,7 +21,6 @@ namespace Zafiro.Avalonia.FileExplorer.Explorer;
 public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposable
 {
     private readonly ObservableAsPropertyHelper<DirectoryContentsViewModel> details;
-    private readonly SerialDisposable serialDisposable = new();
     private readonly CompositeDisposable disposable = new();
 
     public FileSystemExplorer(IFileSystemRoot fileSystem, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
@@ -37,6 +36,7 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
         details = detailsViewModels.ToProperty(this, explorer => explorer.Details)
             .DisposeWith(disposable);
 
+        SerialDisposable serialDisposable = new();
         this.WhenAnyValue(x => x.Details)
             .Do(d => serialDisposable.Disposable = d)
             .Subscribe()
