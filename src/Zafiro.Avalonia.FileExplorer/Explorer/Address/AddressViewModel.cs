@@ -22,7 +22,10 @@ public class AddressViewModel : ReactiveObject, IAddress
         History = new History();
         LoadRequestedPath.Successes().Select(x => x.Path).Select(Maybe.From).BindTo(this, x => x.History.CurrentFolder);
         GoBack = History.GoBack;
-        this.WhenAnyValue(x => x.History.CurrentFolder).Values().Do(SetAndLoad).Subscribe();
+        this.WhenAnyValue(x => x.History.CurrentFolder).Values()
+            .Do(path => RequestedPathString = path)
+            .ToSignal()
+            .InvokeCommand(LoadRequestedPath);
         CurrentDirectory = LoadRequestedPath.Successes().Select(Maybe.From);
         RequestedPathString = string.Empty;
     }
@@ -43,7 +46,6 @@ public class AddressViewModel : ReactiveObject, IAddress
 
     public void SetAndLoad(ZafiroPath requestedPath)
     {
-        RequestedPathString = requestedPath;
-        LoadRequestedPath.Execute().Take(1).Subscribe();
+        History.CurrentFolder = requestedPath;
     }
 }
