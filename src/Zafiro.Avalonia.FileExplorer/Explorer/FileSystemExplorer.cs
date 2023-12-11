@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reactive.Linq;
 using CSharpFunctionalExtensions;
 using DynamicData;
@@ -11,12 +12,15 @@ using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
+using Zafiro.Mixins;
 using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer;
 
 public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
 {
+    private readonly ObservableAsPropertyHelper<DirectoryContentsViewModel> details;
+
     public FileSystemExplorer(IFileSystemRoot fileSystem, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
     {
         Clipboard = clipboard;
@@ -25,15 +29,13 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
 
         var detailsViewModels = Address.LoadRequestedPath.Successes()
             .Select(directory => new DirectoryContentsViewModel(directory, new EverythingEntryFactory(Address), notificationService, clipboard, transferManager))
-            .Replay()
-            .RefCount();
+            .ReplayLastActive();
 
-        Details = detailsViewModels;
+        details = detailsViewModels.ToProperty(this, explorer => explorer.Details);
 
-        var source = detailsViewModels.Select(x => x.SelectedItems.ToObservableChangeSet()).Switch();
-        source.Bind(out var collection).Subscribe();
-
-        ToolBar = new ToolBarViewModel(collection, Address.LoadRequestedPath.Successes(), clipboard, transferManager, notificationService);
+        this.WhenAnyValue(x => x.Details.SelectedItems).Bind(out var selectedItems);
+        
+        ToolBar = new ToolBarViewModel(selectedItems, Address.LoadRequestedPath.Successes(), clipboard, transferManager, notificationService);
         InitialPath.Or(ZafiroPath.Empty).Execute(GoTo);
     }
 
@@ -47,7 +49,7 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
 
     public IAddress Address { get; }
 
-    public IObservable<DirectoryContentsViewModel> Details { get; }
+    public DirectoryContentsViewModel Details => details.Value;
 
     public IClipboard Clipboard { get; }
 

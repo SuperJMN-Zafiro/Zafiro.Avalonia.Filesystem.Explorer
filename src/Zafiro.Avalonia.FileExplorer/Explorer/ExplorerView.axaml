@@ -10,6 +10,6 @@
         <ContentControl Content="{Binding Address}" DockPanel.Dock="Top" />
         <ContentControl Content="{Binding ToolBar}" DockPanel.Dock="Top" />
         <HeaderedContentControl IsVisible="{Binding !!Clipboard.Contents.Count}" Header="Clipboard" Content="{Binding Clipboard}" DockPanel.Dock="Bottom" />
-        <ContentControl Content="{Binding Details^}" />
+        <ContentControl Content="{Binding Details}" />
     </DockPanel>
 </UserControl>

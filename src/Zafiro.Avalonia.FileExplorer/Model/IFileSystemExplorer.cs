@@ -12,7 +12,7 @@ public interface IFileSystemExplorer
     ITransferManager TransferManager { get; }
     IToolBar ToolBar { get; }
     IAddress Address { get; }
-    IObservable<DirectoryContentsViewModel> Details { get; }
+    DirectoryContentsViewModel Details { get; }
     IClipboard Clipboard { get; }
     IObservable<Maybe<IZafiroDirectory>> CurrentDirectory { get; }
     void GoTo(ZafiroPath path);
