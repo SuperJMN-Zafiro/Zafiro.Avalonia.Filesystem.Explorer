@@ -24,7 +24,7 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
 {
     private readonly IZafiroDirectory directory;
     private readonly SourceCache<IEntry, string> contentsCache = new(entry => entry.Path.Name());
-    private CompositeDisposable disposable = new();
+    private readonly CompositeDisposable disposable = new();
 
     public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, INotificationService notificationService, IClipboard pendingActions, ITransferManager downloadManager)
     {
@@ -35,9 +35,7 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
             return result;
         }).DisposeWith(disposable);
 
-        directory.Changed
-            .Do(UpdateFrom)
-            .Subscribe()
+        UpdateWhenContentsChange(directory)
             .DisposeWith(disposable);
 
         LoadChildren.Successes().Do(entries => contentsCache.Edit(updater => updater.Load(entries))).Subscribe();
@@ -61,9 +59,13 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
         SelectedItems = selectedItems;
     }
 
+    private IDisposable UpdateWhenContentsChange(IZafiroDirectory directory) => directory.Changed
+        .Do(UpdateFrom)
+        .Subscribe();
+
     private void UpdateFrom(FileSystemChange change)
     {
-        var file = directory.GetSingleFile(change.Path);
+        var file = directory.FileSystem.GetFile(change.Path);
         if (change.Change == Change.FileCreated)
         {
             contentsCache.AddOrUpdate(new FileItemViewModel(file));
@@ -88,7 +90,6 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
 
     public void Dispose()
     {
-        contentsCache.Dispose();
-        LoadChildren.Dispose();
+        disposable.Dispose();
     }
 }

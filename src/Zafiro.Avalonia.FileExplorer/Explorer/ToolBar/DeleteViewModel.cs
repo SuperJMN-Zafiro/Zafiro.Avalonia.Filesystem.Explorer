@@ -25,7 +25,7 @@ public class DeleteViewModel
     {
         var canDelete = selectedItems.ToObservableChangeSet().ToCollection().Select(x => x.Any());
 
-        Delete = ReactiveCommand.CreateFromTask(() => GenerateCopyActions(selectedItems), canDelete);
+        Delete = ReactiveCommand.CreateFromTask(() => DeleteItems(selectedItems), canDelete);
         Delete
             .Select(x => x.Successes())
             .Do(actions =>
@@ -46,11 +46,12 @@ public class DeleteViewModel
 
     public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Delete { get; }
 
-    private async Task<IList<Result<IAction<LongProgress>>>> GenerateCopyActions(IEnumerable<IEntry> selectedItems)
+    private async Task<IList<Result<IAction<LongProgress>>>> DeleteItems(IEnumerable<IEntry> selectedItems)
     {
         var results = await selectedItems
             .ToObservable()
-            .SelectMany(GetActionFromItem)
+            .Select(entry => Observable.FromAsync(() => GetActionFromItem(entry)))
+            .Merge(1)
             .ToList();
 
         return results;
@@ -60,20 +61,20 @@ public class DeleteViewModel
     {
         var action = entry switch
         {
-            FileItemViewModel folderItemViewModel => CreateFileTransfer(folderItemViewModel).Map(action1 => (IAction<LongProgress>)action1),
-            DirectoryItemViewModel fileItemViewModel => CreateDirectoryTransfer(fileItemViewModel).Map(action1 => (IAction<LongProgress>)action1),
+            FileItemViewModel file => DeleteFileAction(file).Map(action1 => (IAction<LongProgress>)action1),
+            DirectoryItemViewModel dir => DeleteDirectoryAction(dir).Map(action1 => (IAction<LongProgress>)action1),
             _ => throw new ArgumentOutOfRangeException(nameof(entry))
         };
         return action;
     }
-    private Task<Result<DeleteDirectoryAction>> CreateDirectoryTransfer(DirectoryItemViewModel directoryItem)
+    private Task<Result<DeleteDirectoryAction>> DeleteDirectoryAction(DirectoryItemViewModel directoryItem)
     {
         return Task.FromResult(Result.Success(new DeleteDirectoryAction(directoryItem.Directory)));
     }
 
-    private Task<Result<DeleteFileAction>> CreateFileTransfer(FileItemViewModel fileItem)
+    private Task<Result<DeleteFileAction>> DeleteFileAction(FileItemViewModel fileItem)
     {
-        return Task.FromResult(DeleteFileAction.Create(fileItem.File));
+        return Task.FromResult(FileSystem.Actions.DeleteFileAction.Create(fileItem.File));
     }
 }
 

@@ -1,7 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Threading.Tasks;
-using CSharpFunctionalExtensions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Zafiro.Avalonia.FileExplorer.Model;

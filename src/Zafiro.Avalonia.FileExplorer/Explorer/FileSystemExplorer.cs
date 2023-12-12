@@ -72,6 +72,5 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
     public void Dispose()
     {
         details.Dispose();
-        serialDisposable.Dispose();
     }
 }
