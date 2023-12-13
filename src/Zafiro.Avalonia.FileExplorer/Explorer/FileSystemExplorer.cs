@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using CSharpFunctionalExtensions;
-using DynamicData;
-using DynamicData.Binding;
 using ReactiveUI;
 using Zafiro.Avalonia.FileExplorer.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Explorer.Address;
@@ -31,7 +28,7 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
         TransferManager = transferManager;
 
         var detailsViewModels = PathNavigator.LoadRequestedPath.Successes()
-            .Select(directory => new DirectoryContentsViewModel(directory, new EverythingEntryFactory(PathNavigator, opener), PathNavigator, notificationService, opener))
+            .Select(directory => new DirectoryContentsViewModel(directory, new EverythingEntryFactory(PathNavigator, opener, () => ToolBar!), PathNavigator, notificationService, opener, () => ToolBar!))
             .ReplayLastActive();
 
         details = detailsViewModels.ToProperty(this, explorer => explorer.Details)
@@ -46,8 +43,9 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
         this.WhenAnyValue(x => x.Details.SelectedItems)
             .Bind(out var selectedItems)
             .DisposeWith(disposable);
-        
+
         ToolBar = new ToolBarViewModel(selectedItems, PathNavigator.LoadRequestedPath.Successes(), clipboard, transferManager, notificationService);
+        
         InitialPath.Or(ZafiroPath.Empty).Execute(GoTo);
     }
 

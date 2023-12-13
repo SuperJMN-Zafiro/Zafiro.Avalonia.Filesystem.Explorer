@@ -66,15 +66,20 @@
 		<DrawingImage Drawing="{StaticResource FileDrawing}" x:Key="FileImage"/>
 	</UserControl.Resources>
 	<Panel>
-		<DockPanel Margin="4">
+        <Panel.ContextMenu>
+			<ContextMenu>
+				<MenuItem Header="Copy" Command="{Binding Copy}" />
+            </ContextMenu>
+        </Panel.ContextMenu>
+        <DockPanel Margin="4" Background="Transparent">
 			<Image Source="{StaticResource FileImage}" Margin="5" DockPanel.Dock="Left" Height="20" />
 			<Button DockPanel.Dock="Right" IsVisible="{OnPlatform Windows=true}" Command="{Binding Open}" Content="Open" />
             <TextBlock FontSize="12" Text="{Binding Name}" VerticalAlignment="Center" />
 			<Interaction.Behaviors>
 				<b:ExecuteCommandOnDoubleTappedBehavior Command="{Binding Open}" />
 				<!--<RoutedEventTriggerBehavior RoutedEvent="{x:Static Gestures.DoubleTappedEvent}" RoutingStrategies="Tunnel">
-                <InvokeCommandAction Command="{Binding Open}" />
-            </RoutedEventTriggerBehavior>-->
+                    <InvokeCommandAction Command="{Binding Open}" />
+                </RoutedEventTriggerBehavior>-->
 			</Interaction.Behaviors>
 		</DockPanel>
 		<ProgressBar IsIndeterminate="True" VerticalAlignment="Bottom" Height="4" HorizontalAlignment="Stretch" IsVisible="{Binding IsBusy^}" />

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
@@ -11,11 +12,13 @@ public class EverythingEntryFactory : IEntryFactory
 {
     private readonly IPathNavigator pathNavigator;
     private readonly ISystemOpen opener;
+    private readonly Func<IToolBar> toolbar;
 
-    public EverythingEntryFactory(IPathNavigator pathNavigator, ISystemOpen opener)
+    public EverythingEntryFactory(IPathNavigator pathNavigator, ISystemOpen opener, Func<IToolBar> toolbar)
     {
         this.pathNavigator = pathNavigator;
         this.opener = opener;
+        this.toolbar = toolbar;
     }
 
     public Task<Result<IEnumerable<IEntry>>> Get(IZafiroDirectory directory)
@@ -25,7 +28,7 @@ public class EverythingEntryFactory : IEntryFactory
         
         var files = filesWithProperties
             .Map(files => files.Where(x => !x.Item2.IsHidden)
-                .Select(file => (IEntry) new FileItemViewModel(file.Item1, opener)));
+                .Select(file => (IEntry) new FileItemViewModel(file.Item1, opener, toolbar())));
 
         var dirs = dirsWithProperties
             .Map(dirs => dirs.Where(x => !x.Item2.IsHidden)

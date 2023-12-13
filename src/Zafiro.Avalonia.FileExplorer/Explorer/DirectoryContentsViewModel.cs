@@ -11,7 +11,6 @@ using DynamicData.Binding;
 using ReactiveUI;
 using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.Avalonia.FileExplorer.Model;
-using Zafiro.Avalonia.FileExplorer.TransferManager;
 using Zafiro.Avalonia.Mixins;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
@@ -24,14 +23,16 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
     private readonly IZafiroDirectory directory;
     private readonly IPathNavigator pathNavigator;
     private readonly ISystemOpen opener;
+    private readonly Func<IToolBar> toolbar;
     private readonly SourceCache<IEntry, string> contentsCache = new(entry => entry.Path.Name());
     private readonly CompositeDisposable disposable = new();
 
-    public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, IPathNavigator pathNavigator, INotificationService notificationService, ISystemOpen opener)
+    public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, IPathNavigator pathNavigator, INotificationService notificationService, ISystemOpen opener, Func<IToolBar> toolbar)
     {
         this.directory = directory;
         this.pathNavigator = pathNavigator;
         this.opener = opener;
+        this.toolbar = toolbar;
         LoadChildren = ReactiveCommand.CreateFromTask(async () =>
         {
             var result = await strategy.Get(directory);
@@ -71,7 +72,7 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
         if (change.Change == Change.FileCreated)
         {
             var file = directory.FileSystem.GetFile(change.Path);
-            contentsCache.AddOrUpdate(new FileItemViewModel(file, opener));
+            contentsCache.AddOrUpdate(new FileItemViewModel(file, opener, toolbar()));
         }
         if (change.Change == Change.DirectoryCreated)
         {
