@@ -73,9 +73,15 @@
         </Panel.ContextMenu>
         <DockPanel Margin="4" Background="Transparent">
 			<Image Source="{StaticResource FileImage}" Margin="5" DockPanel.Dock="Left" Height="20" />
-			<Button DockPanel.Dock="Right" IsVisible="{OnPlatform Windows=true}" Command="{Binding Open}" Content="Open" />
+			<Button DockPanel.Dock="Right" Command="{Binding Open}" Content="Open">
+                <Button.IsVisible>
+                    <OnPlatform Default="True">
+						<On Options="Android, iOS" Content="False" />
+                    </OnPlatform>
+                </Button.IsVisible>
+            </Button>
             <TextBlock FontSize="12" Text="{Binding Name}" VerticalAlignment="Center" />
-			<Interaction.Behaviors>
+			<Interaction.Behaviors>e 
 				<b:ExecuteCommandOnDoubleTappedBehavior Command="{Binding Open}" />
 				<!--<RoutedEventTriggerBehavior RoutedEvent="{x:Static Gestures.DoubleTappedEvent}" RoutingStrategies="Tunnel">
                     <InvokeCommandAction Command="{Binding Open}" />
