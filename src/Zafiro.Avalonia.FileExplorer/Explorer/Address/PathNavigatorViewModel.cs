@@ -16,7 +16,7 @@ public class PathNavigatorViewModel : ReactiveObject, IPathNavigator
 {
     public PathNavigatorViewModel(IFileSystemRoot fileSystem, INotificationService notificationService)
     {
-        LoadRequestedPath = ReactiveCommand.Create(() => RequestedPath.Map(fileSystem.GetDirectory), this.WhenAnyValue(x => x.RequestedPathString).NotNull());
+        LoadRequestedPath = ReactiveCommand.Create(() => RequestedPath.Map(fileSystem.GetDirectory));
         LoadRequestedPath.HandleErrorsWith(notificationService);
         IsNavigating = LoadRequestedPath.IsExecuting;
         History = new History();
@@ -30,9 +30,9 @@ public class PathNavigatorViewModel : ReactiveObject, IPathNavigator
         RequestedPathString = string.Empty;
     }
 
-    private Result<ZafiroPath> RequestedPath => RequestedPathString?.Trim() == "" ? Result.Success(ZafiroPath.Empty) : ZafiroPath.Create(RequestedPathString!);
+    private Result<ZafiroPath> RequestedPath => RequestedPathString.Trim() == "" ? Result.Success(ZafiroPath.Empty) : ZafiroPath.Create(RequestedPathString!);
 
-    public ReactiveCommand<Unit, Result<IZafiroDirectory>> LoadRequestedPath { get; set; }
+    public ReactiveCommandBase<Unit, Result<IZafiroDirectory>> LoadRequestedPath { get; }
 
     public IObservable<Maybe<IZafiroDirectory>> CurrentDirectory { get; }
 

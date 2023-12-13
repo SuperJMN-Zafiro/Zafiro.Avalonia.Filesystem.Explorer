@@ -8,6 +8,7 @@
              mc:Ignorable="d"
              x:Class="Zafiro.Avalonia.FileExplorer.TransferManager.LightTransferManagerView"
              x:DataType="transferManager:ITransferManager" ClipToBounds="False"
+             IsHitTestVisible="{Binding HasOngoingTransfers^}" 
              Opacity="{Binding HasOngoingTransfers^, Converter={x:Static converters:BoolOpacityConverters.BoolToOpacity}}">
 
 	<UserControl.Transitions>
