@@ -76,7 +76,7 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
             var dir = directory.FileSystem.GetDirectory(change.Path);
             contentsCache.AddOrUpdate(new DirectoryItemViewModel(dir, pathNavigator));
         }
-        if (change.Change == Change.FileDeleted)
+        if (change.Change == Change.FileDeleted || change.Change == Change.DirectoryDeleted)
         {
             contentsCache.RemoveKey(change.Path.Name());
         }

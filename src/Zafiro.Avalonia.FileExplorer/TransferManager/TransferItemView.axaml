@@ -54,8 +54,8 @@
                                TextTrimming="CharacterEllipsis" Text="{Binding Errors^}" VerticalAlignment="Center" />
                 </Panel>
             </Expander.Header>
-            <TextBlock IsVisible="{Binding EstimatedCompletion^.HasValue}" VerticalAlignment="Center"
-                       DockPanel.Dock="Right" Margin="4" Text="{Binding EstimatedCompletion^.Value, StringFormat='{}{0} remaining'}" />
+            <!--<TextBlock IsVisible="{Binding EstimatedCompletion^.HasValue}" VerticalAlignment="Center"
+                       DockPanel.Dock="Right" Margin="4" Text="{Binding EstimatedCompletion^.Value, StringFormat='{}{0} remaining'}" />-->
         </Expander>
 
     </DockPanel>
