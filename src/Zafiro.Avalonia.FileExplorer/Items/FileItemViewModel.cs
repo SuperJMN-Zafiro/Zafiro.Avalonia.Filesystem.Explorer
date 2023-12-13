@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Reactive;
+using CSharpFunctionalExtensions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Zafiro.Avalonia.FileExplorer.Model;
@@ -10,10 +12,16 @@ public class FileItemViewModel : ReactiveObject, IFile
 {
     public IZafiroFile File { get; }
 
-    public FileItemViewModel(IZafiroFile file)
+    public FileItemViewModel(IZafiroFile file, ISystemOpen fileOpener)
     {
         File = file;
+        Open = ReactiveCommand.CreateFromTask(() => fileOpener.Open(file.Contents, file.Path.Name()));
+        IsBusy = Open.IsExecuting;
     }
+
+    public IObservable<bool> IsBusy { get; }
+
+    public ReactiveCommand<Unit, Result> Open { get; set; }
 
     public ZafiroPath Path => File.Path;
 
@@ -28,4 +36,5 @@ public class FileItemViewModel : ReactiveObject, IFile
 
     [Reactive]
     public bool IsSelected { get; set; }
+
 }

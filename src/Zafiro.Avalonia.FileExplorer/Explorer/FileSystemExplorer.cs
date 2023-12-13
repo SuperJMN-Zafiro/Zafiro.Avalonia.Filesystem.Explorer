@@ -9,6 +9,7 @@ using ReactiveUI;
 using Zafiro.Avalonia.FileExplorer.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Explorer.Address;
 using Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
+using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
 using Zafiro.CSharpFunctionalExtensions;
@@ -23,14 +24,14 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
     private readonly ObservableAsPropertyHelper<DirectoryContentsViewModel> details;
     private readonly CompositeDisposable disposable = new();
 
-    public FileSystemExplorer(IFileSystemRoot fileSystem, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
+    public FileSystemExplorer(IFileSystemRoot fileSystem, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager, ISystemOpen opener)
     {
         Clipboard = clipboard;
         PathNavigator = new PathNavigatorViewModel(fileSystem, notificationService);
         TransferManager = transferManager;
 
         var detailsViewModels = PathNavigator.LoadRequestedPath.Successes()
-            .Select(directory => new DirectoryContentsViewModel(directory, new EverythingEntryFactory(PathNavigator), PathNavigator, notificationService, transferManager))
+            .Select(directory => new DirectoryContentsViewModel(directory, new EverythingEntryFactory(PathNavigator, opener), PathNavigator, notificationService, opener))
             .ReplayLastActive();
 
         details = detailsViewModels.ToProperty(this, explorer => explorer.Details)

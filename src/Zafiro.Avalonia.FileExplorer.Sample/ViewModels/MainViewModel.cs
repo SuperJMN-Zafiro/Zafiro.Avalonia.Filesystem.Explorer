@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net.Http;
+using System.Reactive;
 using System.Reactive.Linq;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Http.Logging;
@@ -30,10 +31,11 @@ public class MainViewModel : ReactiveObject
             BaseAddress = new Uri("http://192.168.1.29:8888"),
         });
         var fileSystem = new FileSystemRoot(new ObservableFileSystem(new SeaweedFileSystem(seaweedFSClient, Maybe<ILogger>.None)));
-        
+
         ClipboardViewModel = new ClipboardViewModel();
         TransferManager = new TransferManagerViewModel { AutoStartOnAdd = true };
-        FileSystemExplorer = new FileSystemExplorer(fileSystem, notificationService, ClipboardViewModel, TransferManager);
+        var opener = new Opener();
+        FileSystemExplorer = new FileSystemExplorer(fileSystem, notificationService, ClipboardViewModel, TransferManager, opener);
         CurrentAddress = FileSystemExplorer.CurrentDirectory.Values().Select(path => path.ToString()!);
     }
 
@@ -42,6 +44,6 @@ public class MainViewModel : ReactiveObject
     public TransferManagerViewModel TransferManager { get; }
 
     public ClipboardViewModel ClipboardViewModel { get; }
-    
+
     public IFileSystemExplorer FileSystemExplorer { get; }
 }

@@ -23,13 +23,15 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
 {
     private readonly IZafiroDirectory directory;
     private readonly IPathNavigator pathNavigator;
+    private readonly ISystemOpen opener;
     private readonly SourceCache<IEntry, string> contentsCache = new(entry => entry.Path.Name());
     private readonly CompositeDisposable disposable = new();
 
-    public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, IPathNavigator pathNavigator, INotificationService notificationService, ITransferManager downloadManager)
+    public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, IPathNavigator pathNavigator, INotificationService notificationService, ISystemOpen opener)
     {
         this.directory = directory;
         this.pathNavigator = pathNavigator;
+        this.opener = opener;
         LoadChildren = ReactiveCommand.CreateFromTask(async () =>
         {
             var result = await strategy.Get(directory);
@@ -69,7 +71,7 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
         if (change.Change == Change.FileCreated)
         {
             var file = directory.FileSystem.GetFile(change.Path);
-            contentsCache.AddOrUpdate(new FileItemViewModel(file));
+            contentsCache.AddOrUpdate(new FileItemViewModel(file, opener));
         }
         if (change.Change == Change.DirectoryCreated)
         {

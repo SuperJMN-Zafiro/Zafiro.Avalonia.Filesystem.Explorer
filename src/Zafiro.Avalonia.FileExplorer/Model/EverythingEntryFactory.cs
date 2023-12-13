@@ -10,10 +10,12 @@ namespace Zafiro.Avalonia.FileExplorer.Model;
 public class EverythingEntryFactory : IEntryFactory
 {
     private readonly IPathNavigator pathNavigator;
+    private readonly ISystemOpen opener;
 
-    public EverythingEntryFactory(IPathNavigator pathNavigator)
+    public EverythingEntryFactory(IPathNavigator pathNavigator, ISystemOpen opener)
     {
         this.pathNavigator = pathNavigator;
+        this.opener = opener;
     }
 
     public Task<Result<IEnumerable<IEntry>>> Get(IZafiroDirectory directory)
@@ -23,7 +25,7 @@ public class EverythingEntryFactory : IEntryFactory
         
         var files = filesWithProperties
             .Map(files => files.Where(x => !x.Item2.IsHidden)
-                .Select(file => (IEntry) new FileItemViewModel(file.Item1)));
+                .Select(file => (IEntry) new FileItemViewModel(file.Item1, opener)));
 
         var dirs = dirsWithProperties
             .Map(dirs => dirs.Where(x => !x.Item2.IsHidden)
