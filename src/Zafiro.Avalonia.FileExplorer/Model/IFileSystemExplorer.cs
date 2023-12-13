@@ -11,7 +11,7 @@ public interface IFileSystemExplorer
 {
     ITransferManager TransferManager { get; }
     IToolBar ToolBar { get; }
-    IAddress Address { get; }
+    IPathNavigator PathNavigator { get; }
     DirectoryContentsViewModel Details { get; }
     IClipboard Clipboard { get; }
     IObservable<Maybe<IZafiroDirectory>> CurrentDirectory { get; }

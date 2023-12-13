@@ -9,11 +9,11 @@ namespace Zafiro.Avalonia.FileExplorer.Model;
 
 public class EverythingEntryFactory : IEntryFactory
 {
-    private readonly IAddress address;
+    private readonly IPathNavigator pathNavigator;
 
-    public EverythingEntryFactory(IAddress address)
+    public EverythingEntryFactory(IPathNavigator pathNavigator)
     {
-        this.address = address;
+        this.pathNavigator = pathNavigator;
     }
 
     public Task<Result<IEnumerable<IEntry>>> Get(IZafiroDirectory directory)
@@ -27,7 +27,7 @@ public class EverythingEntryFactory : IEntryFactory
 
         var dirs = dirsWithProperties
             .Map(dirs => dirs.Where(x => !x.Item2.IsHidden)
-                .Select(dir => (IEntry) new DirectoryItemViewModel(dir.Item1, address)));
+                .Select(dir => (IEntry) new DirectoryItemViewModel(dir.Item1, pathNavigator)));
 
         return from f in files
             from n in dirs

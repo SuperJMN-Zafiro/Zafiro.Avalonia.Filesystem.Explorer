@@ -36,6 +36,9 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Explorer\Address\PathNavigatorView.axaml.cs">
+      <DependentUpon>PathNavigatorView.axaml</DependentUpon>
+    </Compile>
     <Compile Update="Explorer\DirectoryContentsView.axaml.cs">
       <DependentUpon>DirectoryContentsView.axaml</DependentUpon>
     </Compile>

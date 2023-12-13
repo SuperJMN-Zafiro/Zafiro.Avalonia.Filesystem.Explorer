@@ -9,15 +9,15 @@ namespace Zafiro.Avalonia.FileExplorer.Model;
 
 public class DirectoriesEntryFactory : IEntryFactory
 {
-    private readonly IAddress address;
+    private readonly IPathNavigator pathNavigator;
 
-    public DirectoriesEntryFactory(IAddress address)
+    public DirectoriesEntryFactory(IPathNavigator pathNavigator)
     {
-        this.address = address;
+        this.pathNavigator = pathNavigator;
     }
 
     public Task<Result<IEnumerable<IEntry>>> Get(IZafiroDirectory directory)
     {
-        return directory.GetDirectories().Map(dirs => dirs.Select(dir => (IEntry)new DirectoryItemViewModel(dir, address)));
+        return directory.GetDirectories().Map(dirs => dirs.Select(dir => (IEntry)new DirectoryItemViewModel(dir, pathNavigator)));
     }
 }

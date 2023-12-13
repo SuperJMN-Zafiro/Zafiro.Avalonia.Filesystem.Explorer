@@ -12,9 +12,9 @@ using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer.Address;
 
-public class AddressViewModel : ReactiveObject, IAddress
+public class PathNavigatorViewModel : ReactiveObject, IPathNavigator
 {
-    public AddressViewModel(IFileSystemRoot fileSystem, INotificationService notificationService)
+    public PathNavigatorViewModel(IFileSystemRoot fileSystem, INotificationService notificationService)
     {
         LoadRequestedPath = ReactiveCommand.Create(() => RequestedPath.Map(fileSystem.GetDirectory), this.WhenAnyValue(x => x.RequestedPathString).NotNull());
         LoadRequestedPath.HandleErrorsWith(notificationService);

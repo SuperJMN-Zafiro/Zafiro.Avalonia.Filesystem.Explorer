@@ -9,7 +9,6 @@ using CSharpFunctionalExtensions;
 using DynamicData;
 using DynamicData.Binding;
 using ReactiveUI;
-using Zafiro.Avalonia.FileExplorer.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
@@ -23,12 +22,14 @@ namespace Zafiro.Avalonia.FileExplorer.Explorer;
 public class DirectoryContentsViewModel : ReactiveObject, IDisposable
 {
     private readonly IZafiroDirectory directory;
+    private readonly IPathNavigator pathNavigator;
     private readonly SourceCache<IEntry, string> contentsCache = new(entry => entry.Path.Name());
     private readonly CompositeDisposable disposable = new();
 
-    public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, INotificationService notificationService, IClipboard pendingActions, ITransferManager downloadManager)
+    public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, IPathNavigator pathNavigator, INotificationService notificationService, ITransferManager downloadManager)
     {
         this.directory = directory;
+        this.pathNavigator = pathNavigator;
         LoadChildren = ReactiveCommand.CreateFromTask(async () =>
         {
             var result = await strategy.Get(directory);
@@ -65,14 +66,19 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
 
     private void UpdateFrom(FileSystemChange change)
     {
-        var file = directory.FileSystem.GetFile(change.Path);
         if (change.Change == Change.FileCreated)
         {
+            var file = directory.FileSystem.GetFile(change.Path);
             contentsCache.AddOrUpdate(new FileItemViewModel(file));
+        }
+        if (change.Change == Change.DirectoryCreated)
+        {
+            var dir = directory.FileSystem.GetDirectory(change.Path);
+            contentsCache.AddOrUpdate(new DirectoryItemViewModel(dir, pathNavigator));
         }
         if (change.Change == Change.FileDeleted)
         {
-            contentsCache.RemoveKey(file.Path.Name());
+            contentsCache.RemoveKey(change.Path.Name());
         }
     }
 

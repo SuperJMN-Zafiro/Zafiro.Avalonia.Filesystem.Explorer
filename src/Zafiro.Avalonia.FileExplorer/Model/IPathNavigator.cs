@@ -6,7 +6,7 @@ using Zafiro.FileSystem;
 
 namespace Zafiro.Avalonia.FileExplorer.Model;
 
-public interface IAddress
+public interface IPathNavigator
 {
     void SetAndLoad(ZafiroPath requestedPath);
     ReactiveCommand<Unit, Result<IZafiroDirectory>> LoadRequestedPath { get; set; }
