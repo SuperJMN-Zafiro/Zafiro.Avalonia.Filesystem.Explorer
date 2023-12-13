@@ -7,7 +7,7 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.Explorer.DirectoryContentsView"
              x:DataType="explorer:DirectoryContentsViewModel">
-	<Panel>
+    <Panel>
 		<ListBox Theme="{StaticResource TransparentListBox}" Selection="{Binding Selection}" ItemsSource="{Binding Children}">
             <ListBox.ItemContainerTheme>
                 <ControlTheme TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">

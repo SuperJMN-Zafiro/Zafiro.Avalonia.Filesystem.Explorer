@@ -7,7 +7,12 @@
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.Explorer.ExplorerView"
              x:DataType="model:IFileSystemExplorer">
-	<Grid ColumnDefinitions="2* 1*">
+    <UserControl.KeyBindings>
+        <KeyBinding Command="{Binding ToolBar.Copy}" Gesture="Ctrl+C" />
+        <KeyBinding Command="{Binding ToolBar.Paste}" Gesture="Ctrl+V" />
+        <KeyBinding Command="{Binding ToolBar.Delete}" Gesture="Delete" />
+    </UserControl.KeyBindings>
+    <Grid ColumnDefinitions="2* 1*">
 		<DockPanel Grid.ColumnSpan="2" Grid.Column="0">
 			<ContentControl Content="{Binding PathNavigator}" DockPanel.Dock="Top" />
 			<ContentControl Content="{Binding ToolBar}" DockPanel.Dock="Top" />
