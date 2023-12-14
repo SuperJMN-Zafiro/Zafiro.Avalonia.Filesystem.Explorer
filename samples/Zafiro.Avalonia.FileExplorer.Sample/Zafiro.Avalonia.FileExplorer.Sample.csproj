@@ -35,8 +35,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Zafiro.Avalonia.FileExplorer.Pickers\Zafiro.Avalonia.FileExplorer.Pickers.csproj" />
-    <ProjectReference Include="..\Zafiro.Avalonia.FileExplorer\Zafiro.Avalonia.FileExplorer.csproj" />
     <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro.Avalonia\src\Zafiro.Avalonia.Dialogs\Zafiro.Avalonia.Dialogs.csproj">
       <Temp>Zafiro.Avalonia.Dialogs</Temp>
     </ProjectReference>

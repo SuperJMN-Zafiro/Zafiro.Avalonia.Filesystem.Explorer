@@ -5,10 +5,6 @@ VisualStudioVersion = 17.7.34009.444
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zafiro.Avalonia.FileExplorer", "src\Zafiro.Avalonia.FileExplorer\Zafiro.Avalonia.FileExplorer.csproj", "{3F4F7D40-7B0F-4E95-A652-C34DA2FAED91}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zafiro.Avalonia.FileExplorer.Sample.Desktop", "src\Zafiro.Avalonia.FileExplorer.Desktop\Zafiro.Avalonia.FileExplorer.Sample.Desktop.csproj", "{74B0BF04-D514-49B3-8911-A6CD05AE7CA3}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zafiro.Avalonia.FileExplorer.Sample", "src\Zafiro.Avalonia.FileExplorer.Sample\Zafiro.Avalonia.FileExplorer.Sample.csproj", "{2FE912BF-2463-4061-882B-45161654088A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zafiro.Avalonia.FileExplorer.Pickers", "src\Zafiro.Avalonia.FileExplorer.Pickers\Zafiro.Avalonia.FileExplorer.Pickers.csproj", "{88F4072F-7D2E-4706-8A95-6BD36FFF7A09}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{19444FF7-E9CD-43A0-B099-63618A3AC483}"
@@ -31,7 +27,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zafiro.FileSystem.Local", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zafiro.FileSystem.SeaweedFS", "..\Zafiro.FileSystem\src\Zafiro.FileSystem.SeaweedFS\Zafiro.FileSystem.SeaweedFS.csproj", "{F5AEBD9A-3E56-401D-A755-9FCC68A37AD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zafiro.FileSystem.SeaweedFS.Filer.Client", "..\Zafiro.FileSystem\src\Zafiro.FilesSystem.SeaweedFS.Filer.Client\Zafiro.FileSystem.SeaweedFS.Filer.Client.csproj", "{2250A61B-706D-47E9-9FC5-EF119DD8012B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zafiro.FileSystem.SeaweedFS.Filer.Client", "..\Zafiro.FileSystem\src\Zafiro.FilesSystem.SeaweedFS.Filer.Client\Zafiro.FileSystem.SeaweedFS.Filer.Client.csproj", "{2250A61B-706D-47E9-9FC5-EF119DD8012B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zafiro.FileSystem.Android", "..\Zafiro.FileSystem\src\Zafiro.FileSystem.Android\Zafiro.FileSystem.Android.csproj", "{5D73634B-4B0D-4A22-9AB0-531F504B63EF}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zafiro.Avalonia.FileExplorer.Sample", "samples\Zafiro.Avalonia.FileExplorer.Sample\Zafiro.Avalonia.FileExplorer.Sample.csproj", "{643937DE-8217-4D43-A04A-931D783A9C9F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zafiro.Avalonia.FileExplorer.Sample.Desktop", "samples\Zafiro.Avalonia.FileExplorer.Sample.Desktop\Zafiro.Avalonia.FileExplorer.Sample.Desktop.csproj", "{0AAD4BBC-C31F-46F9-94DB-BE8422790AA9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zafiro.Avalonia.FileExplorer.Sample.Android", "samples\Zafiro.Avalonia.FileExplorer.Sample.Android\Zafiro.Avalonia.FileExplorer.Sample.Android.csproj", "{B763DB13-4BCB-4DA6-BF69-68BC83AB06F6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -43,14 +47,6 @@ Global
 		{3F4F7D40-7B0F-4E95-A652-C34DA2FAED91}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3F4F7D40-7B0F-4E95-A652-C34DA2FAED91}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3F4F7D40-7B0F-4E95-A652-C34DA2FAED91}.Release|Any CPU.Build.0 = Release|Any CPU
-		{74B0BF04-D514-49B3-8911-A6CD05AE7CA3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{74B0BF04-D514-49B3-8911-A6CD05AE7CA3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{74B0BF04-D514-49B3-8911-A6CD05AE7CA3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{74B0BF04-D514-49B3-8911-A6CD05AE7CA3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2FE912BF-2463-4061-882B-45161654088A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2FE912BF-2463-4061-882B-45161654088A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2FE912BF-2463-4061-882B-45161654088A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2FE912BF-2463-4061-882B-45161654088A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{88F4072F-7D2E-4706-8A95-6BD36FFF7A09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{88F4072F-7D2E-4706-8A95-6BD36FFF7A09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{88F4072F-7D2E-4706-8A95-6BD36FFF7A09}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -89,13 +85,29 @@ Global
 		{2250A61B-706D-47E9-9FC5-EF119DD8012B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2250A61B-706D-47E9-9FC5-EF119DD8012B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2250A61B-706D-47E9-9FC5-EF119DD8012B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D73634B-4B0D-4A22-9AB0-531F504B63EF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D73634B-4B0D-4A22-9AB0-531F504B63EF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D73634B-4B0D-4A22-9AB0-531F504B63EF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D73634B-4B0D-4A22-9AB0-531F504B63EF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{643937DE-8217-4D43-A04A-931D783A9C9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{643937DE-8217-4D43-A04A-931D783A9C9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{643937DE-8217-4D43-A04A-931D783A9C9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{643937DE-8217-4D43-A04A-931D783A9C9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AAD4BBC-C31F-46F9-94DB-BE8422790AA9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AAD4BBC-C31F-46F9-94DB-BE8422790AA9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AAD4BBC-C31F-46F9-94DB-BE8422790AA9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AAD4BBC-C31F-46F9-94DB-BE8422790AA9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B763DB13-4BCB-4DA6-BF69-68BC83AB06F6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B763DB13-4BCB-4DA6-BF69-68BC83AB06F6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B763DB13-4BCB-4DA6-BF69-68BC83AB06F6}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{B763DB13-4BCB-4DA6-BF69-68BC83AB06F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B763DB13-4BCB-4DA6-BF69-68BC83AB06F6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B763DB13-4BCB-4DA6-BF69-68BC83AB06F6}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{74B0BF04-D514-49B3-8911-A6CD05AE7CA3} = {19444FF7-E9CD-43A0-B099-63618A3AC483}
-		{2FE912BF-2463-4061-882B-45161654088A} = {19444FF7-E9CD-43A0-B099-63618A3AC483}
 		{BCF4BE78-5410-49D9-A229-20230190DEA6} = {231E54C0-8D84-4308-BCA0-20B9BE80096B}
 		{854E02B4-13C7-48E1-9DAB-2FDCF93F4509} = {231E54C0-8D84-4308-BCA0-20B9BE80096B}
 		{E11F5C89-107A-4D0E-B182-1C1EADDD054C} = {231E54C0-8D84-4308-BCA0-20B9BE80096B}
@@ -104,6 +116,10 @@ Global
 		{2B7779CA-608E-44FF-97AB-3E1E6ABF2D79} = {231E54C0-8D84-4308-BCA0-20B9BE80096B}
 		{F5AEBD9A-3E56-401D-A755-9FCC68A37AD8} = {231E54C0-8D84-4308-BCA0-20B9BE80096B}
 		{2250A61B-706D-47E9-9FC5-EF119DD8012B} = {231E54C0-8D84-4308-BCA0-20B9BE80096B}
+		{5D73634B-4B0D-4A22-9AB0-531F504B63EF} = {231E54C0-8D84-4308-BCA0-20B9BE80096B}
+		{643937DE-8217-4D43-A04A-931D783A9C9F} = {19444FF7-E9CD-43A0-B099-63618A3AC483}
+		{0AAD4BBC-C31F-46F9-94DB-BE8422790AA9} = {19444FF7-E9CD-43A0-B099-63618A3AC483}
+		{B763DB13-4BCB-4DA6-BF69-68BC83AB06F6} = {19444FF7-E9CD-43A0-B099-63618A3AC483}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E443F7AA-DA18-46D4-BB37-D19F45E75749}

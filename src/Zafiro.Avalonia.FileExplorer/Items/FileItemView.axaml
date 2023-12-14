@@ -81,7 +81,7 @@
                 </Button.IsVisible>
             </Button>
             <TextBlock FontSize="12" Text="{Binding Name}" VerticalAlignment="Center" />
-			<Interaction.Behaviors>e 
+			<Interaction.Behaviors>
 				<b:ExecuteCommandOnDoubleTappedBehavior Command="{Binding Open}" />
 				<!--<RoutedEventTriggerBehavior RoutedEvent="{x:Static Gestures.DoubleTappedEvent}" RoutingStrategies="Tunnel">
                     <InvokeCommandAction Command="{Binding Open}" />
