@@ -8,6 +8,9 @@
     <AndroidPackageFormat>apk</AndroidPackageFormat>
     <AndroidEnableProfiledAot>False</AndroidEnableProfiledAot>
   </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Resources\xml\filepaths.xml" />
+  </ItemGroup>
 
   <ItemGroup>
     <AndroidResource Include="Icon.png">

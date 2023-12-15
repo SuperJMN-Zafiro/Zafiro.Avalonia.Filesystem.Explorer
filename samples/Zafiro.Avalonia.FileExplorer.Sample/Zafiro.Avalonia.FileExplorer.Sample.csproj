@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+	  <TargetFrameworks>net7.0;net7.0-android</TargetFrameworks>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
@@ -47,5 +47,10 @@
     <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro\src\Zafiro\Zafiro.csproj">
       <Temp>Zafiro</Temp>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0-android'">
+    <PackageReference Include="Xamarin.AndroidX.Core">
+      <Version>1.12.0.2</Version>
+    </PackageReference>
   </ItemGroup>
 </Project>

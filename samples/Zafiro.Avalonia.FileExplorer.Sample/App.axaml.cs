@@ -1,4 +1,5 @@
-﻿using Avalonia;
+﻿using System;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
 using Avalonia.Markup.Xaml;
@@ -15,10 +16,14 @@ public partial class App : Application
 {
     public override void Initialize()
     {
+        
         AvaloniaXamlLoader.Load(this);
-        Log.Logger = new LoggerConfiguration()
-            .AuditTo.Console()
-            .CreateLogger();
+        if (OperatingSystem.IsWindows())
+        {
+            Log.Logger = new LoggerConfiguration()
+                .AuditTo.Console()
+                .CreateLogger();
+        }
     }
 
     public override void OnFrameworkInitializationCompleted()
