@@ -57,14 +57,7 @@ public class Opener : ISystemOpen
         intent.SetDataAndTypeAndNormalize(uri, GetMimeType(uri));
         intent.SetFlags(ActivityFlags.GrantReadUriPermission | ActivityFlags.GrantWriteUriPermission | ActivityFlags.NewTask);
         
-        try
-        {
-            Application.Context.StartActivity(intent);
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error al abrir el documento: {ex.Message}");
-        }
+        Application.Context.StartActivity(intent);
     }
 
     public static string GetMimeType(Android.Net.Uri uri) {           

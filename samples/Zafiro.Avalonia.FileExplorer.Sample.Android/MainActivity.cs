@@ -5,10 +5,9 @@ using Android.OS;
 using Avalonia;
 using Avalonia.Android;
 using Avalonia.ReactiveUI;
-using Zafiro.Avalonia.FileExplorer.Sample;
-using Zafiro.FileSystem.Android;
+using Zafiro.FileSystem.Local.Android;
 
-namespace AvaloniaSyncer.Android;
+namespace Zafiro.Avalonia.FileExplorer.Sample.Android;
 
 [Activity(
     Label = "AvaloniaApplication2.Android",

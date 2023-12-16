@@ -24,7 +24,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\..\Zafiro.FileSystem\src\Zafiro.FileSystem.Android\Zafiro.FileSystem.Android.csproj" />
     <ProjectReference Include="..\Zafiro.Avalonia.FileExplorer.Sample\Zafiro.Avalonia.FileExplorer.Sample.csproj" />
   </ItemGroup>
 </Project>
