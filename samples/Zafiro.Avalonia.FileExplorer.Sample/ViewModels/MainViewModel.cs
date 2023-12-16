@@ -13,6 +13,7 @@ using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.UI;
 using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.FileSystem;
+using Zafiro.FileSystem.Local;
 using Zafiro.FileSystem.SeaweedFS;
 using Zafiro.FileSystem.SeaweedFS.Filer.Client;
 using Zafiro.Misc;
@@ -23,6 +24,19 @@ public class MainViewModel : ReactiveObject
 {
     public MainViewModel(INotificationService notificationService)
     {
+        var seaweedFileSystem = SeaweedFileSystem();
+
+        var fileSystem = new FileSystemRoot(new ObservableFileSystem(LocalFileSystem.Create()));
+
+        ClipboardViewModel = new ClipboardViewModel();
+        TransferManager = new TransferManagerViewModel { AutoStartOnAdd = true };
+        var opener = new Opener();
+        FileSystemExplorer = new FileSystemExplorer(fileSystem, notificationService, ClipboardViewModel, TransferManager, opener);
+        CurrentAddress = FileSystemExplorer.CurrentDirectory.Values().Select(path => path.ToString()!);
+    }
+
+    private static IZafiroFileSystem SeaweedFileSystem()
+    {
         var seaweedFSClient = new SeaweedFSClient(new HttpClient(new LoggingHttpMessageHandler(new LoggerAdapter(Log.Logger))
         {
             InnerHandler = new HttpClientHandler()
@@ -30,13 +44,8 @@ public class MainViewModel : ReactiveObject
         {
             BaseAddress = new Uri("http://192.168.1.29:8888"),
         });
-        var fileSystem = new FileSystemRoot(new ObservableFileSystem(new SeaweedFileSystem(seaweedFSClient, Maybe<ILogger>.None)));
-
-        ClipboardViewModel = new ClipboardViewModel();
-        TransferManager = new TransferManagerViewModel { AutoStartOnAdd = true };
-        var opener = new Opener();
-        FileSystemExplorer = new FileSystemExplorer(fileSystem, notificationService, ClipboardViewModel, TransferManager, opener);
-        CurrentAddress = FileSystemExplorer.CurrentDirectory.Values().Select(path => path.ToString()!);
+        var seaweedFileSystem = new SeaweedFileSystem(seaweedFSClient, Maybe<ILogger>.None);
+        return seaweedFileSystem;
     }
 
     public IObservable<string> CurrentAddress { get; }
