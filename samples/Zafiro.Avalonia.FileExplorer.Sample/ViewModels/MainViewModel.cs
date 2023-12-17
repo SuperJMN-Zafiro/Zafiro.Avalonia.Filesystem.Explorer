@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using CSharpFunctionalExtensions;
 using Microsoft.Extensions.Http.Logging;
 using ReactiveUI;
+using Renci.SshNet;
 using Serilog;
 using Zafiro.Avalonia.FileExplorer.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Explorer;
@@ -16,6 +17,7 @@ using Zafiro.FileSystem;
 using Zafiro.FileSystem.Local;
 using Zafiro.FileSystem.SeaweedFS;
 using Zafiro.FileSystem.SeaweedFS.Filer.Client;
+using Zafiro.FileSystem.Sftp;
 using Zafiro.Misc;
 
 namespace Zafiro.Avalonia.FileExplorer.Sample.ViewModels;
@@ -24,15 +26,25 @@ public class MainViewModel : ReactiveObject
 {
     public MainViewModel(INotificationService notificationService)
     {
-        var seaweedFileSystem = SeaweedFileSystem();
-
-        var fileSystem = new FileSystemRoot(new ObservableFileSystem(LocalFileSystem.Create()));
+        var fileSystem = new FileSystemRoot(new ObservableFileSystem(Local()));
 
         ClipboardViewModel = new ClipboardViewModel();
         TransferManager = new TransferManagerViewModel { AutoStartOnAdd = true };
         var opener = new Opener();
         FileSystemExplorer = new FileSystemExplorer(fileSystem, notificationService, ClipboardViewModel, TransferManager, opener);
         CurrentAddress = FileSystemExplorer.CurrentDirectory.Values().Select(path => path.ToString()!);
+    }
+
+    private static IZafiroFileSystem Local()
+    {
+        return LocalFileSystem.Create();
+    }
+
+    private static IZafiroFileSystem Sftp()
+    {
+        var sftpClient = new SftpClient("host", "usr", "password");
+        sftpClient.Connect();
+        return new SftpFileSystem(sftpClient);
     }
 
     private static IZafiroFileSystem SeaweedFileSystem()

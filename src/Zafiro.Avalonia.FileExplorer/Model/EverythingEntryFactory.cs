@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.FileSystem;
+using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Model;
 
@@ -12,12 +13,14 @@ public class EverythingEntryFactory : IEntryFactory
 {
     private readonly IPathNavigator pathNavigator;
     private readonly ISystemOpen opener;
+    private readonly INotificationService notificationService;
     private readonly Func<IToolBar> toolbar;
 
-    public EverythingEntryFactory(IPathNavigator pathNavigator, ISystemOpen opener, Func<IToolBar> toolbar)
+    public EverythingEntryFactory(IPathNavigator pathNavigator, ISystemOpen opener, INotificationService notificationService, Func<IToolBar> toolbar)
     {
         this.pathNavigator = pathNavigator;
         this.opener = opener;
+        this.notificationService = notificationService;
         this.toolbar = toolbar;
     }
 
@@ -28,7 +31,7 @@ public class EverythingEntryFactory : IEntryFactory
         
         var files = filesWithProperties
             .Map(files => files.Where(x => !x.Item2.IsHidden)
-                .Select(file => (IEntry) new FileItemViewModel(file.Item1, opener, toolbar())));
+                .Select(file => (IEntry) new FileItemViewModel(file.Item1, opener, toolbar(), notificationService)));
 
         var dirs = dirsWithProperties
             .Map(dirs => dirs.Where(x => !x.Item2.IsHidden)

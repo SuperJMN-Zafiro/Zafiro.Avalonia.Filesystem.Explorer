@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls.Selection;
 using CSharpFunctionalExtensions;
 using DynamicData;
@@ -22,6 +23,7 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
 {
     private readonly IZafiroDirectory directory;
     private readonly IPathNavigator pathNavigator;
+    private readonly INotificationService notificationService;
     private readonly ISystemOpen opener;
     private readonly Func<IToolBar> toolbar;
     private readonly SourceCache<IEntry, string> contentsCache = new(entry => entry.Path.Name());
@@ -31,6 +33,7 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
     {
         this.directory = directory;
         this.pathNavigator = pathNavigator;
+        this.notificationService = notificationService;
         this.opener = opener;
         this.toolbar = toolbar;
         LoadChildren = ReactiveCommand.CreateFromTask(async () =>
@@ -72,7 +75,7 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
         if (change.Change == Change.FileCreated)
         {
             var file = directory.FileSystem.GetFile(change.Path);
-            contentsCache.AddOrUpdate(new FileItemViewModel(file, opener, toolbar()));
+            contentsCache.AddOrUpdate(new FileItemViewModel(file, opener, toolbar(), notificationService));
         }
         if (change.Change == Change.DirectoryCreated)
         {

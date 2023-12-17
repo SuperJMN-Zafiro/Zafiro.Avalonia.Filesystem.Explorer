@@ -6,6 +6,7 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.FileSystem;
+using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Items;
 
@@ -14,11 +15,12 @@ public class FileItemViewModel : ReactiveObject, IFile
     private readonly IToolBar toolbar;
     public IZafiroFile File { get; }
 
-    public FileItemViewModel(IZafiroFile file, ISystemOpen fileOpener, IToolBar toolbar)
+    public FileItemViewModel(IZafiroFile file, ISystemOpen fileOpener, IToolBar toolbar, INotificationService notificationService)
     {
         this.toolbar = toolbar;
         File = file;
         Open = ReactiveCommand.CreateFromTask(() => fileOpener.Open(file.Contents, file.Path.Name()));
+        Open.HandleErrorsWith(notificationService);
         IsBusy = Open.IsExecuting;
     }
 

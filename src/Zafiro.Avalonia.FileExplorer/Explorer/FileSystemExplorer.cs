@@ -28,7 +28,7 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
         TransferManager = transferManager;
 
         var detailsViewModels = PathNavigator.LoadRequestedPath.Successes()
-            .Select(directory => new DirectoryContentsViewModel(directory, new EverythingEntryFactory(PathNavigator, opener, () => ToolBar!), PathNavigator, notificationService, opener, () => ToolBar!))
+            .Select(directory => new DirectoryContentsViewModel(directory, new EverythingEntryFactory(PathNavigator, opener, notificationService, () => ToolBar!), PathNavigator, notificationService, opener, () => ToolBar!))
             .ReplayLastActive();
 
         details = detailsViewModels.ToProperty(this, explorer => explorer.Details)

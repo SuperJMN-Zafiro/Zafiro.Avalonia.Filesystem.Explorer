@@ -35,6 +35,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zafiro.Avalonia.FileExplore
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zafiro.Avalonia.FileExplorer.Sample.Android", "samples\Zafiro.Avalonia.FileExplorer.Sample.Android\Zafiro.Avalonia.FileExplorer.Sample.Android.csproj", "{B763DB13-4BCB-4DA6-BF69-68BC83AB06F6}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Zafiro.FileSystem.Sftp", "..\Zafiro.FileSystem\src\Zafiro.FileSystem.Sftp\Zafiro.FileSystem.Sftp.csproj", "{771CB759-1C3A-49DF-91C5-4F051F7A6F1B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -97,6 +99,10 @@ Global
 		{B763DB13-4BCB-4DA6-BF69-68BC83AB06F6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B763DB13-4BCB-4DA6-BF69-68BC83AB06F6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B763DB13-4BCB-4DA6-BF69-68BC83AB06F6}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{771CB759-1C3A-49DF-91C5-4F051F7A6F1B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{771CB759-1C3A-49DF-91C5-4F051F7A6F1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{771CB759-1C3A-49DF-91C5-4F051F7A6F1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{771CB759-1C3A-49DF-91C5-4F051F7A6F1B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,6 +119,7 @@ Global
 		{643937DE-8217-4D43-A04A-931D783A9C9F} = {19444FF7-E9CD-43A0-B099-63618A3AC483}
 		{0AAD4BBC-C31F-46F9-94DB-BE8422790AA9} = {19444FF7-E9CD-43A0-B099-63618A3AC483}
 		{B763DB13-4BCB-4DA6-BF69-68BC83AB06F6} = {19444FF7-E9CD-43A0-B099-63618A3AC483}
+		{771CB759-1C3A-49DF-91C5-4F051F7A6F1B} = {231E54C0-8D84-4308-BCA0-20B9BE80096B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {E443F7AA-DA18-46D4-BB37-D19F45E75749}
