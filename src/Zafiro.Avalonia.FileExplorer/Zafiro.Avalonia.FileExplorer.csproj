@@ -21,7 +21,7 @@
       <Temp>Zafiro.Avalonia</Temp>
       <Name>Zafiro.Avalonia</Name>
     </ProjectReference>
-    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro.FileSystem\src\Zafiro.FileSystem\Zafiro.FileSystem.csproj" Version="4.0.41">
+    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro.FileSystem\src\Zafiro.FileSystem\Zafiro.FileSystem.csproj" Version="4.0.38">
       <Temp>Zafiro.FileSystem</Temp>
       <Name>Zafiro.FileSystem</Name>
     </ProjectReference>
@@ -34,13 +34,5 @@
     <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro\src\Zafiro\Zafiro.csproj">
       <Temp>Zafiro</Temp>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Update="Explorer\Address\PathNavigatorView.axaml.cs">
-      <DependentUpon>PathNavigatorView.axaml</DependentUpon>
-    </Compile>
-    <Compile Update="Explorer\DirectoryContentsView.axaml.cs">
-      <DependentUpon>DirectoryContentsView.axaml</DependentUpon>
-    </Compile>
   </ItemGroup>
 </Project>
