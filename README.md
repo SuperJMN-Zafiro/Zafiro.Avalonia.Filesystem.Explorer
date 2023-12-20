@@ -9,7 +9,7 @@ To use this library, simply add the NuGet package to your project.
 ## Key Features
 
 - Compose your file explorer using this available components, like Address, of the TransferMananger. Style them or use the default look.
-- If quite dynamic! Make up with the best taste of reactive programming!
+- It's quite dynamic! Make up with the best taste of reactive programming!
 - Fully customizable. The model is quite powerfull and extensible.
 
 ## Acknowledgements
