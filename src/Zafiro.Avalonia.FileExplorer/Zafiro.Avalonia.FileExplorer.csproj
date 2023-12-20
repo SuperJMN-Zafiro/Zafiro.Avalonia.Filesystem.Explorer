@@ -17,22 +17,8 @@
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.3" />
     <PackageReference Include="ReactiveUI.Fody" Version="19.5.1" />
-    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro.Avalonia\src\Zafiro.Avalonia\Zafiro.Avalonia.csproj" Version="3.0.49">
-      <Temp>Zafiro.Avalonia</Temp>
-      <Name>Zafiro.Avalonia</Name>
-    </ProjectReference>
-    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro.FileSystem\src\Zafiro.FileSystem\Zafiro.FileSystem.csproj" Version="4.0.38">
-      <Temp>Zafiro.FileSystem</Temp>
-      <Name>Zafiro.FileSystem</Name>
-    </ProjectReference>
-    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro.UI\src\Zafiro.UI\Zafiro.UI.csproj" Version="4.0.11">
-      <Temp>Zafiro.UI</Temp>
-      <Name>Zafiro.UI</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro\src\Zafiro\Zafiro.csproj">
-      <Temp>Zafiro</Temp>
-    </ProjectReference>
+    <PackageReference Include="Zafiro.Avalonia" Version="3.0.63" />
+    <PackageReference Include="Zafiro.FileSystem" Version="5.0.0" />
+    <PackageReference Include="Zafiro.UI" Version="4.0.18" />
   </ItemGroup>
 </Project>

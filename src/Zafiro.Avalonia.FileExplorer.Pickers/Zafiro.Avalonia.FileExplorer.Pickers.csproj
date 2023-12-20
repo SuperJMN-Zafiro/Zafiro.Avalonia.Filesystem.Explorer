@@ -7,28 +7,10 @@
   </PropertyGroup>
   <Import Project="..\Common.props" />
   <ItemGroup>
-    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro.Avalonia.FileExplorer\src\Zafiro.Avalonia.FileExplorer\Zafiro.Avalonia.FileExplorer.csproj">
-      <Temp>Zafiro.Avalonia.FileExplorer</Temp>
-    </ProjectReference>
-    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro.Avalonia\src\Zafiro.Avalonia.Dialogs\Zafiro.Avalonia.Dialogs.csproj" Version="3.0.49">
-      <Temp>Zafiro.Avalonia.Dialogs</Temp>
-      <Name>Zafiro.Avalonia.Dialogs</Name>
-    </ProjectReference>
-    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro.UI\src\Zafiro.UI\Zafiro.UI.csproj" Version="4.0.11">
-      <Temp>Zafiro.UI</Temp>
-      <Name>Zafiro.UI</Name>
-    </ProjectReference>
-    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro.FileSystem\src\Zafiro.FileSystem\Zafiro.FileSystem.csproj">
-      <Temp>Zafiro.FileSystem</Temp>
-    </ProjectReference>
+	  <PackageReference Include="Zafiro.Avalonia.Dialogs" Version="3.0.63" />
+	  <PackageReference Include="Zafiro.UI" Version="4.0.18" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Zafiro.Avalonia.FileExplorer\Zafiro.Avalonia.FileExplorer.csproj" />
-    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro.Avalonia\src\Zafiro.Avalonia\Zafiro.Avalonia.csproj">
-      <Temp>Zafiro.Avalonia</Temp>
-    </ProjectReference>
-    <ProjectReference Include="E:\Repos\SuperJMN-Zafiro\Zafiro\src\Zafiro\Zafiro.csproj">
-      <Temp>Zafiro</Temp>
-    </ProjectReference>
   </ItemGroup>
 </Project>
