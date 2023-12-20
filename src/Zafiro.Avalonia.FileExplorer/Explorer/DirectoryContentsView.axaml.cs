@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer
 {
-    public partial class DetailsView : UserControl
+    public partial class DirectoryContentsView : UserControl
     {
-        public DetailsView()
+        public DirectoryContentsView()
         {
             InitializeComponent();
         }

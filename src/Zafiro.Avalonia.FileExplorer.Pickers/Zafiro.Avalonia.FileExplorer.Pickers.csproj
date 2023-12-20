@@ -3,11 +3,12 @@
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <IsPackable>False</IsPackable>
   </PropertyGroup>
   <Import Project="..\Common.props" />
   <ItemGroup>
-    <PackageReference Include="Zafiro.Avalonia.Dialogs" Version="3.0.49" />
-    <PackageReference Include="Zafiro.UI" Version="4.0.11" />
+	  <PackageReference Include="Zafiro.Avalonia.Dialogs" Version="3.0.63" />
+	  <PackageReference Include="Zafiro.UI" Version="4.0.18" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Zafiro.Avalonia.FileExplorer\Zafiro.Avalonia.FileExplorer.csproj" />

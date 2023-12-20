@@ -10,6 +10,7 @@ using Zafiro.FileSystem;
 using Zafiro.FileSystem.Actions;
 using Zafiro.Mixins;
 using Zafiro.UI;
+using Observable = System.Reactive.Linq.Observable;
 
 namespace Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 

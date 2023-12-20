@@ -7,6 +7,7 @@ using System.Reactive.Subjects;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
 using DynamicData;
+using DynamicData.Aggregation;
 using DynamicData.Binding;
 using ReactiveUI;
 using Zafiro.Actions;
@@ -23,13 +24,13 @@ namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 
 public class PasteViewModel
 {
-    private readonly BehaviorSubject<IZafiroDirectory> directory;
+    private readonly BehaviorSubject<IZafiroDirectory?> directory;
 
-    public PasteViewModel(IClipboard clipboard, BehaviorSubject<IZafiroDirectory> directory, ITransferManager transferManager)
+    public PasteViewModel(IClipboard clipboard, BehaviorSubject<IZafiroDirectory?> directory, ITransferManager transferManager)
     {
         this.directory = directory;
 
-        var canPaste = clipboard.Contents.ToObservableChangeSet().ToCollection().Select(x => x.Any());
+        var canPaste = clipboard.Contents.ToObservableChangeSet().IsNotEmpty();
 
         Paste = ReactiveCommand.CreateFromTask(() => GenerateCopyActions(clipboard.Contents), canPaste);
         Paste
@@ -74,15 +75,15 @@ public class PasteViewModel
     }
     private Task<Result<CopyDirectoryAction>> CreateDirectoryTransfer(ClipboardDirectoryItemViewModel directoryItem)
     {
-        return directory.Value.FileSystem
-            .GetDirectory(directory.Value.Path.Combine(directoryItem.Directory.Path.Name()))
+        return Result.Success(directory.Value.FileSystem
+            .GetDirectory(directory.Value.Path.Combine(directoryItem.Directory.Path.Name())))
             .Bind(async dst => await CopyDirectoryAction.Create(directoryItem.Directory, dst));
     }
 
     private Task<Result<CopyFileAction>> CreateFileTransfer(ClipboardFileItemViewModel fileItem)
     {
-        return directory.Value.FileSystem
-            .GetFile(directory.Value.Path.Combine(fileItem.Path.Name()))
+        return Result.Success(directory.Value.FileSystem
+            .GetFile(directory.Value.Path.Combine(fileItem.Path.Name())))
             .Bind(async dst => await CopyFileAction.Create(fileItem.File, dst));
     }
 }

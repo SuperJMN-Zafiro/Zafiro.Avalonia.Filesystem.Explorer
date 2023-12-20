@@ -5,8 +5,8 @@
              xmlns:behaviors="clr-namespace:Zafiro.Avalonia.Behaviors;assembly=Zafiro.Avalonia"
              xmlns:address="clr-namespace:Zafiro.Avalonia.FileExplorer.Explorer.Address"
              mc:Ignorable="d" d:DesignWidth="400" 
-             x:Class="Zafiro.Avalonia.FileExplorer.Explorer.Address.AddressView"
-             x:DataType="address:AddressViewModel">
+             x:Class="Zafiro.Avalonia.FileExplorer.Explorer.Address.PathNavigatorView"
+             x:DataType="address:PathNavigatorViewModel">
   		<DockPanel DockPanel.Dock="Top">
 
             <DockPanel.Styles>

@@ -13,12 +13,12 @@ namespace Zafiro.Avalonia.FileExplorer.Pickers
     public class FolderPicker : IFolderPicker
     {
         private readonly IDialogService dialogService;
-        private readonly IFileSystem fileSystem;
+        private readonly IFileSystemRoot fileSystem;
         private readonly INotificationService notificationService;
         private readonly IClipboard clipboard;
         private readonly ITransferManager transferManager;
 
-        public FolderPicker(IDialogService dialogService, IFileSystem fileSystem, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
+        public FolderPicker(IDialogService dialogService, IFileSystemRoot fileSystem, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
         {
             this.dialogService = dialogService;
             this.fileSystem = fileSystem;

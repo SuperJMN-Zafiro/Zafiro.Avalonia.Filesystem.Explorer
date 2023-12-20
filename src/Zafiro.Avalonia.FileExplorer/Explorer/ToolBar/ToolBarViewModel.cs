@@ -6,7 +6,7 @@ using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
 using CSharpFunctionalExtensions;
-using DynamicData;
+using DynamicData.Aggregation;
 using DynamicData.Binding;
 using ReactiveUI;
 using Zafiro.Actions;
@@ -24,11 +24,10 @@ public class ToolBarViewModel : IToolBar
     public ToolBarViewModel(ReadOnlyObservableCollection<IEntry> selection, IObservable<IZafiroDirectory> directories, IClipboard clipboard, ITransferManager transferManager, INotificationService notificationService)
     {
         var canCopy = selection
-            .ToObservableChangeSet(x => x.Path)
-            .ToCollection()
-            .Select(x => x.Any());
+                .ToObservableChangeSet(x => x.Path)
+                .IsNotEmpty();
 
-        var directory = new BehaviorSubject<IZafiroDirectory>(null);
+        var directory = new BehaviorSubject<IZafiroDirectory?>(null);
         directories.Subscribe(directory);
 
         Copy = ReactiveCommand.Create(() =>

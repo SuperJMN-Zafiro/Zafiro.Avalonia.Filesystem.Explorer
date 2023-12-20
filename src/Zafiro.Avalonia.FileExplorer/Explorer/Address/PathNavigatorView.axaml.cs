@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer.Address
 {
-    public partial class AddressView : UserControl
+    public partial class PathNavigatorView : UserControl
     {
-        public AddressView()
+        public PathNavigatorView()
         {
             InitializeComponent();
         }

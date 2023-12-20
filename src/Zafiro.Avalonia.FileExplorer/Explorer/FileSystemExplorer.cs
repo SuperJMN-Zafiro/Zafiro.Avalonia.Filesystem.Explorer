@@ -1,8 +1,7 @@
 ﻿using System;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using CSharpFunctionalExtensions;
-using DynamicData;
-using DynamicData.Binding;
 using ReactiveUI;
 using Zafiro.Avalonia.FileExplorer.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Explorer.Address;
@@ -11,48 +10,65 @@ using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
+using Zafiro.Mixins;
 using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer;
 
-public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer
+public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposable
 {
-    public FileSystemExplorer(IFileSystem fileSystem, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager)
+    private readonly ObservableAsPropertyHelper<DirectoryContentsViewModel> details;
+    private readonly CompositeDisposable disposable = new();
+
+    public FileSystemExplorer(IFileSystemRoot fileSystem, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager, IContentOpener opener)
     {
         Clipboard = clipboard;
-        Address = new AddressViewModel(fileSystem, notificationService);
+        PathNavigator = new PathNavigatorViewModel(fileSystem, notificationService);
         TransferManager = transferManager;
 
-        var detailsViewModels = Address.LoadRequestedPath.Successes()
-            .Select(directory => new DetailsViewModel(directory, new EverythingEntryFactory(Address), notificationService, clipboard, transferManager))
-            .Replay()
-            .RefCount();
+        var detailsViewModels = PathNavigator.LoadRequestedPath.Successes()
+            .Select(directory => new DirectoryContentsViewModel(directory, new EverythingEntryFactory(PathNavigator, opener, notificationService, () => ToolBar!), PathNavigator, notificationService, opener, () => ToolBar!))
+            .ReplayLastActive();
 
-        Details = detailsViewModels;
+        details = detailsViewModels.ToProperty(this, explorer => explorer.Details)
+            .DisposeWith(disposable);
 
-        var source = detailsViewModels.Select(x => x.SelectedItems.ToObservableChangeSet()).Switch();
-        source.Bind(out var collection).Subscribe();
+        SerialDisposable serialDisposable = new();
+        this.WhenAnyValue(x => x.Details)
+            .Do(d => serialDisposable.Disposable = d)
+            .Subscribe()
+            .DisposeWith(disposable);
 
-        ToolBar = new ToolBarViewModel(collection, Address.LoadRequestedPath.Successes(), clipboard, transferManager, notificationService);
+        this.WhenAnyValue(x => x.Details.SelectedItems)
+            .Bind(out var selectedItems)
+            .DisposeWith(disposable);
+
+        ToolBar = new ToolBarViewModel(selectedItems, PathNavigator.LoadRequestedPath.Successes(), clipboard, transferManager, notificationService);
+        
         InitialPath.Or(ZafiroPath.Empty).Execute(GoTo);
     }
 
     public Maybe<ZafiroPath> InitialPath { get; init; }
 
-    public IObservable<Maybe<IZafiroDirectory>> CurrentDirectory => Address.CurrentDirectory;
+    public IObservable<Maybe<IZafiroDirectory>> CurrentDirectory => PathNavigator.CurrentDirectory;
 
     public ITransferManager TransferManager { get; }
 
     public IToolBar ToolBar { get; }
 
-    public IAddress Address { get; }
+    public IPathNavigator PathNavigator { get; }
 
-    public IObservable<DetailsViewModel> Details { get; }
+    public DirectoryContentsViewModel Details => details.Value;
 
     public IClipboard Clipboard { get; }
 
     public void GoTo(ZafiroPath path)
     {
-        Address.SetAndLoad(path);
+        PathNavigator.SetAndLoad(path);
+    }
+
+    public void Dispose()
+    {
+        details.Dispose();
     }
 }

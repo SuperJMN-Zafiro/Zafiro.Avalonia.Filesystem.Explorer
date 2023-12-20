@@ -8,10 +8,10 @@ namespace Zafiro.Avalonia.FileExplorer.Items;
 
 public class DirectoryItemViewModel : ReactiveObject, IEntry
 {
-    public DirectoryItemViewModel(IZafiroDirectory directory, IAddress address)
+    public DirectoryItemViewModel(IZafiroDirectory directory, IPathNavigator pathNavigator)
     {
         Directory = directory;
-        Navigate = ReactiveCommand.Create(() => address.SetAndLoad(directory.Path));
+        Navigate = ReactiveCommand.Create(() => pathNavigator.SetAndLoad(directory.Path));
     }
 
     public IZafiroDirectory Directory { get; }
