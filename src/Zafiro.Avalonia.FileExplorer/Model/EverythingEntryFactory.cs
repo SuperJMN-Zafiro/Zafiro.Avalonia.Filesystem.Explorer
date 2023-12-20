@@ -12,11 +12,11 @@ namespace Zafiro.Avalonia.FileExplorer.Model;
 public class EverythingEntryFactory : IEntryFactory
 {
     private readonly IPathNavigator pathNavigator;
-    private readonly ISystemOpen opener;
+    private readonly IContentOpener opener;
     private readonly INotificationService notificationService;
     private readonly Func<IToolBar> toolbar;
 
-    public EverythingEntryFactory(IPathNavigator pathNavigator, ISystemOpen opener, INotificationService notificationService, Func<IToolBar> toolbar)
+    public EverythingEntryFactory(IPathNavigator pathNavigator, IContentOpener opener, INotificationService notificationService, Func<IToolBar> toolbar)
     {
         this.pathNavigator = pathNavigator;
         this.opener = opener;

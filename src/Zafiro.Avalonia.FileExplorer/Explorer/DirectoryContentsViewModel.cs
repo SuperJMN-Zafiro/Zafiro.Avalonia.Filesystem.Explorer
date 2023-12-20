@@ -24,12 +24,12 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
     private readonly IZafiroDirectory directory;
     private readonly IPathNavigator pathNavigator;
     private readonly INotificationService notificationService;
-    private readonly ISystemOpen opener;
+    private readonly IContentOpener opener;
     private readonly Func<IToolBar> toolbar;
     private readonly SourceCache<IEntry, string> contentsCache = new(entry => entry.Path.Name());
     private readonly CompositeDisposable disposable = new();
 
-    public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, IPathNavigator pathNavigator, INotificationService notificationService, ISystemOpen opener, Func<IToolBar> toolbar)
+    public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, IPathNavigator pathNavigator, INotificationService notificationService, IContentOpener opener, Func<IToolBar> toolbar)
     {
         this.directory = directory;
         this.pathNavigator = pathNavigator;

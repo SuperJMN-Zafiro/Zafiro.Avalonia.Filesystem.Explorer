@@ -30,7 +30,7 @@ public class MainViewModel : ReactiveObject
 
         ClipboardViewModel = new ClipboardViewModel();
         TransferManager = new TransferManagerViewModel { AutoStartOnAdd = true };
-        var opener = new Opener();
+        var opener = new OperatingSystemContentOpener();
         FileSystemExplorer = new FileSystemExplorer(fileSystem, notificationService, ClipboardViewModel, TransferManager, opener);
         CurrentAddress = FileSystemExplorer.CurrentDirectory.Values().Select(path => path.ToString()!);
     }

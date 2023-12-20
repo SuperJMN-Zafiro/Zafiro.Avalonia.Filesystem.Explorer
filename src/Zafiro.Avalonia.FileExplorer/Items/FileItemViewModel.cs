@@ -15,7 +15,7 @@ public class FileItemViewModel : ReactiveObject, IFile
     private readonly IToolBar toolbar;
     public IZafiroFile File { get; }
 
-    public FileItemViewModel(IZafiroFile file, ISystemOpen fileOpener, IToolBar toolbar, INotificationService notificationService)
+    public FileItemViewModel(IZafiroFile file, IContentOpener fileOpener, IToolBar toolbar, INotificationService notificationService)
     {
         this.toolbar = toolbar;
         File = file;
