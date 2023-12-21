@@ -18,11 +18,11 @@
     <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
     <PackageReference Include="Serilog.Sinks.Console" Version="5.0.1" />
-    <PackageReference Include="Zafiro.FileSystem" Version="5.0.0" />
-    <PackageReference Include="Zafiro.FileSystem.Local" Version="5.0.0" />
-    <PackageReference Include="Zafiro.FileSystem.SeaweedFS" Version="5.0.0" />
-    <PackageReference Include="Zafiro.FileSystem.Sftp" Version="5.0.0" />
-    <PackageReference Include="Zafiro.UI" Version="4.0.18" />
+    <PackageReference Include="Zafiro.FileSystem" Version="5.0.*" />
+    <PackageReference Include="Zafiro.FileSystem.Local" Version="5.0.*" />
+    <PackageReference Include="Zafiro.FileSystem.SeaweedFS" Version="5.0.*" />
+    <PackageReference Include="Zafiro.FileSystem.Sftp" Version="5.0.*" />
+    <PackageReference Include="Zafiro.UI" Version="4.0.19" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net7.0-android'">
     <PackageReference Include="Xamarin.AndroidX.Core">
