@@ -7,7 +7,7 @@
   </PropertyGroup>
   <Import Project="..\Common.props" />
   <ItemGroup>
-	  <PackageReference Include="Zafiro.Avalonia.Dialogs" Version="3.0.65" />
+	  <PackageReference Include="Zafiro.Avalonia.Dialogs" Version="3.0.66" />
 	  <PackageReference Include="Zafiro.UI" Version="4.0.19" />
   </ItemGroup>
   <ItemGroup>
