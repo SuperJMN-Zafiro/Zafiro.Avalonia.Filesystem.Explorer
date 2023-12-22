@@ -4,7 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:items1="clr-namespace:Zafiro.Avalonia.FileExplorer.Items"
              xmlns:b="clr-namespace:Zafiro.Avalonia.Behaviors;assembly=Zafiro.Avalonia"
-             mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             mc:Ignorable="d" d:DesignWidth="800"
              x:Class="Zafiro.Avalonia.FileExplorer.Items.FileItemView"
              x:DataType="items1:FileItemViewModel">
 
@@ -66,28 +66,21 @@
 		<DrawingImage Drawing="{StaticResource FileDrawing}" x:Key="FileImage"/>
 	</UserControl.Resources>
 	<Panel>
-        <Panel.ContextMenu>
+		<Panel.ContextMenu>
 			<ContextMenu>
 				<MenuItem Header="Copy" Command="{Binding Copy}" />
-            </ContextMenu>
-        </Panel.ContextMenu>
-        <DockPanel Margin="4" Background="Transparent">
+			</ContextMenu>
+		</Panel.ContextMenu>
+		<DockPanel Margin="4" Background="Transparent">
 			<Image Source="{StaticResource FileImage}" Margin="5" DockPanel.Dock="Left" Height="20" />
-			<Button DockPanel.Dock="Right" Command="{Binding Open}" Content="Open">
-                <Button.IsVisible>
-                    <OnPlatform Default="True">
-						<On Options="Android, iOS" Content="False" />
-                    </OnPlatform>
-                </Button.IsVisible>
-            </Button>
-            <TextBlock FontSize="12" Text="{Binding Name}" VerticalAlignment="Center" />
+			<TextBlock FontSize="12" Text="{Binding Name}" VerticalAlignment="Center" />
 			<Interaction.Behaviors>
 				<b:ExecuteCommandOnDoubleTappedBehavior Command="{Binding Open}" />
-				<!--<RoutedEventTriggerBehavior RoutedEvent="{x:Static Gestures.DoubleTappedEvent}" RoutingStrategies="Tunnel">
-                    <InvokeCommandAction Command="{Binding Open}" />
-                </RoutedEventTriggerBehavior>-->
 			</Interaction.Behaviors>
 		</DockPanel>
-		<ProgressBar IsIndeterminate="True" VerticalAlignment="Bottom" Height="4" HorizontalAlignment="Stretch" IsVisible="{Binding IsBusy^}" />
-    </Panel>
+        <Panel IsVisible="{Binding IsBusy^}">
+            <ProgressBar DockPanel.Dock="Bottom" Opacity="0.5" IsIndeterminate="True" VerticalAlignment="Stretch" HorizontalAlignment="Stretch"></ProgressBar>            
+            <TextBox TextAlignment="Center">Opening...</TextBox>
+        </Panel>
+	</Panel>
 </UserControl>
