@@ -1,8 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CSharpFunctionalExtensions;
+using Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.FileSystem;
 using Zafiro.UI;
@@ -14,14 +14,14 @@ public class EverythingEntryFactory : IEntryFactory
     private readonly IPathNavigator pathNavigator;
     private readonly IContentOpener opener;
     private readonly INotificationService notificationService;
-    private readonly Func<IToolBar> toolbar;
+    private readonly ISelectionCommands selectionCommands;
 
-    public EverythingEntryFactory(IPathNavigator pathNavigator, IContentOpener opener, INotificationService notificationService, Func<IToolBar> toolbar)
+    public EverythingEntryFactory(IPathNavigator pathNavigator, IContentOpener opener, INotificationService notificationService, ISelectionCommands selectionCommands)
     {
         this.pathNavigator = pathNavigator;
         this.opener = opener;
         this.notificationService = notificationService;
-        this.toolbar = toolbar;
+        this.selectionCommands = selectionCommands;
     }
 
     public Task<Result<IEnumerable<IEntry>>> Get(IZafiroDirectory directory)
@@ -31,7 +31,7 @@ public class EverythingEntryFactory : IEntryFactory
         
         var files = filesWithProperties
             .Map(files => files.Where(x => !x.Item2.IsHidden)
-                .Select(file => (IEntry) new FileItemViewModel(file.Item1, opener, toolbar(), notificationService)));
+                .Select(file => (IEntry) new FileItemViewModel(file.Item1, opener, selectionCommands, notificationService)));
 
         var dirs = dirsWithProperties
             .Map(dirs => dirs.Where(x => !x.Item2.IsHidden)

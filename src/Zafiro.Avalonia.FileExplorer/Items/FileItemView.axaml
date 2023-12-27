@@ -69,6 +69,7 @@
 		<Panel.ContextMenu>
 			<ContextMenu>
 				<MenuItem Header="Copy" Command="{Binding Copy}" />
+                <MenuItem Header="Paste" Command="{Binding Paste}" />
 			</ContextMenu>
 		</Panel.ContextMenu>
 		<DockPanel Margin="4" Background="Transparent">

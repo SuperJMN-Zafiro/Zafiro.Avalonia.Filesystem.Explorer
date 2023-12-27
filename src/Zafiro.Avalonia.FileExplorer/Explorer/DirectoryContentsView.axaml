@@ -8,7 +8,12 @@
              x:Class="Zafiro.Avalonia.FileExplorer.Explorer.DirectoryContentsView"
              x:DataType="explorer:DirectoryContentsViewModel">
     <Panel>
-		<ListBox Theme="{StaticResource TransparentListBox}" Selection="{Binding Selection}" ItemsSource="{Binding Children}">
+        <Panel.ContextMenu>
+            <ContextMenu>
+                <MenuItem Header="Paste" Command="{Binding Paste}" />
+            </ContextMenu>
+        </Panel.ContextMenu>
+        <ListBox Theme="{StaticResource TransparentListBox}" Selection="{Binding Selection}" ItemsSource="{Binding Children}">
             <ListBox.ItemContainerTheme>
                 <ControlTheme TargetType="ListBoxItem" BasedOn="{StaticResource {x:Type ListBoxItem}}">
                     <Setter Property="Padding" Value="0" />
