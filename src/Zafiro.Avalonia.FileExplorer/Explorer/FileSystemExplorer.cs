@@ -13,7 +13,7 @@ using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
-using Zafiro.Mixins;
+using Zafiro.Reactive;
 using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer;
