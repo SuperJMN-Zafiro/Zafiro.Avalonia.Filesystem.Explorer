@@ -8,6 +8,7 @@ using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.Mixins;
+using Zafiro.Reactive;
 using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer.Address;
