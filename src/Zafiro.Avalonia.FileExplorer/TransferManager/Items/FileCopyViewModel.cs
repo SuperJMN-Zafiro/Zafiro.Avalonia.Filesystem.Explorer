@@ -8,7 +8,7 @@ using Zafiro.Actions;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.FileSystem.Actions;
-using Zafiro.Reactive;
+using Zafiro.Mixins;
 using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.TransferManager.Items;

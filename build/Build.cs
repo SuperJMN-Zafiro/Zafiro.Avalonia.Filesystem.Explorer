@@ -74,9 +74,21 @@ class Build : NukeBuild
     Target Publish => _ => _
         .DependsOn(Pack)
         .Requires(() => NuGetApiKey)
-        .OnlyWhenStatic(() => Repository.IsOnMasterBranch())
+        .OnlyWhenStatic(() => Repository.IsOnMainOrMasterBranch())
         .Executes(() =>
         {
+            Log.Information("Commit = {Value}", Repository.Commit);
+            Log.Information("Branch = {Value}", Repository.Branch);
+            Log.Information("Tags = {Value}", Repository.Tags);
+
+            Log.Information("main branch = {Value}", Repository.IsOnMainBranch());
+            Log.Information("main/master branch = {Value}", Repository.IsOnMainOrMasterBranch());
+            Log.Information("release/* branch = {Value}", Repository.IsOnReleaseBranch());
+            Log.Information("hotfix/* branch = {Value}", Repository.IsOnHotfixBranch());
+
+            Log.Information("Https URL = {Value}", Repository.HttpsUrl);
+            Log.Information("SSH URL = {Value}", Repository.SshUrl);
+
             DotNetNuGetPush(settings => settings
                     .SetSource("https://api.nuget.org/v3/index.json")
                     .SetApiKey(NuGetApiKey)
