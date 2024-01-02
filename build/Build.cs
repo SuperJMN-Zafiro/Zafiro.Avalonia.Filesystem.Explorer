@@ -74,7 +74,7 @@ class Build : NukeBuild
     Target Publish => _ => _
         .DependsOn(Pack)
         .Requires(() => NuGetApiKey)
-        .Requires(() => Repository.IsOnMainOrMasterBranch())
+        .OnlyWhenStatic(() => Repository.IsOnMainOrMasterBranch())
         .Executes(() =>
         {
             Log.Information("Commit = {Value}", Repository.Commit);
