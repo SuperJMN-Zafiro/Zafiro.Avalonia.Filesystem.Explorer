@@ -22,7 +22,6 @@
     <PackageReference Include="Zafiro.FileSystem.Local" Version="5.0.*" />
     <PackageReference Include="Zafiro.FileSystem.SeaweedFS" Version="5.0.*" />
     <PackageReference Include="Zafiro.FileSystem.Sftp" Version="5.0.*" />
-    <PackageReference Include="Zafiro.UI" Version="4.0.20" />
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFramework)' == 'net7.0-android'">
     <PackageReference Include="Xamarin.AndroidX.Core">
