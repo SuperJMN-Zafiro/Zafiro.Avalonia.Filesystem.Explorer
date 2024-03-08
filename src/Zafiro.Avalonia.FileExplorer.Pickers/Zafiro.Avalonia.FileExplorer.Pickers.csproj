@@ -1,14 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <IsPackable>False</IsPackable>
   </PropertyGroup>
   <Import Project="..\Common.props" />
   <ItemGroup>
-	  <PackageReference Include="Zafiro.Avalonia.Dialogs" Version="3.0.74" />
-	  <PackageReference Include="Zafiro.UI" Version="4.0.24" />
+	  <PackageReference Include="Zafiro.Avalonia.Dialogs" Version="3.0.76" />
+	  <PackageReference Include="Zafiro.UI" Version="4.0.26" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Zafiro.Avalonia.FileExplorer\Zafiro.Avalonia.FileExplorer.csproj" />

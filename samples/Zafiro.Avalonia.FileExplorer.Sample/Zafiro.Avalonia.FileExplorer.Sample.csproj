@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-	  <TargetFrameworks>net7.0</TargetFrameworks>
+	  <TargetFrameworks>net8.0</TargetFrameworks>
     <Nullable>enable</Nullable>
     <LangVersion>latest</LangVersion>
     <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
@@ -23,12 +23,17 @@
     <PackageReference Include="Zafiro.FileSystem.SeaweedFS" Version="5.0.*" />
     <PackageReference Include="Zafiro.FileSystem.Sftp" Version="5.0.*" />
   </ItemGroup>
-  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0-android'">
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0-android'">
     <PackageReference Include="Xamarin.AndroidX.Core">
       <Version>1.12.0.2</Version>
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\src\Zafiro.Avalonia.FileExplorer\Zafiro.Avalonia.FileExplorer.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Zafiro.Avalonia">
+      <HintPath>C:\Users\JMN\.nuget\packages\zafiro.avalonia\3.0.76\lib\net8.0\Zafiro.Avalonia.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>
