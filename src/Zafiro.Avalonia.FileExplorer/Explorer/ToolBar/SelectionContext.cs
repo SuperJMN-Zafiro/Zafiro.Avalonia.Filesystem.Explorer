@@ -9,6 +9,7 @@ using CSharpFunctionalExtensions;
 using DynamicData.Aggregation;
 using DynamicData.Binding;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Zafiro.Actions;
 using Zafiro.Avalonia.FileExplorer.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Items;
@@ -19,9 +20,9 @@ using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 
-public class SelectionCommands : ISelectionCommands
+public class SelectionContext : ISelectionContext
 {
-    public SelectionCommands(ReadOnlyObservableCollection<IEntry> selection, IObservable<IZafiroDirectory> directories, IClipboard clipboard, ITransferManager transferManager, INotificationService notificationService)
+    public SelectionContext(ReadOnlyObservableCollection<IEntry> selection, IObservable<IZafiroDirectory> directories, IClipboard clipboard, ITransferManager transferManager, INotificationService notificationService)
     {
         var canCopy = selection
             .ToObservableChangeSet(x => x.Path)
@@ -66,4 +67,7 @@ public class SelectionCommands : ISelectionCommands
     public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Paste { get; }
 
     public ReactiveCommand<Unit, List<IClipboardItem>> Copy { get; set; }
+
+    [Reactive]
+    public bool IsTouchFriendlySelectionEnabled { get; set; }
 }

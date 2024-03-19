@@ -10,15 +10,24 @@ namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 
 public class ToolBarViewModel : IToolBar
 {
-    public ToolBarViewModel(ISelectionCommands selectionCommands)
+    private readonly ISelectionContext selectionContext;
+
+    public ToolBarViewModel(ISelectionContext selectionContext)
     {
-        Delete = selectionCommands.Delete;
-        Copy = selectionCommands.Copy;
-        Paste = selectionCommands.Paste;
-        IsPasting = selectionCommands.IsPasting;
+        this.selectionContext = selectionContext;
+        Delete = selectionContext.Delete;
+        Copy = selectionContext.Copy;
+        Paste = selectionContext.Paste;
+        IsPasting = selectionContext.IsPasting;
     }
 
     public IObservable<bool> IsPasting { get; }
+
+    public bool IsSelectionEnabled
+    {
+        get => selectionContext.IsTouchFriendlySelectionEnabled;
+        set => selectionContext.IsTouchFriendlySelectionEnabled = value;
+    }
 
     public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Delete { get; set; }
 
