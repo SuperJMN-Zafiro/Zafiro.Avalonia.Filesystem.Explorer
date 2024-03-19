@@ -29,15 +29,15 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
     private readonly INotificationService notificationService;
     private readonly IContentOpener opener;
     private readonly IPathNavigator pathNavigator;
-    private readonly ISelectionCommands selectionCommands;
+    private readonly ISelectionCommands selectionCommandses;
 
-    public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, IPathNavigator pathNavigator, INotificationService notificationService, IContentOpener opener, ISelectionCommands selectionCommands)
+    public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, IPathNavigator pathNavigator, INotificationService notificationService, IContentOpener opener, ISelectionCommands selectionCommandses)
     {
         this.directory = directory;
         this.pathNavigator = pathNavigator;
         this.notificationService = notificationService;
         this.opener = opener;
-        this.selectionCommands = selectionCommands;
+        this.selectionCommandses = selectionCommandses;
         LoadChildren = ReactiveCommand.CreateFromTask(async () =>
         {
             var result = await strategy.Get(directory);
@@ -66,8 +66,11 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
         var tracker = new SelectionTracker<IEntry, ZafiroPath>(Selection, entry => entry.Path);
         tracker.Changes.Bind(out var selectedItems).Subscribe().DisposeWith(disposable);
         SelectedItems = selectedItems;
-        Paste = selectionCommands.Paste;
+        Paste = selectionCommandses.Paste;
+        SelectionCommands = selectionCommandses;
     }
+
+    public ISelectionCommands SelectionCommands { get; }
 
     public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Paste { get; }
 
@@ -97,7 +100,7 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
         if (change.Change == Change.FileCreated)
         {
             var file = directory.FileSystem.GetFile(change.Path);
-            contentsCache.AddOrUpdate(new FileItemViewModel(file, opener, selectionCommands, notificationService));
+            contentsCache.AddOrUpdate(new FileItemViewModel(file, opener, selectionCommandses, notificationService));
         }
 
         if (change.Change == Change.DirectoryCreated)

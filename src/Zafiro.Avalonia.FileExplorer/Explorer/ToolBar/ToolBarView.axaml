@@ -116,5 +116,6 @@
 				</DockPanel>
 			</Button.Content>
 		</Button>
-	</StackPanel>
+		<ToggleButton Content="Selection" Theme="{StaticResource TransparentButton}" IsChecked="{Binding IsSelectionEnabled}" />
+    </StackPanel>
 </UserControl>

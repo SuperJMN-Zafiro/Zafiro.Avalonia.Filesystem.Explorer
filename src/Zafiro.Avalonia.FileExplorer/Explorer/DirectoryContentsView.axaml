@@ -13,6 +13,10 @@
 		<Style Selector="ListBoxItem">
 			<Setter Property="Padding" Value="0" />
 		</Style>
+        <Style Selector="ListBoxItem CheckBox">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="8 0 0 0" />
+        </Style>
 	</UserControl.Styles>
 
 	<UserControl.Resources>
@@ -48,14 +52,9 @@
 			<ListBox Classes="Transparent"
                      Theme="{StaticResource EasyListBox}"
                      Selection="{Binding Selection}"
-                     ItemsSource="{Binding Children}">
-				<c:Selection.EnableCheckBoxes>
-                    <OnPlatform>
-                        <On Options="Default">False</On>
-                        <On Options="Android">True</On>
-                    </OnPlatform>
-				</c:Selection.EnableCheckBoxes>
-			</ListBox>
+                     ItemsSource="{Binding Children}" 
+                     c:Selection.EnableCheckBoxes="{Binding SelectionCommands.IsTouchFriendlySelectionEnabled}">
+            </ListBox>
 		</DockPanel>
 		<avaloniaProgressRing:ProgressRing Foreground="{DynamicResource SystemAccentColor}" Height="100" Width="100" IsActive="{Binding IsLoadingChildren^}" />
 	</Panel>

@@ -5,6 +5,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using CSharpFunctionalExtensions;
 using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
 using Zafiro.Actions;
 using Zafiro.Avalonia.FileExplorer.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Explorer.Address;
@@ -29,6 +30,7 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
         Clipboard = clipboard;
         PathNavigator = new PathNavigatorViewModel(fileSystem, notificationService);
         TransferManager = transferManager;
+        
 
         var detailsViewModels = PathNavigator.LoadRequestedPath.Successes()
             .Select(directory => new DirectoryContentsViewModel(directory, new EverythingEntryFactory(PathNavigator, opener, notificationService, this), PathNavigator, notificationService, opener, this))
@@ -84,4 +86,7 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
     public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Paste => selectionCommands.Paste;
 
     public ReactiveCommand<Unit, List<IClipboardItem>> Copy => selectionCommands.Copy;
+
+    [Reactive]
+    public bool IsTouchFriendlySelectionEnabled { get; set; }
 }
