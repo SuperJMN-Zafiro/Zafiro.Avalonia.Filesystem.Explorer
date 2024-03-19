@@ -14,14 +14,14 @@ public class EverythingEntryFactory : IEntryFactory
     private readonly IPathNavigator pathNavigator;
     private readonly IContentOpener opener;
     private readonly INotificationService notificationService;
-    private readonly ISelectionCommands selectionCommands;
+    private readonly ISelectionContext selectionContext;
 
-    public EverythingEntryFactory(IPathNavigator pathNavigator, IContentOpener opener, INotificationService notificationService, ISelectionCommands selectionCommands)
+    public EverythingEntryFactory(IPathNavigator pathNavigator, IContentOpener opener, INotificationService notificationService, ISelectionContext selectionContext)
     {
         this.pathNavigator = pathNavigator;
         this.opener = opener;
         this.notificationService = notificationService;
-        this.selectionCommands = selectionCommands;
+        this.selectionContext = selectionContext;
     }
 
     public Task<Result<IEnumerable<IEntry>>> Get(IZafiroDirectory directory)
@@ -31,7 +31,7 @@ public class EverythingEntryFactory : IEntryFactory
         
         var files = filesWithProperties
             .Map(files => files.Where(x => !x.Item2.IsHidden)
-                .Select(file => (IEntry) new FileItemViewModel(file.Item1, opener, selectionCommands, notificationService)));
+                .Select(file => (IEntry) new FileItemViewModel(file.Item1, opener, selectionContext, notificationService)));
 
         var dirs = dirsWithProperties
             .Map(dirs => dirs.Where(x => !x.Item2.IsHidden)

@@ -20,9 +20,9 @@ using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 
-public class SelectionCommands : ISelectionCommands
+public class SelectionContext : ISelectionContext
 {
-    public SelectionCommands(ReadOnlyObservableCollection<IEntry> selection, IObservable<IZafiroDirectory> directories, IClipboard clipboard, ITransferManager transferManager, INotificationService notificationService)
+    public SelectionContext(ReadOnlyObservableCollection<IEntry> selection, IObservable<IZafiroDirectory> directories, IClipboard clipboard, ITransferManager transferManager, INotificationService notificationService)
     {
         var canCopy = selection
             .ToObservableChangeSet(x => x.Path)

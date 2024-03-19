@@ -29,9 +29,9 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
     private readonly INotificationService notificationService;
     private readonly IContentOpener opener;
     private readonly IPathNavigator pathNavigator;
-    private readonly ISelectionCommands selectionCommandses;
+    private readonly ISelectionContext selectionCommandses;
 
-    public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, IPathNavigator pathNavigator, INotificationService notificationService, IContentOpener opener, ISelectionCommands selectionCommandses)
+    public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, IPathNavigator pathNavigator, INotificationService notificationService, IContentOpener opener, ISelectionContext selectionCommandses)
     {
         this.directory = directory;
         this.pathNavigator = pathNavigator;
@@ -67,10 +67,10 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
         tracker.Changes.Bind(out var selectedItems).Subscribe().DisposeWith(disposable);
         SelectedItems = selectedItems;
         Paste = selectionCommandses.Paste;
-        SelectionCommands = selectionCommandses;
+        SelectionContext = selectionCommandses;
     }
 
-    public ISelectionCommands SelectionCommands { get; }
+    public ISelectionContext SelectionContext { get; }
 
     public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Paste { get; }
 

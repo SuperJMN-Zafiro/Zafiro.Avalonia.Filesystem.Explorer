@@ -53,7 +53,7 @@
                      Theme="{StaticResource EasyListBox}"
                      Selection="{Binding Selection}"
                      ItemsSource="{Binding Children}" 
-                     c:Selection.EnableCheckBoxes="{Binding SelectionCommands.IsTouchFriendlySelectionEnabled}">
+                     c:Selection.EnableCheckBoxes="{Binding SelectionContext.IsTouchFriendlySelectionEnabled}">
             </ListBox>
 		</DockPanel>
 		<avaloniaProgressRing:ProgressRing Foreground="{DynamicResource SystemAccentColor}" Height="100" Width="100" IsActive="{Binding IsLoadingChildren^}" />
