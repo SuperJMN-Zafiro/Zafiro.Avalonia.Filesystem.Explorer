@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Reactive;
 using CSharpFunctionalExtensions;
 using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
 using Zafiro.Actions;
 using Zafiro.Avalonia.FileExplorer.Model;
 

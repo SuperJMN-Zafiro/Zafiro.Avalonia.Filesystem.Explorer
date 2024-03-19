@@ -69,6 +69,8 @@
 		</DrawingGroup>
 		<DrawingImage Drawing="{StaticResource paste_xaml}" x:Key="di_paste_xaml"/>
 
+		<StreamGeometry x:Key="Checkmark">m 286 1063 c 0 1.1 -0.896 2 -2 2 h -24 c -1.104 0 -2 -0.9 -2 -2 v -24 c 0 -1.1 0.896 -2 2 -2 h 24 c 1.104 0 2 0.9 2 2 v 24 z m -2 -28 h -24 c -2.209 0 -4 1.79 -4 4 v 24 c 0 2.21 1.791 4 4 4 h 24 c 2.209 0 4 -1.79 4 -4 v -24 c 0 -2.21 -1.791 -4 -4 -4 z m -5.973 9.07 c -0.479 -0.28 -1.09 -0.11 -1.366 0.36 l -6.395 11.08 l -3.578 -3.3 c -0.378 -0.4 -1.011 -0.42 -1.414 -0.04 c -0.403 0.37 -0.424 1.01 -0.046 1.41 l 4.572 4.22 c 0.377 0.4 1.01 0.42 1.413 0.04 c 0.122 -0.11 7.18 -12.41 7.18 -12.41 c 0.276 -0.47 0.112 -1.09 -0.366 -1.36 z</StreamGeometry>
+
 	</UserControl.Resources>
 
 	<UserControl.Styles>
@@ -77,6 +79,10 @@
 			<Setter Property="Padding" Value="6" />
 		</Style>
 		<Style Selector="Image">
+			<Setter Property="Height" Value="16" />
+			<Setter Property="VerticalAlignment" Value="Center" />
+		</Style>
+		<Style Selector="PathIcon">
 			<Setter Property="Height" Value="16" />
 			<Setter Property="VerticalAlignment" Value="Center" />
 		</Style>
@@ -116,6 +122,10 @@
 				</DockPanel>
 			</Button.Content>
 		</Button>
-		<ToggleButton Content="Selection" Theme="{StaticResource TransparentButton}" IsChecked="{Binding IsSelectionEnabled}" />
-    </StackPanel>
+		<ToggleButton Theme="{StaticResource TransparentButton}" ToolTip.Tip="Enable Select Mode" IsChecked="{Binding IsSelectionEnabled}">
+			<ToggleButton.Content>
+				<PathIcon Data="{StaticResource Checkmark}" />
+			</ToggleButton.Content>
+		</ToggleButton>
+	</StackPanel>
 </UserControl>
