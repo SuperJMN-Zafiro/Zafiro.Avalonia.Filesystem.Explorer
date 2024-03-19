@@ -8,6 +8,7 @@
 		<FluentTheme />
         <StyleInclude Source="avares://AvaloniaProgressRing/Styles/ProgressRing.xaml"/>
         <StyleInclude Source="avares://Zafiro.Avalonia.FileExplorer/Styles.axaml"/>
+        <StyleInclude Source="avares://Zafiro.Avalonia/Styles.axaml" />
 	</Application.Styles>
 
 	<Application.DataTemplates>
