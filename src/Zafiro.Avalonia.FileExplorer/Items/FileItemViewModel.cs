@@ -4,11 +4,13 @@ namespace Zafiro.Avalonia.FileExplorer.Items;
 
 public class FileItemViewModel : ReactiveObject, IFile
 {
+    private readonly FileProperties properties;
     private readonly ISelectionContext selectionContext;
     public IZafiroFile File { get; }
 
-    public FileItemViewModel(IZafiroFile file, IContentOpener fileOpener, ISelectionContext selectionContext, INotificationService notificationService)
+    public FileItemViewModel(IZafiroFile file, FileProperties properties, IContentOpener fileOpener, ISelectionContext selectionContext, INotificationService notificationService)
     {
+        this.properties = properties;
         this.selectionContext = selectionContext;
         File = file;
         Open = ReactiveCommand.CreateFromTask(() => fileOpener.Open(file.Contents, file.Path.Name()));
@@ -29,7 +31,7 @@ public class FileItemViewModel : ReactiveObject, IFile
 
     public string Name => Path.Name();
 
-    public long Size { get; }
+    public long Size => properties.Length;
 
     [Reactive]
     public bool IsSelected { get; set; }

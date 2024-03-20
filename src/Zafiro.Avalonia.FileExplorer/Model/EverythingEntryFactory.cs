@@ -27,7 +27,7 @@ public class EverythingEntryFactory : IEntryFactory
         
         var files = filesWithProperties
             .Map(files => files.Where(x => !x.Item2.IsHidden)
-                .Select(file => (IEntry) new FileItemViewModel(file.Item1, opener, selectionContext, notificationService)));
+                .Select(file => (IEntry) new FileItemViewModel(file.Item1, file.Item2, opener, selectionContext, notificationService)));
 
         var dirs = dirsWithProperties
             .Map(dirs => dirs.Where(x => !x.Item2.IsHidden)

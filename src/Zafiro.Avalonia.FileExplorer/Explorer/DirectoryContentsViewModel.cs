@@ -1,4 +1,5 @@
 ﻿using System.Reactive.Disposables;
+using System.Threading.Tasks;
 using Avalonia.Controls.Selection;
 using DynamicData;
 using DynamicData.Binding;
@@ -80,15 +81,17 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
     }
 
     private IDisposable UpdateWhenContentsChange(IZafiroDirectory directory) => directory.Changed
-        .Do(UpdateFrom)
+        .Select(UpdateFrom)
         .Subscribe();
 
-    private void UpdateFrom(FileSystemChange change)
+    private async Task UpdateFrom(FileSystemChange change)
     {
         if (change.Change == Change.FileCreated)
         {
             var file = directory.FileSystem.GetFile(change.Path);
-            contentsCache.AddOrUpdate(new FileItemViewModel(file, opener, selectionCommandses, notificationService));
+            await file.Properties
+                .Map(properties => new FileItemViewModel(file, properties, opener, selectionCommandses, notificationService))
+                .Tap(f => contentsCache.AddOrUpdate(f));
         }
 
         if (change.Change == Change.DirectoryCreated)
