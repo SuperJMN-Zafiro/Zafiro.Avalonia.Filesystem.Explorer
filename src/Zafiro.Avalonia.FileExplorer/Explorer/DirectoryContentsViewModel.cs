@@ -60,7 +60,7 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
 
     public ISelectionContext SelectionContext { get; }
 
-    public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Paste { get; }
+    public ReactiveCommand<Unit, IAction<LongProgress>> Paste { get; }
 
     public ReadOnlyObservableCollection<IEntry> SelectedItems { get; }
 

@@ -19,37 +19,33 @@ public class PasteViewModel : ReactiveObject
 
         var canPaste = clipboard.Contents.ToObservableChangeSet().IsNotEmpty();
 
-        Paste = ReactiveCommand.CreateFromTask(() => GenerateCopyActions(clipboard.Contents), canPaste);
-        Paste
-            .Select(x => x.Successes())
-            .Do(actions =>
-            {
-                foreach (var act in actions)
-                {
-                    if (act is CopyFileAction fc)
-                    {
-                        transferManager.Add(new FileCopyViewModel(fc));
-                    }
-                    if (act is CopyDirectoryAction dc)
-                    {
-                        transferManager.Add(new DirectoryCopyViewModel(dc));
-                    }
-                }
-            }).Subscribe();
+        Paste = ReactiveCommand.CreateFromObservable(() =>
+        {
+            return CopyActions(clipboard.Contents)
+                .Successes()
+                .Do(action => transferManager.Add(ToAction(action)));
+        }, canPaste);
+    }
+
+    private static ITransferItem ToAction(IAction<LongProgress> action)
+    {
+        return action switch
+        {
+            CopyFileAction fc => new FileCopyViewModel(fc),
+            CopyDirectoryAction dc => new DirectoryCopyViewModel(dc),
+            _ => throw new ArgumentOutOfRangeException(nameof(action), action, null)
+        };
     }
 
     public IZafiroDirectory CurrentDirectory => currentDirectory.Value;
 
-    public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Paste { get; }
+    public ReactiveCommand<Unit, IAction<LongProgress>> Paste { get; }
 
-    private async Task<IList<Result<IAction<LongProgress>>>> GenerateCopyActions(IEnumerable<IClipboardItem> selectedItems)
+    private IObservable<Result<IAction<LongProgress>>> CopyActions(IEnumerable<IClipboardItem> selectedItems)
     {
-        var results = await selectedItems
+        return selectedItems
             .ToObservable()
-            .SelectMany(GetCopyAction)
-            .ToList();
-
-        return results;
+            .SelectMany(GetCopyAction);
     }
 
     private Task<Result<IAction<LongProgress>>> GetCopyAction(IClipboardItem entry)

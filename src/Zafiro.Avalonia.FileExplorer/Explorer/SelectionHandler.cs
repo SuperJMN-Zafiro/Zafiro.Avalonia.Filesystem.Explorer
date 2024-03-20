@@ -4,12 +4,12 @@ using Zafiro.Avalonia.Misc;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer;
 
-public class MySelectionHandler<T, TKey> : ReactiveObject, ISelectionHandler<T, TKey> where TKey : notnull where T : notnull
+public class SelectionHandler<T, TKey> : ReactiveObject, ISelectionHandler<T, TKey> where TKey : notnull where T : notnull
 {
     private readonly ObservableAsPropertyHelper<ReactiveCommand<Unit, Unit>> selectAll;
     private readonly ObservableAsPropertyHelper<ReactiveCommand<Unit, Unit>> selectNone;
 
-    public MySelectionHandler(IObservable<SelectionModel<T>> selectionModels, Func<T, TKey> keySelector)
+    public SelectionHandler(IObservable<SelectionModel<T>> selectionModels, Func<T, TKey> keySelector)
     {
         var selectionTracker = selectionModels.Select(x => new SelectionTracker<T, TKey>(x, keySelector).Changes).Switch();
         Changes = selectionTracker;

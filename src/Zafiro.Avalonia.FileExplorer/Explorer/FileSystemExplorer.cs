@@ -33,8 +33,8 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
             .Subscribe()
             .DisposeWith(disposable);
 
-        var selectionHandler = new MySelectionHandler<IEntry, string>(this.WhenAnyValue(x => x.Details.Selection), x => x.Path);
-        var selectContext = new MySelectionContext(selectionHandler, PathNavigator.LoadRequestedPath.Successes(), clipboard, transferManager, notificationService);
+        var selectionHandler = new SelectionHandler<IEntry, string>(this.WhenAnyValue(x => x.Details.Selection), x => x.Path);
+        var selectContext = new SelectionContext(selectionHandler, PathNavigator.LoadRequestedPath.Successes(), clipboard, transferManager, notificationService);
 
         selectionContext = selectContext;
         ToolBar = new ToolBarViewModel(this);
@@ -68,9 +68,9 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
 
     public IObservable<bool> IsPasting => selectionContext.IsPasting;
 
-    public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Delete => selectionContext.Delete;
+    public ReactiveCommand<Unit, IList<IAction<LongProgress>>> Delete => selectionContext.Delete;
 
-    public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Paste => selectionContext.Paste;
+    public ReactiveCommand<Unit, IAction<LongProgress>> Paste => selectionContext.Paste;
 
     public ReactiveCommand<Unit, List<IClipboardItem>> Copy => selectionContext.Copy;
 

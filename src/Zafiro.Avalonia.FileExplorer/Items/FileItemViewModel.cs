@@ -35,5 +35,5 @@ public class FileItemViewModel : ReactiveObject, IFile
     public bool IsSelected { get; set; }
 
     public ReactiveCommand<Unit, List<IClipboardItem>> Copy => selectionContext.Copy;
-    public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Paste => selectionContext.Paste;
+    public ReactiveCommand<Unit, IAction<LongProgress>> Paste => selectionContext.Paste;
 }

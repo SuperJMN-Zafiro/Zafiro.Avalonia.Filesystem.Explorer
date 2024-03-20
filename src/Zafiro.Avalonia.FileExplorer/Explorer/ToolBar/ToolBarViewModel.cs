@@ -21,9 +21,9 @@ public class ToolBarViewModel : IToolBar
         set => selectionContext.IsTouchFriendlySelectionEnabled = value;
     }
 
-    public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Delete { get; set; }
+    public ReactiveCommand<Unit, IList<IAction<LongProgress>>> Delete { get; set; }
 
-    public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Paste { get; }
+    public ReactiveCommand<Unit, IAction<LongProgress>> Paste { get; }
 
     public ReactiveCommand<Unit, List<IClipboardItem>> Copy { get; set; }
 }

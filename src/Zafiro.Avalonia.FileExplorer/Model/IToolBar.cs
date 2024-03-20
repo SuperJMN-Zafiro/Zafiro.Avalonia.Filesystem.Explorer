@@ -2,7 +2,7 @@
 
 public interface IToolBar
 {
-    ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Delete { get; set; }
-    ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Paste { get; }
+    ReactiveCommand<Unit, IList<IAction<LongProgress>>> Delete { get; set; }
+    ReactiveCommand<Unit, IAction<LongProgress>> Paste { get; }
     ReactiveCommand<Unit, List<IClipboardItem>> Copy { get; set; }
 }
