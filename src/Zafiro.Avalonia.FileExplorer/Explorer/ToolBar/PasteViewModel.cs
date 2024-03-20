@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Reactive.Disposables;
+using System.Threading.Tasks;
 using DynamicData.Aggregation;
 using DynamicData.Binding;
 using Zafiro.Avalonia.FileExplorer.Clipboard;
@@ -12,6 +13,7 @@ namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 public class PasteViewModel : ReactiveObject
 {
     private readonly ObservableAsPropertyHelper<IZafiroDirectory> currentDirectory;
+    private readonly CompositeDisposable disposables = new();
 
     public PasteViewModel(IClipboard clipboard, IObservable<IZafiroDirectory> directories, ITransferManager transferManager)
     {
@@ -19,12 +21,11 @@ public class PasteViewModel : ReactiveObject
 
         var canPaste = clipboard.Contents.ToObservableChangeSet().IsNotEmpty();
 
-        Paste = ReactiveCommand.CreateFromObservable(() =>
-        {
-            return CopyActions(clipboard.Contents)
-                .Successes()
-                .Do(action => transferManager.Add(ToAction(action)));
-        }, canPaste);
+        Paste = ReactiveCommand.CreateFromObservable(() => CopyActions(clipboard.Contents).Successes().Select(ToAction).ToList(), canPaste);
+        Paste
+            .Do(transferManager.Add)
+            .Subscribe()
+            .DisposeWith(disposables);
     }
 
     private static ITransferItem ToAction(IAction<LongProgress> action)
@@ -39,7 +40,7 @@ public class PasteViewModel : ReactiveObject
 
     public IZafiroDirectory CurrentDirectory => currentDirectory.Value;
 
-    public ReactiveCommand<Unit, IAction<LongProgress>> Paste { get; }
+    public ReactiveCommand<Unit, IList<ITransferItem>> Paste { get; }
 
     private IObservable<Result<IAction<LongProgress>>> CopyActions(IEnumerable<IClipboardItem> selectedItems)
     {
@@ -58,6 +59,7 @@ public class PasteViewModel : ReactiveObject
         };
         return action;
     }
+    
     private Task<Result<CopyDirectoryAction>> CreateDirectoryTransfer(ClipboardDirectoryItemViewModel directoryItem)
     {
         return Result.Success(CurrentDirectory.FileSystem

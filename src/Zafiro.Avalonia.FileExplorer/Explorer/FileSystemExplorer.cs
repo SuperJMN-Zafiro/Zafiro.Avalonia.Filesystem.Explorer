@@ -4,6 +4,7 @@ using Zafiro.Avalonia.FileExplorer.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Explorer.Address;
 using Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
+using Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 using Zafiro.Reactive;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer;
@@ -68,9 +69,9 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
 
     public IObservable<bool> IsPasting => selectionContext.IsPasting;
 
-    public ReactiveCommand<Unit, IList<IAction<LongProgress>>> Delete => selectionContext.Delete;
+    public ReactiveCommand<Unit, IList<ITransferItem>> Delete => selectionContext.Delete;
 
-    public ReactiveCommand<Unit, IAction<LongProgress>> Paste => selectionContext.Paste;
+    public ReactiveCommand<Unit, IList<ITransferItem>> Paste => selectionContext.Paste;
 
     public ReactiveCommand<Unit, List<IClipboardItem>> Copy => selectionContext.Copy;
 

@@ -21,15 +21,13 @@ public class DeleteViewModel
             .Subscribe()
             .DisposeWith(disposables);
 
-        Delete = ReactiveCommand.CreateFromObservable(() =>
-        {
-            return DeleteActions(selectedCollection).Successes()
-                .Do(action => transferManager.Add(ToAction(action)))
-                .ToList();
-        }, canDelete);
+        Delete = ReactiveCommand.CreateFromObservable(() => DeleteActions(selectedCollection).Successes().Select(ToAction).ToList(), canDelete);
+        Delete.Do(transferManager.Add)
+            .Subscribe()
+            .DisposeWith(disposables);
     }
 
-    public ReactiveCommand<Unit, IList<IAction<LongProgress>>> Delete { get; }
+    public ReactiveCommand<Unit, IList<ITransferItem>> Delete { get; }
 
     private static ITransferItem ToAction(IAction<LongProgress> action)
     {

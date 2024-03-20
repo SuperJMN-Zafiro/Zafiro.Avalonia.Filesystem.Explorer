@@ -1,4 +1,5 @@
 ﻿using Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
+using Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 
 namespace Zafiro.Avalonia.FileExplorer.Items;
 
@@ -37,5 +38,5 @@ public class FileItemViewModel : ReactiveObject, IFile
     public bool IsSelected { get; set; }
 
     public ReactiveCommand<Unit, List<IClipboardItem>> Copy => selectionContext.Copy;
-    public ReactiveCommand<Unit, IAction<LongProgress>> Paste => selectionContext.Paste;
+    public ReactiveCommand<Unit, IList<ITransferItem>> Paste => selectionContext.Paste;
 }

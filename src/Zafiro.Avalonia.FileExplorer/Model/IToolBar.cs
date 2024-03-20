@@ -1,8 +1,10 @@
-﻿namespace Zafiro.Avalonia.FileExplorer.Model;
+﻿using Zafiro.Avalonia.FileExplorer.TransferManager.Items;
+
+namespace Zafiro.Avalonia.FileExplorer.Model;
 
 public interface IToolBar
 {
-    ReactiveCommand<Unit, IList<IAction<LongProgress>>> Delete { get; set; }
-    ReactiveCommand<Unit, IAction<LongProgress>> Paste { get; }
+    ReactiveCommand<Unit, IList<ITransferItem>> Delete { get; set; }
+    ReactiveCommand<Unit, IList<ITransferItem>> Paste { get; }
     ReactiveCommand<Unit, List<IClipboardItem>> Copy { get; set; }
 }

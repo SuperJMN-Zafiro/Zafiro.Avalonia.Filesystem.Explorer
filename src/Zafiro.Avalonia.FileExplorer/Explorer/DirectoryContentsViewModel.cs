@@ -5,6 +5,7 @@ using DynamicData;
 using DynamicData.Binding;
 using Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 using Zafiro.Avalonia.FileExplorer.Items;
+using Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 using Zafiro.Avalonia.Misc;
 using Zafiro.Avalonia.Mixins;
 
@@ -18,15 +19,16 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
     private readonly INotificationService notificationService;
     private readonly IContentOpener opener;
     private readonly IPathNavigator pathNavigator;
-    private readonly ISelectionContext selectionCommandses;
+    private readonly ISelectionContext selectionContext;
+    private readonly object lockObject = new();
 
-    public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, IPathNavigator pathNavigator, INotificationService notificationService, IContentOpener opener, ISelectionContext selectionCommandses)
+    public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, IPathNavigator pathNavigator, INotificationService notificationService, IContentOpener opener, ISelectionContext selectionContext)
     {
         this.directory = directory;
         this.pathNavigator = pathNavigator;
         this.notificationService = notificationService;
         this.opener = opener;
-        this.selectionCommandses = selectionCommandses;
+        this.selectionContext = selectionContext;
         LoadChildren = ReactiveCommand.CreateFromTask(async () =>
         {
             var result = await strategy.Get(directory);
@@ -55,13 +57,13 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
         var tracker = new SelectionTracker<IEntry, ZafiroPath>(Selection, entry => entry.Path);
         tracker.Changes.Bind(out var selectedItems).Subscribe().DisposeWith(disposable);
         SelectedItems = selectedItems;
-        Paste = selectionCommandses.Paste;
-        SelectionContext = selectionCommandses;
+        Paste = selectionContext.Paste;
+        SelectionContext = selectionContext;
     }
 
     public ISelectionContext SelectionContext { get; }
 
-    public ReactiveCommand<Unit, IAction<LongProgress>> Paste { get; }
+    public ReactiveCommand<Unit, IList<ITransferItem>> Paste { get; }
 
     public ReadOnlyObservableCollection<IEntry> SelectedItems { get; }
 
@@ -80,8 +82,16 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
         disposable.Dispose();
     }
 
-    private IDisposable UpdateWhenContentsChange(IZafiroDirectory directory) => directory.Changed
-        .Select(UpdateFrom)
+    private IDisposable UpdateWhenContentsChange(IZafiroDirectory directory) => directory
+        .Changed
+        .ObserveOn(RxApp.MainThreadScheduler)
+        .Select(change =>
+        {
+            lock (lockObject)
+            {
+                return UpdateFrom(change);    
+            }
+        })
         .Subscribe();
 
     private async Task UpdateFrom(FileSystemChange change)
@@ -90,7 +100,7 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
         {
             var file = directory.FileSystem.GetFile(change.Path);
             await file.Properties
-                .Map(properties => new FileItemViewModel(file, properties, opener, selectionCommandses, notificationService))
+                .Map(properties => new FileItemViewModel(file, properties, opener, selectionContext, notificationService))
                 .Tap(f => contentsCache.AddOrUpdate(f));
         }
 

@@ -1,4 +1,6 @@
-﻿namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
+﻿using Zafiro.Avalonia.FileExplorer.TransferManager.Items;
+
+namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 
 public class ToolBarViewModel : IToolBar
 {
@@ -21,9 +23,9 @@ public class ToolBarViewModel : IToolBar
         set => selectionContext.IsTouchFriendlySelectionEnabled = value;
     }
 
-    public ReactiveCommand<Unit, IList<IAction<LongProgress>>> Delete { get; set; }
+    public ReactiveCommand<Unit, IList<ITransferItem>> Delete { get; set; }
 
-    public ReactiveCommand<Unit, IAction<LongProgress>> Paste { get; }
+    public ReactiveCommand<Unit, IList<ITransferItem>> Paste { get; }
 
     public ReactiveCommand<Unit, List<IClipboardItem>> Copy { get; set; }
 }
