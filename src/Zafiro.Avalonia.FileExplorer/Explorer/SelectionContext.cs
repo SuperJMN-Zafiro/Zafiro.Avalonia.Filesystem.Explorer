@@ -17,24 +17,26 @@ public class SelectionContext : ISelectionContext
 
     public SelectionContext(ISelectionHandler<IEntry, string> selectionHandler, IObservable<IZafiroDirectory> directories, IClipboard clipboard, ITransferManager transferManager, INotificationService notificationService)
     {
-        selectionHandler.Changes.Bind(out var selectedEntries)
+        selectionHandler.Changes
+            .Bind(out var selectedEntries)
             .Subscribe()
             .DisposeWith(disposables);
-
-        Copy = ReactiveCommand.Create(() => selectedEntries.Select(ToClipboardItem).ToList(), selectionHandler.Changes.IsNotEmpty());
-        Copy
-            .Do(clipboard.Add)
-            .Subscribe()
-            .DisposeWith(disposables);
-
-        var pasteViewModel = new PasteViewModel(clipboard, directories, transferManager);
-        Paste = pasteViewModel.Paste;
-
-        var delete = new DeleteViewModel(selectionHandler.Changes, transferManager);
-        Delete = delete.Delete;
-
+        
+        Copy = CreateCopyCommand(selectionHandler, clipboard, selectedEntries);
+        Paste = CreatePasteCommand(directories, clipboard, transferManager);
+        Delete = CreateDeleteCommand(selectionHandler, transferManager);
         IsPasting = Paste.IsExecuting;
     }
+
+    public IObservable<bool> IsPasting { get; }
+
+    public ReactiveCommand<Unit, IList<ITransferItem>> Delete { get; }
+
+    public ReactiveCommand<Unit, IList<ITransferItem>> Paste { get; }
+
+    public ReactiveCommand<Unit, List<IClipboardItem>> Copy { get; }
+
+    [Reactive] public bool IsTouchFriendlySelectionEnabled { get; set; }
 
     private static IClipboardItem ToClipboardItem(IEntry entry)
     {
@@ -46,14 +48,22 @@ public class SelectionContext : ISelectionContext
         };
     }
 
-    public IObservable<bool> IsPasting { get; }
+    private ReactiveCommand<Unit, List<IClipboardItem>> CreateCopyCommand(ISelectionHandler<IEntry, string> selectionHandler, IClipboard clipboard, ReadOnlyObservableCollection<IEntry> selectedEntries)
+    {
+        var command = ReactiveCommand.Create(() => selectedEntries.Select(ToClipboardItem).ToList(), selectionHandler.Changes.IsNotEmpty());
+        command.Do(clipboard.Add).Subscribe().DisposeWith(disposables);
+        return command;
+    }
 
-    public ReactiveCommand<Unit, IList<ITransferItem>> Delete { get; }
+    private ReactiveCommand<Unit, IList<ITransferItem>> CreatePasteCommand(IObservable<IZafiroDirectory> directories, IClipboard clipboard, ITransferManager transferManager)
+    {
+        var pasteViewModel = new PasteViewModel(clipboard, directories, transferManager);
+        return pasteViewModel.Paste;
+    }
 
-    public ReactiveCommand<Unit, IList<ITransferItem>> Paste { get; }
-
-    public ReactiveCommand<Unit, List<IClipboardItem>> Copy { get; }
-
-    [Reactive]
-    public bool IsTouchFriendlySelectionEnabled { get; set; }
+    private ReactiveCommand<Unit, IList<ITransferItem>> CreateDeleteCommand(ISelectionHandler<IEntry, string> selectionHandler, ITransferManager transferManager)
+    {
+        var deleteViewModel = new DeleteViewModel(selectionHandler.Changes, transferManager);
+        return deleteViewModel.Delete;
+    }
 }
