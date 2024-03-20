@@ -1,16 +1,5 @@
-﻿using System;
-using System.Reactive;
-using System.Reactive.Linq;
-using CSharpFunctionalExtensions;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-using Zafiro.Actions;
-using Zafiro.Avalonia.FileExplorer.Model;
-using Zafiro.CSharpFunctionalExtensions;
-using Zafiro.FileSystem;
-using Zafiro.FileSystem.Actions;
+﻿using Zafiro.FileSystem.Actions;
 using Zafiro.Reactive;
-using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 

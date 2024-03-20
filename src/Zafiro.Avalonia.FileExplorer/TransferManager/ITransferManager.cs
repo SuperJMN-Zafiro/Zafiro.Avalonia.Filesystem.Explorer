@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using Zafiro.Avalonia.FileExplorer.TransferManager.Items;
+﻿using Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 
 namespace Zafiro.Avalonia.FileExplorer.TransferManager;
 

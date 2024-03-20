@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reactive;
-using CSharpFunctionalExtensions;
-using ReactiveUI;
-using Zafiro.Actions;
-using Zafiro.Avalonia.FileExplorer.Model;
-
-namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
+﻿namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 
 public interface ISelectionContext
 {

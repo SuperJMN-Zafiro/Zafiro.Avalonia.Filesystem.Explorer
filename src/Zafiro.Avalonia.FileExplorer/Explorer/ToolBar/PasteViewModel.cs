@@ -1,34 +1,21 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reactive;
-using System.Reactive.Linq;
-using System.Reactive.Subjects;
-using System.Threading.Tasks;
-using CSharpFunctionalExtensions;
-using DynamicData;
+﻿using System.Threading.Tasks;
 using DynamicData.Aggregation;
 using DynamicData.Binding;
-using ReactiveUI;
-using Zafiro.Actions;
 using Zafiro.Avalonia.FileExplorer.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Items;
-using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
 using Zafiro.Avalonia.FileExplorer.TransferManager.Items;
-using Zafiro.CSharpFunctionalExtensions;
-using Zafiro.FileSystem;
 using Zafiro.FileSystem.Actions;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 
-public class PasteViewModel
+public class PasteViewModel : ReactiveObject
 {
-    private readonly BehaviorSubject<IZafiroDirectory?> directory;
+    private readonly ObservableAsPropertyHelper<IZafiroDirectory> currentDirectory;
 
-    public PasteViewModel(IClipboard clipboard, BehaviorSubject<IZafiroDirectory?> directory, ITransferManager transferManager)
+    public PasteViewModel(IClipboard clipboard, IObservable<IZafiroDirectory> directories, ITransferManager transferManager)
     {
-        this.directory = directory;
+        currentDirectory = directories.ToProperty(this, x => x.CurrentDirectory);
 
         var canPaste = clipboard.Contents.ToObservableChangeSet().IsNotEmpty();
 
@@ -50,6 +37,8 @@ public class PasteViewModel
                 }
             }).Subscribe();
     }
+
+    public IZafiroDirectory CurrentDirectory => currentDirectory.Value;
 
     public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Paste { get; }
 
@@ -75,15 +64,15 @@ public class PasteViewModel
     }
     private Task<Result<CopyDirectoryAction>> CreateDirectoryTransfer(ClipboardDirectoryItemViewModel directoryItem)
     {
-        return Result.Success(directory.Value.FileSystem
-            .GetDirectory(directory.Value.Path.Combine(directoryItem.Directory.Path.Name())))
+        return Result.Success(CurrentDirectory.FileSystem
+            .GetDirectory(CurrentDirectory.Path.Combine(directoryItem.Directory.Path.Name())))
             .Bind(async dst => await CopyDirectoryAction.Create(directoryItem.Directory, dst));
     }
 
     private Task<Result<CopyFileAction>> CreateFileTransfer(ClipboardFileItemViewModel fileItem)
     {
-        return Result.Success(directory.Value.FileSystem
-            .GetFile(directory.Value.Path.Combine(fileItem.Path.Name())))
+        return Result.Success(CurrentDirectory.FileSystem
+            .GetFile(CurrentDirectory.Path.Combine(fileItem.Path.Name())))
             .Bind(async dst => await CopyFileAction.Create(fileItem.File, dst));
     }
 }

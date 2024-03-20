@@ -1,20 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reactive;
-using System.Reactive.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using CSharpFunctionalExtensions;
 using DynamicData;
 using DynamicData.Binding;
-using ReactiveUI;
-using Zafiro.Actions;
 using Zafiro.Avalonia.FileExplorer.Items;
-using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
 using Zafiro.Avalonia.FileExplorer.TransferManager.Items;
-using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem.Actions;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;

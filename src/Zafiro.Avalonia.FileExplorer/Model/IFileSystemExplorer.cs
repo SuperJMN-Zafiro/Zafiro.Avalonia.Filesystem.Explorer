@@ -1,9 +1,6 @@
-﻿using System;
-using CSharpFunctionalExtensions;
-using Zafiro.Avalonia.FileExplorer.Clipboard;
+﻿using Zafiro.Avalonia.FileExplorer.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Explorer;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
-using Zafiro.FileSystem;
 
 namespace Zafiro.Avalonia.FileExplorer.Model;
 

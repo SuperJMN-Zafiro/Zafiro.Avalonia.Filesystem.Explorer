@@ -1,6 +1,4 @@
-﻿using System;
-using System.Reactive.Concurrency;
-using System.Reactive.Linq;
+﻿using System.Reactive.Concurrency;
 
 namespace Zafiro.Avalonia.FileExplorer.Model;
 

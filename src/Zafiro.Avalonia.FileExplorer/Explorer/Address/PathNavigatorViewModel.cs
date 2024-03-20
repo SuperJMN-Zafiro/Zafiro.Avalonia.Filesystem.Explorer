@@ -1,14 +1,4 @@
-﻿using System;
-using System.Reactive;
-using System.Reactive.Linq;
-using CSharpFunctionalExtensions;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-using Zafiro.Avalonia.FileExplorer.Model;
-using Zafiro.CSharpFunctionalExtensions;
-using Zafiro.FileSystem;
-using Zafiro.Reactive;
-using Zafiro.UI;
+﻿using Zafiro.Reactive;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer.Address;
 

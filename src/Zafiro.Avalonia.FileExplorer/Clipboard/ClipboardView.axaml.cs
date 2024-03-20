@@ -1,5 +1,3 @@
-using Avalonia.Controls;
-
 namespace Zafiro.Avalonia.FileExplorer.Clipboard
 {
     public partial class ClipboardView : UserControl

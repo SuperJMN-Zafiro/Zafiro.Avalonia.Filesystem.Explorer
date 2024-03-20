@@ -1,10 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Reactive;
-using CSharpFunctionalExtensions;
-using ReactiveUI;
-using Zafiro.Actions;
-
-namespace Zafiro.Avalonia.FileExplorer.Model;
+﻿namespace Zafiro.Avalonia.FileExplorer.Model;
 
 public interface IToolBar
 {

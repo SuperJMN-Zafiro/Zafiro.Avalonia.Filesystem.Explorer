@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reactive.Linq;
+﻿using System.Linq;
 using DynamicData;
 using DynamicData.Binding;
 using Zafiro.Avalonia.FileExplorer.TransferManager.Items;

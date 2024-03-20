@@ -1,6 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using Zafiro.FileSystem;
+﻿using System.ComponentModel;
 
 namespace Zafiro.Avalonia.FileExplorer.Model;
 

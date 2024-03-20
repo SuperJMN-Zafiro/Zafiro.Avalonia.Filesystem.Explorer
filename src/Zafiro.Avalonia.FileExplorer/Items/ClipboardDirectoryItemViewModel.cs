@@ -1,7 +1,4 @@
-﻿using Zafiro.Avalonia.FileExplorer.Model;
-using Zafiro.FileSystem;
-
-namespace Zafiro.Avalonia.FileExplorer.Items;
+﻿namespace Zafiro.Avalonia.FileExplorer.Items;
 
 public class ClipboardDirectoryItemViewModel : IClipboardItem
 {

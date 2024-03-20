@@ -1,24 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reactive;
-using System.Reactive.Linq;
+﻿using System.Linq;
 using System.Reactive.Subjects;
-using CSharpFunctionalExtensions;
 using DynamicData.Aggregation;
 using DynamicData.Binding;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-using Zafiro.Actions;
 using Zafiro.Avalonia.FileExplorer.Clipboard;
+using Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 using Zafiro.Avalonia.FileExplorer.Items;
-using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
-using Zafiro.FileSystem;
-using Zafiro.UI;
 
-namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
+namespace Zafiro.Avalonia.FileExplorer;
 
 public class SelectionContext : ISelectionContext
 {
@@ -37,7 +26,7 @@ public class SelectionContext : ISelectionContext
             {
                 return entry switch
                 {
-                    DirectoryItemViewModel di => (IClipboardItem) new ClipboardDirectoryItemViewModel(di.Directory),
+                    DirectoryItemViewModel di => (IClipboardItem)new ClipboardDirectoryItemViewModel(di.Directory),
                     FileItemViewModel fi => new ClipboardFileItemViewModel(fi.File),
                     _ => throw new ArgumentOutOfRangeException(nameof(entry))
                 };
