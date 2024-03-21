@@ -24,6 +24,7 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
             .ToProperty(this, explorer => explorer.Details);
 
         var selectionHandler = new SelectionHandler<IEntry, string>(this.WhenAnyValue(x => x.Details.Selection), x => x.Path);
+        SelectionHandler = selectionHandler;
         var selectContext = new SelectionContext(selectionHandler, PathNavigator.LoadRequestedPath.Successes(), explorerContext);
 
         selectionContext = selectContext;
@@ -65,4 +66,6 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
     public ReactiveCommand<Unit, List<IClipboardItem>> Copy => selectionContext.Copy;
 
     [Reactive] public bool IsTouchFriendlySelectionEnabled { get; set; }
+
+    public ISelectionHandler SelectionHandler { get; set; }
 }

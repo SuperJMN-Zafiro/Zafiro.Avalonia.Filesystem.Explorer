@@ -7,16 +7,17 @@ using Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
 using Zafiro.Avalonia.FileExplorer.TransferManager.Items;
-using Zafiro.Avalonia.Misc;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer;
 
 public class SelectionContext : ISelectionContext
 {
+    public ISelectionHandler SelectionHandler { get; }
     private readonly CompositeDisposable disposables = new();
 
     public SelectionContext(ISelectionHandler<IEntry, string> selectionHandler, IObservable<IZafiroDirectory> directories, ExplorerContext explorerContext)
     {
+        SelectionHandler = selectionHandler;
         selectionHandler.Changes
             .Bind(out var selectedEntries)
             .Subscribe()

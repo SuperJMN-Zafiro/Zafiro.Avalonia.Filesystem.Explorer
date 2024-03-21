@@ -9,4 +9,5 @@ public interface ISelectionContext
     ReactiveCommand<Unit, IList<ITransferItem>> Paste { get; }
     ReactiveCommand<Unit, List<IClipboardItem>> Copy { get; }
     bool IsTouchFriendlySelectionEnabled { get; set; }
+    ISelectionHandler SelectionHandler { get; }
 }

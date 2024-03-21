@@ -19,43 +19,18 @@
         </Style>
 	</UserControl.Styles>
 
-	<UserControl.Resources>
-		<ControlTheme x:Key="{x:Type c:SelectionControl}" TargetType="c:SelectionControl">
-			<Setter Property="Template">
-				<Setter.Value>
-					<ControlTemplate TargetType="c:SelectionControl">
-						<StackPanel Orientation="Horizontal">
-							<Button Command="{TemplateBinding SelectAll}">Select all</Button>
-							<Button Command="{TemplateBinding Clear}">Unselect</Button>
-						</StackPanel>
-					</ControlTemplate>
-				</Setter.Value>
-			</Setter>
-		</ControlTheme>
-	</UserControl.Resources>
-
 	<Panel>
 		<Panel.ContextMenu>
 			<ContextMenu>
 				<MenuItem Header="Paste" Command="{Binding Paste}" />
 			</ContextMenu>
 		</Panel.ContextMenu>
-		<DockPanel>
-			<c:SelectionControl DockPanel.Dock="Top" Selection="{Binding Selection}">
-				<c:SelectionControl.IsVisible>
-					<OnPlatform>
-						<On Options="Default">False</On>
-                        <On Options="Android">True</On>
-					</OnPlatform>
-				</c:SelectionControl.IsVisible>
-			</c:SelectionControl>
-			<ListBox Classes="Transparent"
-                     Theme="{StaticResource EasyListBox}"
-                     Selection="{Binding Selection}"
-                     ItemsSource="{Binding Children}" 
-                     c:Selection.EnableCheckBoxes="{Binding SelectionContext.IsTouchFriendlySelectionEnabled}">
-            </ListBox>
-		</DockPanel>
+        <ListBox Classes="Transparent"
+                 Theme="{StaticResource EasyListBox}"
+                 Selection="{Binding Selection}"
+                 ItemsSource="{Binding Children}" 
+                 c:Selection.EnableCheckBoxes="{Binding SelectionContext.IsTouchFriendlySelectionEnabled}">
+        </ListBox>
 		<avaloniaProgressRing:ProgressRing Foreground="{DynamicResource SystemAccentColor}" Height="100" Width="100" IsActive="{Binding IsLoadingChildren^}" />
 	</Panel>
 </UserControl>

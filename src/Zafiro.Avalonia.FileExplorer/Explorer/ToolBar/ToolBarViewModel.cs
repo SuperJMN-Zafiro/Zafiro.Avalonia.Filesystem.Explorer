@@ -19,8 +19,8 @@ public class ToolBarViewModel : IToolBar
 
     public bool IsSelectionEnabled
     {
-        get => selectionContext.IsTouchFriendlySelectionEnabled;
-        set => selectionContext.IsTouchFriendlySelectionEnabled = value;
+        get => SelectionContext.IsTouchFriendlySelectionEnabled;
+        set => SelectionContext.IsTouchFriendlySelectionEnabled = value;
     }
 
     public ReactiveCommand<Unit, IList<ITransferItem>> Delete { get; set; }
@@ -28,4 +28,6 @@ public class ToolBarViewModel : IToolBar
     public ReactiveCommand<Unit, IList<ITransferItem>> Paste { get; }
 
     public ReactiveCommand<Unit, List<IClipboardItem>> Copy { get; set; }
+
+    public ISelectionContext SelectionContext => selectionContext;
 }
