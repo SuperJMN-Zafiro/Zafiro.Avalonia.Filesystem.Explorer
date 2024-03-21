@@ -15,16 +15,16 @@ public class SelectionContext : ISelectionContext
 {
     private readonly CompositeDisposable disposables = new();
 
-    public SelectionContext(ISelectionHandler<IEntry, string> selectionHandler, IObservable<IZafiroDirectory> directories, IClipboard clipboard, ITransferManager transferManager, INotificationService notificationService)
+    public SelectionContext(ISelectionHandler<IEntry, string> selectionHandler, IObservable<IZafiroDirectory> directories, ExplorerContext explorerContext)
     {
         selectionHandler.Changes
             .Bind(out var selectedEntries)
             .Subscribe()
             .DisposeWith(disposables);
         
-        Copy = CreateCopyCommand(selectionHandler, clipboard, selectedEntries);
-        Paste = CreatePasteCommand(directories, clipboard, transferManager);
-        Delete = CreateDeleteCommand(selectionHandler, transferManager);
+        Copy = CreateCopyCommand(selectionHandler, explorerContext.Clipboard, selectedEntries);
+        Paste = CreatePasteCommand(directories, explorerContext.Clipboard, explorerContext.TransferManager);
+        Delete = CreateDeleteCommand(selectionHandler, explorerContext.TransferManager);
         IsPasting = Paste.IsExecuting;
     }
 

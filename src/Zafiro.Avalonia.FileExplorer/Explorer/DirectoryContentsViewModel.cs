@@ -8,26 +8,24 @@ using Zafiro.Avalonia.FileExplorer.Items;
 using Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 using Zafiro.Avalonia.Misc;
 using Zafiro.Avalonia.Mixins;
+using Zafiro.Avalonia.Notifications;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer;
 
 public class DirectoryContentsViewModel : ReactiveObject, IDisposable
 {
     private readonly SourceCache<IEntry, string> contentsCache = new(entry => entry.Path.Name());
+    private readonly ExplorerContext explorerContext;
     private readonly IZafiroDirectory directory;
     private readonly CompositeDisposable disposable = new();
-    private readonly INotificationService notificationService;
-    private readonly IContentOpener opener;
     private readonly IPathNavigator pathNavigator;
     private readonly ISelectionContext selectionContext;
-    private readonly object lockObject = new();
 
-    public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, IPathNavigator pathNavigator, INotificationService notificationService, IContentOpener opener, ISelectionContext selectionContext)
+    public DirectoryContentsViewModel(ExplorerContext explorerContext, IZafiroDirectory directory, IEntryFactory strategy, IPathNavigator pathNavigator, ISelectionContext selectionContext)
     {
+        this.explorerContext = explorerContext;
         this.directory = directory;
         this.pathNavigator = pathNavigator;
-        this.notificationService = notificationService;
-        this.opener = opener;
         this.selectionContext = selectionContext;
         LoadChildren = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -39,7 +37,7 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
             .DisposeWith(disposable);
 
         LoadChildren.Successes().Do(entries => contentsCache.Edit(updater => updater.Load(entries))).Subscribe();
-        LoadChildren.HandleErrorsWith(notificationService);
+        LoadChildren.HandleErrorsWith(explorerContext.NotificationService);
 
         var observable = contentsCache
             .Connect();
@@ -81,27 +79,17 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
     {
         disposable.Dispose();
     }
-
-    private IDisposable UpdateWhenContentsChange(IZafiroDirectory directory) => directory
-        .Changed
-        .ObserveOn(RxApp.MainThreadScheduler)
-        .Select(change =>
-        {
-            lock (lockObject)
-            {
-                return UpdateFrom(change);    
-            }
-        })
+    
+    private IDisposable UpdateWhenContentsChange(IZafiroDirectory directory) => directory.Changed
+        .Do(UpdateFrom)
         .Subscribe();
 
-    private async Task UpdateFrom(FileSystemChange change)
+    private void UpdateFrom(FileSystemChange change)
     {
         if (change.Change == Change.FileCreated)
         {
             var file = directory.FileSystem.GetFile(change.Path);
-            await file.Properties
-                .Map(properties => new FileItemViewModel(file, properties, opener, selectionContext, notificationService))
-                .Tap(f => contentsCache.AddOrUpdate(f));
+            contentsCache.AddOrUpdate(new FileItemViewModel(file, explorerContext, selectionContext));
         }
 
         if (change.Change == Change.DirectoryCreated)

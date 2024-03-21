@@ -1,11 +1,9 @@
-﻿using System.Linq;
-using System.Reactive.Disposables;
+﻿using System.Reactive.Disposables;
 using Zafiro.Avalonia.FileExplorer.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Explorer.Address;
 using Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
 using Zafiro.Avalonia.FileExplorer.TransferManager.Items;
-using Zafiro.Reactive;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer;
 
@@ -15,27 +13,18 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
     private readonly CompositeDisposable disposable = new();
     private readonly ISelectionContext selectionContext;
 
-    public FileSystemExplorer(IFileSystemRoot fileSystem, INotificationService notificationService, IClipboard clipboard, ITransferManager transferManager, IContentOpener opener)
+    public FileSystemExplorer(ExplorerContext explorerContext, IFileSystemRoot fileSystem)
     {
-        Clipboard = clipboard;
-        PathNavigator = new PathNavigatorViewModel(fileSystem, notificationService);
-        TransferManager = transferManager;
-        
-        var detailsViewModels = PathNavigator.LoadRequestedPath.Successes()
-            .Select(directory => new DirectoryContentsViewModel(directory, new EverythingEntryFactory(PathNavigator, opener, notificationService, this), PathNavigator, notificationService, opener, this))
-            .ReplayLastActive();
+        Clipboard = explorerContext.Clipboard;
+        PathNavigator = new PathNavigatorViewModel(fileSystem, explorerContext.NotificationService);
+        TransferManager = explorerContext.TransferManager;
 
-        details = detailsViewModels.ToProperty(this, explorer => explorer.Details)
-            .DisposeWith(disposable);
-
-        SerialDisposable serialDisposable = new();
-        this.WhenAnyValue(x => x.Details)
-            .Do(d => serialDisposable.Disposable = d)
-            .Subscribe()
-            .DisposeWith(disposable);
+        details = PathNavigator.LoadRequestedPath.Successes()
+            .Select(directory => new DirectoryContentsViewModel(explorerContext, directory, new EverythingEntryFactory(explorerContext, PathNavigator, this), PathNavigator, this))
+            .ToProperty(this, explorer => explorer.Details);
 
         var selectionHandler = new SelectionHandler<IEntry, string>(this.WhenAnyValue(x => x.Details.Selection), x => x.Path);
-        var selectContext = new SelectionContext(selectionHandler, PathNavigator.LoadRequestedPath.Successes(), clipboard, transferManager, notificationService);
+        var selectContext = new SelectionContext(selectionHandler, PathNavigator.LoadRequestedPath.Successes(), explorerContext);
 
         selectionContext = selectContext;
         ToolBar = new ToolBarViewModel(this);
@@ -75,6 +64,5 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
 
     public ReactiveCommand<Unit, List<IClipboardItem>> Copy => selectionContext.Copy;
 
-    [Reactive]
-    public bool IsTouchFriendlySelectionEnabled { get; set; }
+    [Reactive] public bool IsTouchFriendlySelectionEnabled { get; set; }
 }
