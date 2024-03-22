@@ -22,8 +22,7 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
         details = PathNavigator.LoadRequestedPath.Successes()
             .Select(directory => new DirectoryContentsViewModel(explorerContext, directory, new EverythingEntryFactory(explorerContext, PathNavigator, this), PathNavigator, this))
             .DisposePrevious()
-            .ToProperty(this, explorer => explorer.Details)
-            .DisposeMany(x => x.DisposeWith(disposable));
+            .ToProperty(this, explorer => explorer.Details);
 
         var selectionHandler = new SelectionHandler<IEntry, string>(this.WhenAnyValue(x => x.Details.Selection), x => x.Path);
         SelectionHandler = selectionHandler;
