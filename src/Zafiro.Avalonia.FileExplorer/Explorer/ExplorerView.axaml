@@ -18,6 +18,8 @@
 			<ContentControl Content="{Binding ToolBar}" DockPanel.Dock="Top" />
 			<HeaderedContentControl IsVisible="{Binding !!Clipboard.Contents.Count}" Header="Clipboard"
                                     Content="{Binding Clipboard}" DockPanel.Dock="Bottom" />
+			<TextBlock Text="{Binding SelectionContext.SelectionHandler.TotalItems^}" DockPanel.Dock="Bottom" />
+			<TextBlock Text="{Binding SelectionContext.SelectionHandler.SelectedItems^}" DockPanel.Dock="Bottom" />
 			<ContentControl Content="{Binding Details}" />
 		</DockPanel>
         <tm:LightTransferManagerView DataContext="{Binding TransferManager}" Grid.Column="1" />

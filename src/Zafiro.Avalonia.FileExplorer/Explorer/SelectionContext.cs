@@ -18,7 +18,7 @@ public class SelectionContext : ISelectionContext
     public SelectionContext(ISelectionHandler<IEntry, string> selectionHandler, IObservable<IZafiroDirectory> directories, ExplorerContext explorerContext)
     {
         SelectionHandler = selectionHandler;
-        selectionHandler.Changes
+        selectionHandler.SelectionChanges
             .Bind(out var selectedEntries)
             .Subscribe()
             .DisposeWith(disposables);
@@ -51,7 +51,7 @@ public class SelectionContext : ISelectionContext
 
     private ReactiveCommand<Unit, List<IClipboardItem>> CreateCopyCommand(ISelectionHandler<IEntry, string> selectionHandler, IClipboard clipboard, ReadOnlyObservableCollection<IEntry> selectedEntries)
     {
-        var command = ReactiveCommand.Create(() => selectedEntries.Select(ToClipboardItem).ToList(), selectionHandler.Changes.IsNotEmpty());
+        var command = ReactiveCommand.Create(() => selectedEntries.Select(ToClipboardItem).ToList(), selectionHandler.SelectionChanges.IsNotEmpty());
         command.Do(clipboard.Add).Subscribe().DisposeWith(disposables);
         return command;
     }
@@ -64,7 +64,7 @@ public class SelectionContext : ISelectionContext
 
     private ReactiveCommand<Unit, IList<ITransferItem>> CreateDeleteCommand(ISelectionHandler<IEntry, string> selectionHandler, ITransferManager transferManager)
     {
-        var deleteViewModel = new DeleteViewModel(selectionHandler.Changes, transferManager);
+        var deleteViewModel = new DeleteViewModel(selectionHandler.SelectionChanges, transferManager);
         return deleteViewModel.Delete;
     }
 }

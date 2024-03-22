@@ -11,7 +11,7 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
 {
     private readonly ObservableAsPropertyHelper<DirectoryContentsViewModel> details;
     private readonly CompositeDisposable disposable = new();
-    private readonly ISelectionContext selectionContext;
+    public ISelectionContext SelectionContext { get; }
 
     public FileSystemExplorer(ExplorerContext explorerContext, IFileSystemRoot fileSystem)
     {
@@ -21,13 +21,15 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
 
         details = PathNavigator.LoadRequestedPath.Successes()
             .Select(directory => new DirectoryContentsViewModel(explorerContext, directory, new EverythingEntryFactory(explorerContext, PathNavigator, this), PathNavigator, this))
-            .ToProperty(this, explorer => explorer.Details);
+            .DisposePrevious()
+            .ToProperty(this, explorer => explorer.Details)
+            .DisposeMany(x => x.DisposeWith(disposable));
 
         var selectionHandler = new SelectionHandler<IEntry, string>(this.WhenAnyValue(x => x.Details.Selection), x => x.Path);
         SelectionHandler = selectionHandler;
         var selectContext = new SelectionContext(selectionHandler, PathNavigator.LoadRequestedPath.Successes(), explorerContext);
 
-        selectionContext = selectContext;
+        SelectionContext = selectContext;
         ToolBar = new ToolBarViewModel(this);
 
         InitialPath.Or(ZafiroPath.Empty).Execute(GoTo);
@@ -57,13 +59,13 @@ public class FileSystemExplorer : ReactiveObject, IFileSystemExplorer, IDisposab
         PathNavigator.SetAndLoad(path);
     }
 
-    public IObservable<bool> IsPasting => selectionContext.IsPasting;
+    public IObservable<bool> IsPasting => SelectionContext.IsPasting;
 
-    public ReactiveCommand<Unit, IList<ITransferItem>> Delete => selectionContext.Delete;
+    public ReactiveCommand<Unit, IList<ITransferItem>> Delete => SelectionContext.Delete;
 
-    public ReactiveCommand<Unit, IList<ITransferItem>> Paste => selectionContext.Paste;
+    public ReactiveCommand<Unit, IList<ITransferItem>> Paste => SelectionContext.Paste;
 
-    public ReactiveCommand<Unit, List<IClipboardItem>> Copy => selectionContext.Copy;
+    public ReactiveCommand<Unit, List<IClipboardItem>> Copy => SelectionContext.Copy;
 
     [Reactive] public bool IsTouchFriendlySelectionEnabled { get; set; }
 

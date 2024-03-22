@@ -52,9 +52,6 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
         Children = collection;
         IsLoadingChildren = LoadChildren.IsExecuting.DelayItem(true, TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler);
         LoadChildren.Execute().Subscribe().DisposeWith(disposable);
-        var tracker = new SelectionTracker<IEntry, ZafiroPath>(Selection, entry => entry.Path);
-        tracker.Changes.Bind(out var selectedItems).Subscribe().DisposeWith(disposable);
-        SelectedItems = selectedItems;
         Paste = selectionContext.Paste;
         SelectionContext = selectionContext;
     }
@@ -62,8 +59,6 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
     public ISelectionContext SelectionContext { get; }
 
     public ReactiveCommand<Unit, IList<ITransferItem>> Paste { get; }
-
-    public ReadOnlyObservableCollection<IEntry> SelectedItems { get; }
 
     public IObservable<bool> IsLoadingChildren { get; }
 

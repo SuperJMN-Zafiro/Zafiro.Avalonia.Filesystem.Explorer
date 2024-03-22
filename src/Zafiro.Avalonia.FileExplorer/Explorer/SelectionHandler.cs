@@ -15,20 +15,22 @@ public class SelectionHandler<T, TKey> : ReactiveObject, ISelectionHandler<T, TK
         var trackers = selectionModels.Select(x => new SelectionTracker<T, TKey>(x, keySelector));
 
         TotalCount = trackers.Select(x => x.Count).Switch();
-        Changes = trackers.Select(x => x.Changes).Switch();
+        SelectionChanges = trackers.Select(x => x.Changes).Switch();
         
         selectAll = selectionModels.Select(x => ReactiveCommand.Create(x.SelectAll)).ToProperty(this, handler => handler.SelectAll);
         selectNone = selectionModels.Select(x => ReactiveCommand.Create(x.Clear)).ToProperty(this, handler => handler.SelectNone);
 
-
-        var selectedCount = Changes.Count();
-        selectedCount.Subscribe(i => { });
+        var selectedCount = trackers.Select(tracker => tracker.Changes.Count().StartWith(0)).Switch();
         SelectionKind = selectedCount.WithLatestFrom(TotalCount, (selected, total) => selected == 0 ? UI.SelectionKind.None : total == selected ? UI.SelectionKind.Full : UI.SelectionKind.Partial);
+        SelectedItems = selectedCount;
+        TotalItems = TotalCount;
     }
 
     public IObservable<int> TotalCount { get; }
-    public IObservable<IChangeSet<T, TKey>> Changes { get; }
+    public IObservable<IChangeSet<T, TKey>> SelectionChanges { get; }
     public ReactiveCommand<Unit, Unit> SelectNone => selectNone.Value;
     public ReactiveCommand<Unit, Unit> SelectAll => selectAll.Value;
     public IObservable<SelectionKind> SelectionKind { get; }
+    public IObservable<int> SelectedItems { get; }
+    public IObservable<int> TotalItems { get; }
 }
