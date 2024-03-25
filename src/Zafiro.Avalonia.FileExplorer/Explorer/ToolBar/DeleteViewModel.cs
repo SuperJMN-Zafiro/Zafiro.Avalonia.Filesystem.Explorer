@@ -1,80 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Reactive;
-using System.Reactive.Linq;
+﻿using System.Reactive.Disposables;
 using System.Threading.Tasks;
-using CSharpFunctionalExtensions;
 using DynamicData;
-using DynamicData.Binding;
-using ReactiveUI;
-using Zafiro.Actions;
+using DynamicData.Aggregation;
 using Zafiro.Avalonia.FileExplorer.Items;
-using Zafiro.Avalonia.FileExplorer.Model;
 using Zafiro.Avalonia.FileExplorer.TransferManager;
 using Zafiro.Avalonia.FileExplorer.TransferManager.Items;
-using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem.Actions;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 
 public class DeleteViewModel
 {
-    public DeleteViewModel(ReadOnlyObservableCollection<IEntry> selectedItems, ITransferManager transferManager)
-    {
-        var canDelete = selectedItems.ToObservableChangeSet().ToCollection().Select(x => x.Any());
+    private readonly CompositeDisposable disposables = new();
 
-        Delete = ReactiveCommand.CreateFromTask(() => DeleteItems(selectedItems), canDelete);
-        Delete
-            .Select(x => x.Successes())
-            .Do(actions =>
-            {
-                foreach (var act in actions)
-                {
-                    if (act is DeleteFileAction df)
-                    {
-                        transferManager.Add(new FileDeleteViewModel(df));
-                    }
-                    if (act is DeleteDirectoryAction dd)
-                    {
-                        transferManager.Add(new DirectoryDeleteViewModel(dd));
-                    }
-                }
-            }).Subscribe();
+    public DeleteViewModel(IObservable<IChangeSet<IEntry, string>> selectedItems, ITransferManager transferManager)
+    {
+        var canDelete = selectedItems.IsNotEmpty();
+        selectedItems
+            .Bind(out var selectedCollection)
+            .Subscribe()
+            .DisposeWith(disposables);
+
+        Delete = ReactiveCommand.CreateFromObservable(() => DeleteActions(selectedCollection).Successes().Select(ToAction).ToList(), canDelete);
+        Delete.Do(transferManager.Add)
+            .Subscribe()
+            .DisposeWith(disposables);
     }
 
-    public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Delete { get; }
+    public ReactiveCommand<Unit, IList<ITransferItem>> Delete { get; }
 
-    private async Task<IList<Result<IAction<LongProgress>>>> DeleteItems(IEnumerable<IEntry> selectedItems)
+    private static ITransferItem ToAction(IAction<LongProgress> action)
     {
-        var results = await selectedItems
+        return action switch
+        {
+            DeleteFileAction df => new FileDeleteViewModel(df),
+            DeleteDirectoryAction dd => new DirectoryDeleteViewModel(dd),
+            _ => throw new ArgumentOutOfRangeException(nameof(action), action, null)
+        };
+    }
+
+    private static Task<Result<DeleteDirectoryAction>> DeleteDirectoryAction(DirectoryItemViewModel directoryItem) => Task.FromResult(Result.Success(new DeleteDirectoryAction(directoryItem.Directory)));
+
+    private static Task<Result<DeleteFileAction>> DeleteFileAction(FileItemViewModel fileItem) => Task.FromResult(FileSystem.Actions.DeleteFileAction.Create(fileItem.File));
+
+    private IObservable<Result<IAction<LongProgress>>> DeleteActions(IEnumerable<IEntry> selectedItems)
+    {
+        return selectedItems
             .ToObservable()
             .Select(entry => Observable.FromAsync(() => GetActionFromItem(entry)))
-            .Merge(1)
-            .ToList();
-
-        return results;
+            .Concat();
     }
 
     private Task<Result<IAction<LongProgress>>> GetActionFromItem(IEntry entry)
     {
         var action = entry switch
         {
-            FileItemViewModel file => DeleteFileAction(file).Map(action1 => (IAction<LongProgress>)action1),
-            DirectoryItemViewModel dir => DeleteDirectoryAction(dir).Map(action1 => (IAction<LongProgress>)action1),
+            FileItemViewModel file => DeleteFileAction(file).Map(action1 => (IAction<LongProgress>) action1),
+            DirectoryItemViewModel dir => DeleteDirectoryAction(dir).Map(action1 => (IAction<LongProgress>) action1),
             _ => throw new ArgumentOutOfRangeException(nameof(entry))
         };
         return action;
     }
-    private Task<Result<DeleteDirectoryAction>> DeleteDirectoryAction(DirectoryItemViewModel directoryItem)
-    {
-        return Task.FromResult(Result.Success(new DeleteDirectoryAction(directoryItem.Directory)));
-    }
-
-    private Task<Result<DeleteFileAction>> DeleteFileAction(FileItemViewModel fileItem)
-    {
-        return Task.FromResult(FileSystem.Actions.DeleteFileAction.Create(fileItem.File));
-    }
 }
-

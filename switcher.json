@@ -1,0 +1,104 @@
+{
+  "solution": "Zafiro.Avalonia.FileExplorer.sln",
+  "solutionFolder": null,
+  "mappings": {
+    "Zafiro": "../../SuperJMN-Zafiro/Zafiro/src/Zafiro/Zafiro.csproj",
+    "Zafiro.FileSystem": "../../SuperJMN-Zafiro/Zafiro.FileSystem/src/Zafiro.FileSystem/Zafiro.FileSystem.csproj",
+    "Zafiro.FileSystem.Local": "../../SuperJMN-Zafiro/Zafiro.FileSystem/src/Zafiro.FileSystem.Local/Zafiro.FileSystem.Local.csproj",
+    "Zafiro.FileSystem.SeaweedFS": "../../SuperJMN-Zafiro/Zafiro.FileSystem/src/Zafiro.FileSystem.SeaweedFS/Zafiro.FileSystem.SeaweedFS.csproj",
+    "Zafiro.FileSystem.SeaweedFS.Filer.Client": "../../SuperJMN-Zafiro/Zafiro.FileSystem/src/Zafiro.FilesSystem.SeaweedFS.Filer.Client/Zafiro.FileSystem.SeaweedFS.Filer.Client.csproj",
+    "Zafiro.FileSystem.Sftp": "../../SuperJMN-Zafiro/Zafiro.FileSystem/src/Zafiro.FileSystem.Sftp/Zafiro.FileSystem.Sftp.csproj",
+    "Zafiro.Avalonia": "../../SuperJMN-Zafiro/Zafiro.Avalonia/src/Zafiro.Avalonia/Zafiro.Avalonia.csproj",
+    "Zafiro.Avalonia.Dialogs": "../../SuperJMN-Zafiro/Zafiro.Avalonia/src/Zafiro.Avalonia.Dialogs/Zafiro.Avalonia.Dialogs.csproj",
+    "Zafiro.UI": "../../SuperJMN-Zafiro/Zafiro.UI/src/Zafiro.UI/Zafiro.UI.csproj"
+  },
+  "restore": [
+    {
+      "name": "Zafiro.Avalonia.FileExplorer",
+      "packages": [
+        {
+          "packageName": "Zafiro.FileSystem",
+          "version": "5.0.11"
+        },
+        {
+          "packageName": "Zafiro.Avalonia",
+          "version": "3.0.79"
+        },
+        {
+          "packageName": "Zafiro.UI",
+          "version": "4.0.28"
+        }
+      ]
+    },
+    {
+      "name": "Zafiro.Avalonia.FileExplorer.Pickers",
+      "packages": [
+        {
+          "packageName": "Zafiro.Avalonia.Dialogs",
+          "version": "3.0.79"
+        },
+        {
+          "packageName": "Zafiro.UI",
+          "version": "4.0.28"
+        }
+      ]
+    },
+    {
+      "name": "Zafiro.Avalonia.FileExplorer.Sample",
+      "packages": [
+        {
+          "packageName": "Zafiro.FileSystem",
+          "version": "5.0.*"
+        },
+        {
+          "packageName": "Zafiro.FileSystem.Local",
+          "version": "5.0.*"
+        },
+        {
+          "packageName": "Zafiro.FileSystem.SeaweedFS",
+          "version": "5.0.*"
+        },
+        {
+          "packageName": "Zafiro.FileSystem.Sftp",
+          "version": "5.0.*"
+        }
+      ]
+    },
+    {
+      "name": "Zafiro.FileSystem",
+      "packages": [
+        {
+          "packageName": "Zafiro",
+          "version": "4.0.23"
+        }
+      ]
+    },
+    {
+      "name": "Zafiro.Avalonia",
+      "packages": [
+        {
+          "packageName": "Zafiro.FileSystem",
+          "version": "5.0.10"
+        },
+        {
+          "packageName": "Zafiro.UI",
+          "version": "4.0.27"
+        }
+      ]
+    },
+    {
+      "name": "Zafiro.UI",
+      "packages": [
+        {
+          "packageName": "Zafiro",
+          "version": "4.0.17"
+        },
+        {
+          "packageName": "Zafiro.FileSystem",
+          "version": "[4,)"
+        }
+      ]
+    }
+  ],
+  "removeProjects": true
+}

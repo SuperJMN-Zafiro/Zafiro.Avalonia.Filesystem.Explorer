@@ -1,43 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Reactive;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
+﻿using System.Reactive.Disposables;
+using System.Threading.Tasks;
 using Avalonia.Controls.Selection;
-using CSharpFunctionalExtensions;
 using DynamicData;
 using DynamicData.Binding;
-using ReactiveUI;
-using Zafiro.Actions;
 using Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 using Zafiro.Avalonia.FileExplorer.Items;
-using Zafiro.Avalonia.FileExplorer.Model;
+using Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 using Zafiro.Avalonia.Misc;
 using Zafiro.Avalonia.Mixins;
-using Zafiro.CSharpFunctionalExtensions;
-using Zafiro.FileSystem;
-using Zafiro.UI;
+using Zafiro.Avalonia.Notifications;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer;
 
 public class DirectoryContentsViewModel : ReactiveObject, IDisposable
 {
     private readonly SourceCache<IEntry, string> contentsCache = new(entry => entry.Path.Name());
+    private readonly ExplorerContext explorerContext;
     private readonly IZafiroDirectory directory;
     private readonly CompositeDisposable disposable = new();
-    private readonly INotificationService notificationService;
-    private readonly IContentOpener opener;
     private readonly IPathNavigator pathNavigator;
-    private readonly ISelectionContext selectionCommandses;
+    private readonly ISelectionContext selectionContext;
 
-    public DirectoryContentsViewModel(IZafiroDirectory directory, IEntryFactory strategy, IPathNavigator pathNavigator, INotificationService notificationService, IContentOpener opener, ISelectionContext selectionCommandses)
+    public DirectoryContentsViewModel(ExplorerContext explorerContext, IZafiroDirectory directory, IEntryFactory strategy, IPathNavigator pathNavigator, ISelectionContext selectionContext)
     {
+        this.explorerContext = explorerContext;
         this.directory = directory;
         this.pathNavigator = pathNavigator;
-        this.notificationService = notificationService;
-        this.opener = opener;
-        this.selectionCommandses = selectionCommandses;
+        this.selectionContext = selectionContext;
         LoadChildren = ReactiveCommand.CreateFromTask(async () =>
         {
             var result = await strategy.Get(directory);
@@ -48,7 +37,7 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
             .DisposeWith(disposable);
 
         LoadChildren.Successes().Do(entries => contentsCache.Edit(updater => updater.Load(entries))).Subscribe();
-        LoadChildren.HandleErrorsWith(notificationService);
+        LoadChildren.HandleErrorsWith(explorerContext.NotificationService);
 
         var observable = contentsCache
             .Connect();
@@ -63,18 +52,13 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
         Children = collection;
         IsLoadingChildren = LoadChildren.IsExecuting.DelayItem(true, TimeSpan.FromSeconds(0.5), RxApp.MainThreadScheduler);
         LoadChildren.Execute().Subscribe().DisposeWith(disposable);
-        var tracker = new SelectionTracker<IEntry, ZafiroPath>(Selection, entry => entry.Path);
-        tracker.Changes.Bind(out var selectedItems).Subscribe().DisposeWith(disposable);
-        SelectedItems = selectedItems;
-        Paste = selectionCommandses.Paste;
-        SelectionContext = selectionCommandses;
+        Paste = selectionContext.Paste;
+        SelectionContext = selectionContext;
     }
 
     public ISelectionContext SelectionContext { get; }
 
-    public ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Paste { get; }
-
-    public ReadOnlyObservableCollection<IEntry> SelectedItems { get; }
+    public ReactiveCommand<Unit, IList<ITransferItem>> Paste { get; }
 
     public IObservable<bool> IsLoadingChildren { get; }
 
@@ -90,7 +74,7 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
     {
         disposable.Dispose();
     }
-
+    
     private IDisposable UpdateWhenContentsChange(IZafiroDirectory directory) => directory.Changed
         .Do(UpdateFrom)
         .Subscribe();
@@ -100,7 +84,7 @@ public class DirectoryContentsViewModel : ReactiveObject, IDisposable
         if (change.Change == Change.FileCreated)
         {
             var file = directory.FileSystem.GetFile(change.Path);
-            contentsCache.AddOrUpdate(new FileItemViewModel(file, opener, selectionCommandses, notificationService));
+            contentsCache.AddOrUpdate(new FileItemViewModel(file, explorerContext, selectionContext));
         }
 
         if (change.Change == Change.DirectoryCreated)

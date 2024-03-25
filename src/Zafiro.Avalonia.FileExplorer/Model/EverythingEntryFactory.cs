@@ -1,26 +1,21 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
-using CSharpFunctionalExtensions;
+using Zafiro.Avalonia.FileExplorer.Explorer;
 using Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 using Zafiro.Avalonia.FileExplorer.Items;
-using Zafiro.FileSystem;
-using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.Model;
 
 public class EverythingEntryFactory : IEntryFactory
 {
+    private readonly ExplorerContext explorerContext;
     private readonly IPathNavigator pathNavigator;
-    private readonly IContentOpener opener;
-    private readonly INotificationService notificationService;
     private readonly ISelectionContext selectionContext;
 
-    public EverythingEntryFactory(IPathNavigator pathNavigator, IContentOpener opener, INotificationService notificationService, ISelectionContext selectionContext)
+    public EverythingEntryFactory(ExplorerContext explorerContext, IPathNavigator pathNavigator, ISelectionContext selectionContext)
     {
+        this.explorerContext = explorerContext;
         this.pathNavigator = pathNavigator;
-        this.opener = opener;
-        this.notificationService = notificationService;
         this.selectionContext = selectionContext;
     }
 
@@ -31,7 +26,7 @@ public class EverythingEntryFactory : IEntryFactory
         
         var files = filesWithProperties
             .Map(files => files.Where(x => !x.Item2.IsHidden)
-                .Select(file => (IEntry) new FileItemViewModel(file.Item1, opener, selectionContext, notificationService)));
+                .Select(file => (IEntry) new FileItemViewModel(file.Item1, explorerContext, selectionContext)));
 
         var dirs = dirsWithProperties
             .Map(dirs => dirs.Where(x => !x.Item2.IsHidden)

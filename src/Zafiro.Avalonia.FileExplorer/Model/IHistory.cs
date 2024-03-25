@@ -1,8 +1,4 @@
-﻿using System.Reactive;
-using CSharpFunctionalExtensions;
-using ReactiveUI;
-
-namespace Zafiro.Avalonia.FileExplorer.Model;
+﻿namespace Zafiro.Avalonia.FileExplorer.Model;
 
 public interface IHistory<T>
 {

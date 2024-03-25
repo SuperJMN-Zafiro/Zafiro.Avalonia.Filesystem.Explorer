@@ -1,10 +1,4 @@
-﻿using System;
-using System.Reactive;
-using CSharpFunctionalExtensions;
-using ReactiveUI;
-using Zafiro.FileSystem;
-
-namespace Zafiro.Avalonia.FileExplorer.Model;
+﻿namespace Zafiro.Avalonia.FileExplorer.Model;
 
 public interface IPathNavigator
 {

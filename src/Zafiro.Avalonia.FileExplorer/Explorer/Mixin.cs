@@ -1,36 +1,25 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.Linq.Expressions;
-using System.Reactive.Disposables;
-using System.Reactive.Linq;
-using DynamicData;
-using DynamicData.Binding;
-using ReactiveUI;
+﻿using System.Reactive.Disposables;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer;
 
-public static class Mixin
+public static class ReactiveExtensions
 {
-    public static IDisposable UpdateCollectionWhenSomeOtherCollectionObservableChanges<T, TItem>(
-        this T parent, 
-        Expression<Func<T, ReadOnlyObservableCollection<TItem>>> selector, out ReadOnlyObservableCollection<TItem> collection) where TItem : notnull where T : ReactiveObject
+    public static IObservable<T> DisposePrevious<T>(this IObservable<T> source) where T : IDisposable
     {
-        CompositeDisposable disposable = new();
-        var source = new SourceList<TItem>()
-            .DisposeWith(disposable);
+        return Observable.Create<T>(observer =>
+        {
+            var serialDisposable = new SerialDisposable();
+            var subscription = source.Subscribe(
+                onNext: value =>
+                {
+                    serialDisposable.Disposable = value;
+                    observer.OnNext(value);
+                },
+                onError: observer.OnError,
+                onCompleted: observer.OnCompleted
+            );
 
-        parent.WhenAnyValue(selector)
-            .Do(r => source.EditDiff(r))
-            .Select(r => r.ToObservableChangeSet())
-            .Switch()
-            .PopulateInto(source)
-            .DisposeWith(disposable);
-
-        source.Connect()
-            .Bind(out collection)
-            .Subscribe()
-            .DisposeWith(disposable);
-
-        return disposable;
+            return new CompositeDisposable(subscription, serialDisposable);
+        });
     }
 }

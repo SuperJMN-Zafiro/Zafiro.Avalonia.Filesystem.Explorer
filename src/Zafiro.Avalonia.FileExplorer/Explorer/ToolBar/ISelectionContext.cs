@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reactive;
-using CSharpFunctionalExtensions;
-using ReactiveUI;
-using Zafiro.Actions;
-using Zafiro.Avalonia.FileExplorer.Model;
+﻿using Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer.ToolBar;
 
 public interface ISelectionContext
 {
     IObservable<bool> IsPasting { get; }
-    ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Delete { get;  }
-    ReactiveCommand<Unit, IList<Result<IAction<LongProgress>>>> Paste { get; }
+    ReactiveCommand<Unit, IList<ITransferItem>> Delete { get;  }
+    ReactiveCommand<Unit, IList<ITransferItem>> Paste { get; }
     ReactiveCommand<Unit, List<IClipboardItem>> Copy { get; }
     bool IsTouchFriendlySelectionEnabled { get; set; }
+    ISelectionHandler SelectionHandler { get; }
 }

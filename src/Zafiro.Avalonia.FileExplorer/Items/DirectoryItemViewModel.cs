@@ -1,10 +1,4 @@
-﻿using System.Reactive;
-using ReactiveUI;
-using ReactiveUI.Fody.Helpers;
-using Zafiro.Avalonia.FileExplorer.Model;
-using Zafiro.FileSystem;
-
-namespace Zafiro.Avalonia.FileExplorer.Items;
+﻿namespace Zafiro.Avalonia.FileExplorer.Items;
 
 public class DirectoryItemViewModel : ReactiveObject, IEntry
 {

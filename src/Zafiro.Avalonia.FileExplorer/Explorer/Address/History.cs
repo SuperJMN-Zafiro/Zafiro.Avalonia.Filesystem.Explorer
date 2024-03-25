@@ -1,10 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using System.Reactive;
-using CSharpFunctionalExtensions;
-using ReactiveUI;
-using Zafiro.Avalonia.FileExplorer.Model;
-using Zafiro.FileSystem;
+﻿using System.Linq;
 
 namespace Zafiro.Avalonia.FileExplorer.Explorer.Address;
 

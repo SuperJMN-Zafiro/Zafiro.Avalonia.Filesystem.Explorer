@@ -1,10 +1,4 @@
-﻿using System;
-using System.ComponentModel;
-using System.Reactive;
-using CSharpFunctionalExtensions;
-using Zafiro.Actions;
-using Zafiro.FileSystem;
-using Zafiro.UI;
+﻿using System.ComponentModel;
 
 namespace Zafiro.Avalonia.FileExplorer.TransferManager.Items;
 

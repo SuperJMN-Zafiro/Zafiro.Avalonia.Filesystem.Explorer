@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using CSharpFunctionalExtensions;
-using Zafiro.FileSystem;
+﻿using System.Threading.Tasks;
 
 namespace Zafiro.Avalonia.FileExplorer.Model;
 

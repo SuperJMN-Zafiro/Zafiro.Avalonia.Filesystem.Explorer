@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using DynamicData;
-using Zafiro.Avalonia.FileExplorer.Model;
+﻿using DynamicData;
 
 namespace Zafiro.Avalonia.FileExplorer.Clipboard;
 

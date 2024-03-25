@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.ObjectModel;
-using System.IO;
+﻿using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
-using CSharpFunctionalExtensions;
 using DynamicData;
-using Zafiro.FileSystem;
 
 namespace Zafiro.Avalonia.FileExplorer.Model;
 
