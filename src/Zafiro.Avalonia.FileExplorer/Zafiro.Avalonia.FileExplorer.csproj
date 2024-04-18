@@ -19,7 +19,7 @@
     <PackageReference Include="Zafiro.Avalonia" Version="3.0.81" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Zafiro.FileSystem" Version="5.0.11" />
+    <PackageReference Include="Zafiro.FileSystem" Version="5.1.1" />
     <PackageReference Include="Zafiro.UI" Version="4.0.29" />
   </ItemGroup>
 </Project>
