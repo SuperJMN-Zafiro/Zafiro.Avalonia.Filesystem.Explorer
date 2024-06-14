@@ -1,0 +1,46 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:behaviors="clr-namespace:Zafiro.Avalonia.Behaviors;assembly=Zafiro.Avalonia"
+             xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.ViewModels"
+             mc:Ignorable="d" d:DesignWidth="400" 
+             x:Class="Zafiro.Avalonia.FileExplorer.NextGen.Views.PathNavigatorView"
+             x:DataType="viewModels:PathNavigatorViewModel"
+             x:CompileBindings="True">
+  		<DockPanel DockPanel.Dock="Top">
+
+            <DockPanel.Styles>
+                <Style Selector="Button">
+                    <Setter Property="Height" Value="32" />
+                    <Setter Property="Width" Value="32" />
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+                <Style Selector="Image">
+                    <Setter Property="VerticalAlignment" Value="Center" />
+                </Style>
+            </DockPanel.Styles>
+
+            <Button Theme="{StaticResource TransparentButton}" Command="{Binding GoBack}" DockPanel.Dock="Left">
+				<Button.Content>
+					<Image Margin="0 2" Source="{StaticResource di_back_xaml}" />
+				</Button.Content>
+			</Button>
+			<Button Theme="{StaticResource TransparentButton}" Command="{Binding LoadRequestedPath}"  DockPanel.Dock="Right">
+				<Button.Content>
+					<Image Source="{StaticResource di_reload_xaml}"  />
+				</Button.Content>
+			</Button>
+			<Panel>
+				<ProgressBar Margin="6" VerticalAlignment="Stretch" IsIndeterminate="True" IsVisible="{Binding IsNavigating^}" />
+				<TextBox AcceptsReturn="False" Watermark="(root)" Text="{Binding RequestedPathString}" VerticalAlignment="Center">
+                    <Interaction.Behaviors>
+                        <behaviors:TextBoxAutoSelectTextBehavior />
+                        <behaviors:KeyDownTriggerBehavior EventRoutingStrategy="Tunnel" MarkAsHandled="True" Key="Enter">
+                            <InvokeCommandAction Command="{Binding LoadRequestedPath}" />
+                        </behaviors:KeyDownTriggerBehavior>
+                    </Interaction.Behaviors>
+                </TextBox>
+            </Panel>
+		</DockPanel>
+</UserControl>
