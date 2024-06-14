@@ -11,7 +11,7 @@ using File = Zafiro.FileSystem.File;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.ViewModels;
 
-public class DirectoryContentsViewModel : ViewModelBase
+public class DirectoryContentsViewModel : ViewModelBase, IDisposable
 {
     private readonly CompositeDisposable disposable = new();
     
@@ -37,4 +37,10 @@ public class DirectoryContentsViewModel : ViewModelBase
     public ReadOnlyObservableCollection<IEntry> Items { get; set; }
 
     public ReactiveCommand<Unit,Result> CreateFile { get; set; }
+
+    public void Dispose()
+    {
+        disposable.Dispose();
+        CreateFile.Dispose();
+    }
 }

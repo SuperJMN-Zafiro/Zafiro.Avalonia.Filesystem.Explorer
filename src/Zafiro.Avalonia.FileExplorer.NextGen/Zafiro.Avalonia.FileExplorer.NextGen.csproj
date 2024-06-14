@@ -15,4 +15,11 @@
       <ProjectReference Include="..\..\..\Zafiro.FileSystem\src\Zafiro.FileSystem\Zafiro.FileSystem.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Views\FileExplorerView.axaml.cs">
+        <DependentUpon>FileExplorerView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+
 </Project>
