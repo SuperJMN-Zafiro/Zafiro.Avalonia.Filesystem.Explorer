@@ -20,7 +20,7 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
     private readonly CompositeDisposable disposable = new();
     private readonly SourceCache<IEntry, string> entriesCache = new(x => x.Name);
 
-    public DirectoryContentsViewModel(INotificationService notificationService, IRooted<IMutableDirectory> directory,
+    public DirectoryContentsViewModel(IRooted<IMutableDirectory> directory,
         ExplorerContext context)
     {
         Directory = directory;
@@ -45,7 +45,7 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
         Items = itemCollection;
         CreateFile = ReactiveCommand.CreateFromTask(() => directory.Value.AddOrUpdate(new File("Random", "Content")));
         CreateFile
-            .HandleErrorsWith(notificationService)
+            .HandleErrorsWith(context.NotificationService)
             .DisposeWith(disposable);
     }
     
