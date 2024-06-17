@@ -37,7 +37,7 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
         Observable.Interval(TimeSpan.FromSeconds(5))
             .Do(_ =>
             {
-                Update().Tap(files => entriesCache.EditDiff(files, (a, b) => Equals(a.Key, b.Key)));
+                Update().Tap(entries => entriesCache.EditDiff(entries, (a, b) => Equals(a.Key, b.Key)));
             })
             .Subscribe()
             .DisposeWith(disposable);
@@ -51,8 +51,8 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
     
     private Task<Result<IEnumerable<IEntry>>> Update()
     { 
-        var fileVms = Directory.Value.MutableFiles().MapEach(x => (IEntry)new FileViewModel(Directory, x));
-        var dirVms = Directory.Value.MutableDirectories().MapEach(x => (IEntry)new DirectoryViewModel(Directory, x, Context));
+        var fileVms = Directory.Value.MutableFiles().Map(files => files.Where(file => !file.IsHidden)).MapEach(x => (IEntry)new FileViewModel(Directory, x));
+        var dirVms = Directory.Value.MutableDirectories().Map(files => files.Where(file => !file.IsHidden)).MapEach(x => (IEntry)new DirectoryViewModel(Directory, x, Context));
 
         return dirVms.CombineAndMap(fileVms, (a, b) => a.Concat(b));
     }

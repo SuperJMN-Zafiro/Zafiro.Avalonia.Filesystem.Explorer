@@ -3,20 +3,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.ViewModels"
+             xmlns:views="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Views"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.NextGen.Views.DirectoryContentsView"
              x:CompileBindings="True"
              x:DataType="viewModels:DirectoryContentsViewModel">
+    
     <UserControl.DataTemplates>
         <DataTemplate DataType="viewModels:FileViewModel">
-            <TextBlock Text="{Binding Name}" />
+            <views:FileItemView />
         </DataTemplate>
         <DataTemplate DataType="viewModels:DirectoryViewModel">
-            <DockPanel>
-                <Button Command="{Binding Navigate}" Content=">>" DockPanel.Dock="Right" />
-                <TextBlock Text="{Binding Name}" />
-            </DockPanel>
+            <views:DirectoryItemView />
         </DataTemplate>
     </UserControl.DataTemplates>
+    
     <ListBox ItemsSource="{Binding Items}" />
+    
 </UserControl>

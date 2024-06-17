@@ -8,6 +8,17 @@
              x:Class="Zafiro.Avalonia.FileExplorer.NextGen.Views.FileExplorerView"
              x:DataType="nextGen:FileExplorer"
              x:CompileBindings="True">
+    
+    <UserControl.Styles>
+        <Style Selector="ListBoxItem">
+            <Setter Property="Padding" Value="0" />
+        </Style>
+        <Style Selector="ListBoxItem CheckBox">
+            <Setter Property="Padding" Value="0" />
+            <Setter Property="Margin" Value="8 0 0 0" />
+        </Style>
+    </UserControl.Styles>
+    
     <DockPanel>
         <views:PathNavigatorView DataContext="{Binding PathNavigator}" DockPanel.Dock="Top" />
         <views:DirectoryContentsView DataContext="{Binding Contents}" />
