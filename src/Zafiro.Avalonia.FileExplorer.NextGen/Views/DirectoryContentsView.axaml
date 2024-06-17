@@ -7,5 +7,16 @@
              x:Class="Zafiro.Avalonia.FileExplorer.NextGen.Views.DirectoryContentsView"
              x:CompileBindings="True"
              x:DataType="viewModels:DirectoryContentsViewModel">
-    <ListBox ItemsSource="{Binding Items}" DisplayMemberBinding="{Binding Name}" />
+    <UserControl.DataTemplates>
+        <DataTemplate DataType="viewModels:FileViewModel">
+            <TextBlock Text="{Binding Name}" />
+        </DataTemplate>
+        <DataTemplate DataType="viewModels:DirectoryViewModel">
+            <DockPanel>
+                <Button Command="{Binding Navigate}" DockPanel.Dock="Right" />
+                <TextBlock Text="{Binding Name}" />
+            </DockPanel>
+        </DataTemplate>
+    </UserControl.DataTemplates>
+    <ListBox ItemsSource="{Binding Items}" />
 </UserControl>

@@ -17,8 +17,9 @@ public class FileExplorer : ReactiveObject
     {
         FileSystem = fileSystem;
         PathNavigator = new PathNavigatorViewModel(fileSystem, notificationService);
+        var context = new ExplorerContext(PathNavigator, notificationService);
         contents = PathNavigator.CurrentDirectory.Values()
-            .Select(rooted => new DirectoryContentsViewModel(notificationService, rooted.Value))
+            .Select(rooted => new DirectoryContentsViewModel(notificationService, rooted, context))
             .DisposePrevious()
             .ToProperty(this, x => x.Contents);
     }
@@ -26,4 +27,14 @@ public class FileExplorer : ReactiveObject
     public DirectoryContentsViewModel Contents => contents.Value;
     public IFileSystem FileSystem { get; }
     public IPathNavigator PathNavigator { get; }
+}
+
+public class ExplorerContext
+{
+    public IPathNavigator PathNavigator { get; }
+
+    public ExplorerContext(IPathNavigator pathNavigator, INotificationService notificationService)
+    {
+        PathNavigator = pathNavigator;
+    }
 }

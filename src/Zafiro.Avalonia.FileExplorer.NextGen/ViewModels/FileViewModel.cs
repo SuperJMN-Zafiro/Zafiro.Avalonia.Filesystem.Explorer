@@ -2,17 +2,18 @@ using System.Windows.Input;
 using ReactiveUI;
 using Zafiro.FileSystem;
 using Zafiro.FileSystem.DynamicData;
+using Zafiro.FileSystem.Mutable;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.ViewModels;
 
 public class FileViewModel : IEntry
 {
-    public IFile File { get; }
+    public IMutableFile File { get; }
 
-    public FileViewModel(IDynamicDirectory directory, IFile file)
+    public FileViewModel(IRooted<IMutableDirectory> directory, IMutableFile file)
     {
         File = file;
-        Delete = ReactiveCommand.CreateFromTask(() => directory.DeleteFile(Name));
+        //Delete = ReactiveCommand.CreateFromTask(() => directory(Name));
     }
 
     public string Name => File.Name;

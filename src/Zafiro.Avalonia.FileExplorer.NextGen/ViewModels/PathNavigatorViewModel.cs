@@ -7,6 +7,7 @@ using Zafiro.Avalonia.FileExplorer.NextGen.Core;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.FileSystem.DynamicData;
+using Zafiro.FileSystem.Mutable;
 using Zafiro.Reactive;
 using Zafiro.UI;
 
@@ -38,9 +39,9 @@ public class PathNavigatorViewModel : ReactiveObject, IPathNavigator
 
     private Result<ZafiroPath> RequestedPath => RequestedPathString.Trim() == "" ? Result.Success(ZafiroPath.Empty) : ZafiroPath.Create(RequestedPathString!);
 
-    public ReactiveCommandBase<Unit, Result<IRooted<IDynamicDirectory>>> LoadRequestedPath { get; }
+    public ReactiveCommandBase<Unit, Result<IRooted<IMutableDirectory>>> LoadRequestedPath { get; }
 
-    public IObservable<Maybe<IRooted<IDynamicDirectory>>> CurrentDirectory { get; }
+    public IObservable<Maybe<IRooted<IMutableDirectory>>> CurrentDirectory { get; }
 
     public ReactiveCommand<Unit, Unit> GoBack { get; set; }
 
