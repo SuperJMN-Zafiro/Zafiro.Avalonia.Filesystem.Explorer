@@ -13,7 +13,7 @@
         </DataTemplate>
         <DataTemplate DataType="viewModels:DirectoryViewModel">
             <DockPanel>
-                <Button Command="{Binding Navigate}" DockPanel.Dock="Right" />
+                <Button Command="{Binding Navigate}" Content=">>" DockPanel.Dock="Right" />
                 <TextBlock Text="{Binding Name}" />
             </DockPanel>
         </DataTemplate>
