@@ -37,7 +37,7 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
         Observable.Interval(TimeSpan.FromSeconds(5))
             .Do(_ =>
             {
-                Update().Tap(files => entriesCache.EditDiff(files, (a, b) => Equals(a.Name, b.Name)));
+                Update().Tap(files => entriesCache.EditDiff(files, (a, b) => Equals(a.Key, b.Key)));
             })
             .Subscribe()
             .DisposeWith(disposable);
