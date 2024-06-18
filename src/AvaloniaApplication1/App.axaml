@@ -17,5 +17,7 @@
     <Application.Styles>
         <FluentTheme />
         <StyleInclude Source="avares://Zafiro.Avalonia.FileExplorer.NextGen/Styles.axaml" />
+        <StyleInclude Source="avares://Zafiro.Avalonia/Styles.axaml" />
+        <StyleInclude Source="avares://Zafiro.Avalonia.Dialogs/Styles.axaml" />
     </Application.Styles>
 </Application>
