@@ -10,7 +10,7 @@ using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem.Mutable;
 using Zafiro.Reactive;
 
-namespace Zafiro.Avalonia.FileExplorer.NextGen.Core;
+namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 
 public class CreateDirectoryViewModel : ReactiveValidationObject
 {

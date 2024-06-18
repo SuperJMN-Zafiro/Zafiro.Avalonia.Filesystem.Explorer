@@ -1,0 +1,21 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="AvaloniaApplication1.App"
+             xmlns:local="using:AvaloniaApplication1"
+             xmlns:core="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core;assembly=Zafiro.Avalonia.FileExplorer.NextGen"
+             xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;assembly=Zafiro.Avalonia.FileExplorer.NextGen"
+             RequestedThemeVariant="Default">
+             <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
+
+    <Application.DataTemplates>
+        <local:ViewLocator/>
+        <DataTemplate DataType="viewModels:CreateDirectoryViewModel">
+            <TextBox Text="{Binding DirectoryName}" />
+        </DataTemplate>
+    </Application.DataTemplates>
+  
+    <Application.Styles>
+        <FluentTheme />
+        <StyleInclude Source="avares://Zafiro.Avalonia.FileExplorer.NextGen/Styles.axaml" />
+    </Application.Styles>
+</Application>
