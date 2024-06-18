@@ -1,8 +1,8 @@
 using Zafiro.Avalonia.Dialogs.Simple;
-using Zafiro.FileSystem.DynamicData;
+using Zafiro.FileSystem.Mutable;
 using Zafiro.UI;
 
-namespace Zafiro.Avalonia.FileExplorer.NextGen.Core;
+namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 
 public class ExplorerContext
 {

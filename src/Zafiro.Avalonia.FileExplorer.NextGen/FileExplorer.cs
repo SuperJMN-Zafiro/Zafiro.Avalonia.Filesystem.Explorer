@@ -3,9 +3,8 @@ using ReactiveUI;
 using Zafiro.Avalonia.Dialogs.Simple;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
-using Zafiro.Avalonia.FileExplorer.NextGen.ViewModels;
 using Zafiro.CSharpFunctionalExtensions;
-using Zafiro.FileSystem.DynamicData;
+using Zafiro.FileSystem.Mutable;
 using Zafiro.Reactive;
 using Zafiro.UI;
 

@@ -6,7 +6,7 @@ using ReactiveUI.Validation.Helpers;
 using Zafiro.Avalonia.Dialogs;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem.Core;
-using Zafiro.FileSystem.Mutable.Mutable;
+using Zafiro.FileSystem.Mutable;
 using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;

@@ -1,7 +1,7 @@
 using System;
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using Zafiro.Avalonia.FileExplorer.NextGen.ViewModels;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 
 namespace AvaloniaApplication1;
 

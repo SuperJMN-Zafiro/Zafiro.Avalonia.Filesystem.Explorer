@@ -6,15 +6,13 @@ using Avalonia.Controls.Selection;
 using CSharpFunctionalExtensions;
 using DynamicData;
 using ReactiveUI;
-using Zafiro.Avalonia.FileExplorer.NextGen.Core;
-using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem.Core;
-using Zafiro.FileSystem.Mutable.Mutable;
+using Zafiro.FileSystem.Mutable;
 using Zafiro.UI;
 using File = Zafiro.FileSystem.Readonly.File;
 
-namespace Zafiro.Avalonia.FileExplorer.NextGen.ViewModels;
+namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 
 public class DirectoryContentsViewModel : ViewModelBase, IDisposable
 {

@@ -1,10 +1,8 @@
 using System.Windows.Input;
-using ReactiveUI;
 using Zafiro.FileSystem.Core;
-using Zafiro.FileSystem.DynamicData;
-using Zafiro.FileSystem.Mutable.Mutable;
+using Zafiro.FileSystem.Mutable;
 
-namespace Zafiro.Avalonia.FileExplorer.NextGen.ViewModels;
+namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 
 public class FileViewModel : IEntry
 {

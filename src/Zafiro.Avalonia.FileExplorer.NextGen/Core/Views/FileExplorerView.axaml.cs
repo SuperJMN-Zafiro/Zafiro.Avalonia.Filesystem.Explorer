@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace Zafiro.Avalonia.FileExplorer.NextGen.Views
+namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.Views
 {
     public partial class FileExplorerView : UserControl
     {

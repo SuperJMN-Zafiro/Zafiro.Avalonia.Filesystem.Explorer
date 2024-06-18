@@ -4,8 +4,8 @@ using ReactiveUI;
 using Zafiro.Avalonia.Dialogs;
 using Zafiro.Avalonia.Dialogs.Simple;
 using Zafiro.Avalonia.FileExplorer.NextGen;
-using Zafiro.Avalonia.FileExplorer.NextGen.ViewModels;
-using Zafiro.FileSystem.DynamicData;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
+using Zafiro.FileSystem.Mutable;
 using Zafiro.UI;
 
 namespace AvaloniaApplication1.ViewModels;

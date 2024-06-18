@@ -1,8 +1,7 @@
 using System.Reactive;
 using ReactiveUI;
-using Zafiro.Avalonia.FileExplorer.NextGen.ViewModels;
 using Zafiro.FileSystem.Core;
-using Zafiro.FileSystem.Mutable.Mutable;
+using Zafiro.FileSystem.Mutable;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 

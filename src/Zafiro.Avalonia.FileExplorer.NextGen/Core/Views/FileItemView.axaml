@@ -3,9 +3,9 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:b="clr-namespace:Zafiro.Avalonia.Behaviors;assembly=Zafiro.Avalonia"
-             xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.ViewModels"
+             xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             x:Class="Zafiro.Avalonia.FileExplorer.NextGen.Views.FileItemView" x:DataType="viewModels:FileViewModel" x:CompileBindings="True">
+             x:Class="Zafiro.Avalonia.FileExplorer.NextGen.Core.Views.FileItemView" x:DataType="viewModels:FileViewModel" x:CompileBindings="True">
     <UserControl.Resources>
 		<DrawingGroup x:Key="FileDrawing">
 			<DrawingGroup.ClipGeometry>
