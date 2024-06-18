@@ -7,6 +7,7 @@ using CSharpFunctionalExtensions;
 using DynamicData;
 using ReactiveUI;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.FileSystem.Mutable;

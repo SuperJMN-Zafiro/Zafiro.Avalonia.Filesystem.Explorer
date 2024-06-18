@@ -9,6 +9,7 @@
     <ItemGroup>
         <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
         <PackageReference Include="Zafiro.Avalonia" Version="4.0.0" />
+        <PackageReference Include="Zafiro.Avalonia.Dialogs" Version="4.0.0" />
     </ItemGroup>
 
     <ItemGroup>

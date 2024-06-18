@@ -4,9 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:behaviors="clr-namespace:Zafiro.Avalonia.Behaviors;assembly=Zafiro.Avalonia"
              xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.ViewModels"
+             xmlns:viewModels1="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels"
              mc:Ignorable="d" d:DesignWidth="400"
              x:Class="Zafiro.Avalonia.FileExplorer.NextGen.Views.PathNavigatorView"
-             x:DataType="viewModels:PathNavigatorViewModel"
+             x:DataType="viewModels1:PathNavigatorViewModel"
              x:CompileBindings="True">
 
 

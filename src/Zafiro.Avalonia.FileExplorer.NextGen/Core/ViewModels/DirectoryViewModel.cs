@@ -1,10 +1,10 @@
 using System.Reactive;
 using ReactiveUI;
-using Zafiro.Avalonia.FileExplorer.NextGen.Core;
+using Zafiro.Avalonia.FileExplorer.NextGen.ViewModels;
 using Zafiro.FileSystem;
 using Zafiro.FileSystem.Mutable;
 
-namespace Zafiro.Avalonia.FileExplorer.NextGen.ViewModels;
+namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 
 public class DirectoryViewModel: ReactiveObject, IEntry
 {

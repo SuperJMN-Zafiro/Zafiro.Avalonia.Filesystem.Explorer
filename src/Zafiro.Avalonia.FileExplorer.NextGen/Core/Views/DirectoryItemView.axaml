@@ -3,9 +3,10 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.ViewModels"
+             xmlns:viewModels1="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.NextGen.Views.DirectoryItemView"
-             x:CompileBindings="True" x:DataType="viewModels:DirectoryViewModel">
+             x:CompileBindings="True" x:DataType="viewModels1:DirectoryViewModel">
     <UserControl.Resources>
 
         <ResourceDictionary>

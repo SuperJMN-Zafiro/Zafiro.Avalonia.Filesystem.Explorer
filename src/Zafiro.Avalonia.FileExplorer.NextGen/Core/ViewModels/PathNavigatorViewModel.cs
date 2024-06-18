@@ -3,7 +3,6 @@ using System.Reactive.Linq;
 using CSharpFunctionalExtensions;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
-using Zafiro.Avalonia.FileExplorer.NextGen.Core;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.FileSystem.DynamicData;
@@ -11,7 +10,7 @@ using Zafiro.FileSystem.Mutable;
 using Zafiro.Reactive;
 using Zafiro.UI;
 
-namespace Zafiro.Avalonia.FileExplorer.NextGen.ViewModels;
+namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 
 public class PathNavigatorViewModel : ReactiveObject, IPathNavigator
 {

@@ -4,10 +4,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:nextGen="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen"
              xmlns:behaviors="clr-namespace:Zafiro.Avalonia.Behaviors;assembly=Zafiro.Avalonia"
+             xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.NextGen.Views.ToolBarView"
              x:CompileBindings="True"
-             x:DataType="nextGen:ToolBarViewModel">
+             x:DataType="viewModels:ToolBarViewModel">
     <UserControl.Resources>
         <DrawingGroup x:Key="copy_xaml">
             <DrawingGroup.ClipGeometry>
@@ -113,27 +114,15 @@
         </Style>
     </UserControl.Styles>
 
-    <StackPanel Orientation="Horizontal" DataContext="{Binding CreateDirectory}">
-        <ToggleButton Theme="{StaticResource TransparentButton}" x:Name="CreateButton">
+    <StackPanel Orientation="Horizontal">
+        <Button Theme="{StaticResource TransparentButton}" Command="{Binding CreateDirectory}">
             <Button.Content>
                 <DockPanel>
                     <Image Source="{StaticResource di_copy_xaml}" />
                     <TextBlock>New directory</TextBlock>
                 </DockPanel>
             </Button.Content>
-        </ToggleButton>
-        <Popup IsOpen="{Binding #CreateButton.IsChecked}" PlacementTarget="CreateButton">
-            <StackPanel Width="200" Spacing="10">
-                <TextBox VerticalContentAlignment="Center" Text="{Binding DirectoryName}" />
-                <Button HorizontalAlignment="Right" Content="Create" Command="{Binding CreateNewDirectory}">
-                    <Interaction.Behaviors>
-                        <behaviors:OnSignalTriggerBehavior Trigger="{Binding IsBusy^}">
-                            <ChangePropertyAction PropertyName="IsChecked" Value="False" TargetObject="CreateButton" />
-                        </behaviors:OnSignalTriggerBehavior>
-                    </Interaction.Behaviors>
-                </Button>
-            </StackPanel>
-        </Popup>
+        </Button>
         <!-- <Button Theme="{StaticResource TransparentButton}" Command="{Binding Copy}"> -->
         <!-- 	<Button.Content> -->
         <!-- 		<DockPanel> -->
