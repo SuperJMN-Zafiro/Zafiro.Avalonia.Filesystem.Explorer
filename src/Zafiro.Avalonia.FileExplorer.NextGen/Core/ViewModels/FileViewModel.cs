@@ -1,6 +1,6 @@
 using System.Windows.Input;
 using ReactiveUI;
-using Zafiro.FileSystem;
+using Zafiro.FileSystem.Core;
 using Zafiro.FileSystem.DynamicData;
 using Zafiro.FileSystem.Mutable.Mutable;
 

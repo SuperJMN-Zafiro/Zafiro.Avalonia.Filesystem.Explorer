@@ -1,7 +1,7 @@
 using System.Reactive;
 using CSharpFunctionalExtensions;
 using ReactiveUI;
-using Zafiro.FileSystem;
+using Zafiro.FileSystem.Core;
 using Zafiro.FileSystem.DynamicData;
 using Zafiro.FileSystem.Mutable.Mutable;
 
