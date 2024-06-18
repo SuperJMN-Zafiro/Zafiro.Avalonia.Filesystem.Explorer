@@ -38,6 +38,7 @@ public class PathNavigatorViewModel : ReactiveObject, IPathNavigator
         currentDirectory = Directories.ToProperty(this, x => x.CurrentDirectory);
         
         RequestedPathString = string.Empty;
+        GoUp = ReactiveCommand.Create(() => SetAndLoad(CurrentDirectory.Value.Path.Parent().ToString()), Directories.Values().Select(rooted => rooted.Path.Parent().HasValue));
     }
 
     public Maybe<IRooted<IMutableDirectory>> CurrentDirectory => currentDirectory.Value;
@@ -48,7 +49,8 @@ public class PathNavigatorViewModel : ReactiveObject, IPathNavigator
 
     public IObservable<Maybe<IRooted<IMutableDirectory>>> Directories { get; }
 
-    public ReactiveCommand<Unit, Unit> GoBack { get; set; }
+    public ReactiveCommand<Unit, Unit> GoBack { get; }
+    public ReactiveCommand<Unit, Unit> GoUp { get; }
 
     [Reactive]
     public string RequestedPathString { get; set; }

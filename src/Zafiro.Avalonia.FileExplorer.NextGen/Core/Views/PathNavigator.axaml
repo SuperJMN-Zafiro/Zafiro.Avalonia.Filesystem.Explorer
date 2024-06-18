@@ -79,6 +79,11 @@
                 <Image Margin="0 2" Source="{StaticResource Back}" />
             </Button.Content>
         </Button>
+        <Button Theme="{StaticResource TransparentButton}" Command="{Binding GoUp}" DockPanel.Dock="Left">
+            <Button.Content>
+                <Image Margin="0 2" Source="{StaticResource Back}" />
+            </Button.Content>
+        </Button>
         <Button Theme="{StaticResource TransparentButton}" Command="{Binding LoadRequestedPath}" DockPanel.Dock="Right">
             <Button.Content>
                 <Image Source="{StaticResource Reload}" />
