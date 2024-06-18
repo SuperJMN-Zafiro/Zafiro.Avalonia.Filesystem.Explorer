@@ -9,10 +9,10 @@ public class ExplorerContext
     public IPathNavigator PathNavigator { get; }
     public INotificationService NotificationService { get; }
     public IFileSystem FileSystem { get; }
-    public ISimpleDialog Dialog { get; }
+    public IDialog Dialog { get; }
 
     public ExplorerContext(IPathNavigator pathNavigator, INotificationService notificationService,
-        IFileSystem fileSystem, ISimpleDialog dialog)
+        IFileSystem fileSystem, IDialog dialog)
     {
         PathNavigator = pathNavigator;
         NotificationService = notificationService;

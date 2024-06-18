@@ -15,7 +15,7 @@ public class FileExplorer : ReactiveObject
 {
     private readonly ObservableAsPropertyHelper<DirectoryContentsViewModel> contents;
 
-    public FileExplorer(IFileSystem fileSystem, INotificationService notificationService, ISimpleDialog dialog)
+    public FileExplorer(IFileSystem fileSystem, INotificationService notificationService, IDialog dialog)
     {
         FileSystem = fileSystem;
         PathNavigator = new PathNavigatorViewModel(fileSystem, notificationService);
