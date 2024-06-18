@@ -1,7 +1,6 @@
 using System.Reactive.Linq;
 using ReactiveUI;
 using Zafiro.Avalonia.Dialogs.Simple;
-using Zafiro.Avalonia.FileExplorer.NextGen.Core;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem.Mutable;
@@ -27,6 +26,8 @@ public class FileExplorer : ReactiveObject
             .Select(rooted => new DirectoryContentsViewModel(rooted, context))
             .DisposePrevious()
             .ToProperty(this, x => x.Contents);
+
+        PathNavigator.SetAndLoad(fileSystem.InitialPath);
     }
 
     public ToolBarViewModel ToolBar { get; }
