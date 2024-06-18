@@ -10,7 +10,7 @@ using Zafiro.Avalonia.FileExplorer.NextGen.Core;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
-using Zafiro.FileSystem.Mutable;
+using Zafiro.FileSystem.Mutable.Mutable;
 using Zafiro.UI;
 using File = Zafiro.FileSystem.File;
 

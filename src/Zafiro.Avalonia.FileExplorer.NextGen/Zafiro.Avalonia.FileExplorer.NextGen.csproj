@@ -14,7 +14,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\Zafiro.Avalonia\src\Zafiro.Avalonia.Dialogs\Zafiro.Avalonia.Dialogs.csproj" />
-      <ProjectReference Include="..\..\..\Zafiro.FileSystem\src\Zafiro.FileSystem.DynamicData\Zafiro.FileSystem.DynamicData.csproj" />
+      <ProjectReference Include="..\..\..\Zafiro.FileSystem\src\Zafiro.FileSystem.DynamicData\Zafiro.FileSystem.DynamicData.Delete.csproj" />
       <ProjectReference Include="..\..\..\Zafiro.FileSystem\src\Zafiro.FileSystem\Zafiro.FileSystem.csproj" />
       <ProjectReference Include="..\..\..\Zafiro.UI\src\Zafiro.UI\Zafiro.UI.csproj" />
     </ItemGroup>

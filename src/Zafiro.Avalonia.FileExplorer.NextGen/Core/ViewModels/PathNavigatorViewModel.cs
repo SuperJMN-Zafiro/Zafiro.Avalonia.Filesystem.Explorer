@@ -6,7 +6,7 @@ using ReactiveUI.Fody.Helpers;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.FileSystem.DynamicData;
-using Zafiro.FileSystem.Mutable;
+using Zafiro.FileSystem.Mutable.Mutable;
 using Zafiro.Reactive;
 using Zafiro.UI;
 

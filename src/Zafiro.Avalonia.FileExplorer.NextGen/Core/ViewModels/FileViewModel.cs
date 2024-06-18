@@ -2,7 +2,7 @@ using System.Windows.Input;
 using ReactiveUI;
 using Zafiro.FileSystem;
 using Zafiro.FileSystem.DynamicData;
-using Zafiro.FileSystem.Mutable;
+using Zafiro.FileSystem.Mutable.Mutable;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.ViewModels;
 

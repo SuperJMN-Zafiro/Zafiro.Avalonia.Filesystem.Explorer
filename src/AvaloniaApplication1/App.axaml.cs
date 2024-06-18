@@ -1,20 +1,14 @@
-using System;
 using System.IO.Abstractions;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
-using Avalonia.Controls.Templates;
 using Avalonia.Markup.Xaml;
 using AvaloniaApplication1.ViewModels;
 using AvaloniaApplication1.Views;
-using CSharpFunctionalExtensions;
-using Zafiro.Avalonia.Dialogs;
 using Zafiro.Avalonia.Dialogs.Simple;
-using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 using Zafiro.Avalonia.Mixins;
 using Zafiro.Avalonia.Notifications;
-using Zafiro.CSharpFunctionalExtensions;
-using Zafiro.FileSystem.Local.Mutable;
+using Zafiro.FileSystem.Local;
 
 namespace AvaloniaApplication1;
 
