@@ -31,7 +31,7 @@ public partial class App : Application
             mv =>
             {
                 var notificationService = new NotificationService(new WindowNotificationManager(TopLevel.GetTopLevel(mv)));
-                return new MainViewModel(new DotNetFileSystem(new FileSystem()), notificationService, new SimpleDesktopDialogService(Maybe<Action<ConfigureWindowContext>>.None));
+                return new MainViewModel(new DotNetFileSystem(new FileSystem()), notificationService, new SimpleDesktopDialogService());
             }, () => new MainWindow());
     }
 }
