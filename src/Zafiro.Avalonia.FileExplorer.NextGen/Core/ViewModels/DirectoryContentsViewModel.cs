@@ -6,6 +6,7 @@ using Avalonia.Controls.Selection;
 using CSharpFunctionalExtensions;
 using DynamicData;
 using ReactiveUI;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem;
 using Zafiro.FileSystem.Mutable;
@@ -27,7 +28,6 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
         Directory = directory;
         Context = context;
         Update().Tap(files => entriesCache.AddOrUpdate(files));
-
 
         entriesCache
             .Connect()

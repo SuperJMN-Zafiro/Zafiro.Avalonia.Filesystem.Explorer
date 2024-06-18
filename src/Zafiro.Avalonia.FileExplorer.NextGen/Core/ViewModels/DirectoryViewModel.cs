@@ -1,5 +1,6 @@
 using System.Reactive;
 using ReactiveUI;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core;
 using Zafiro.FileSystem;
 using Zafiro.FileSystem.Mutable;
 

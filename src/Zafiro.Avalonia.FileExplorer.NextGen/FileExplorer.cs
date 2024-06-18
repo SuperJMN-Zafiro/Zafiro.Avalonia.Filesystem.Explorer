@@ -1,5 +1,6 @@
 using System.Reactive.Linq;
 using ReactiveUI;
+using ReactiveUI.Validation.Helpers;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core;
 using Zafiro.Avalonia.FileExplorer.NextGen.ViewModels;
 using Zafiro.CSharpFunctionalExtensions;
@@ -17,26 +18,30 @@ public class FileExplorer : ReactiveObject
     {
         FileSystem = fileSystem;
         PathNavigator = new PathNavigatorViewModel(fileSystem, notificationService);
-        var context = new ExplorerContext(PathNavigator, notificationService);
-        contents = PathNavigator.CurrentDirectory.Values()
+        
+        var context = new ExplorerContext(PathNavigator, notificationService, fileSystem);
+        
+        ToolBar = new ToolBarViewModel(context);
+        
+        contents = PathNavigator.Directories.Values()
             .Select(rooted => new DirectoryContentsViewModel(rooted, context))
             .DisposePrevious()
             .ToProperty(this, x => x.Contents);
     }
+
+    public ToolBarViewModel ToolBar { get; }
 
     public DirectoryContentsViewModel Contents => contents.Value;
     public IFileSystem FileSystem { get; }
     public IPathNavigator PathNavigator { get; }
 }
 
-public class ExplorerContext
+public class ToolBarViewModel : ReactiveValidationObject
 {
-    public IPathNavigator PathNavigator { get; }
-    public INotificationService NotificationService { get; }
-
-    public ExplorerContext(IPathNavigator pathNavigator, INotificationService notificationService)
+    public ToolBarViewModel(ExplorerContext context)
     {
-        PathNavigator = pathNavigator;
-        NotificationService = notificationService;
+        CreateDirectory = new CreateDirectoryViewModel(context);
     }
+
+    public CreateDirectoryViewModel CreateDirectory { get; }
 }

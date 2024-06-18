@@ -7,19 +7,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
         <PackageReference Include="Zafiro.Avalonia" Version="4.0.0" />
     </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\Zafiro.FileSystem\src\Zafiro.FileSystem.DynamicData\Zafiro.FileSystem.DynamicData.csproj" />
       <ProjectReference Include="..\..\..\Zafiro.FileSystem\src\Zafiro.FileSystem\Zafiro.FileSystem.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Compile Update="Views\FileExplorerView.axaml.cs">
-        <DependentUpon>FileExplorerView.axaml</DependentUpon>
-        <SubType>Code</SubType>
-      </Compile>
     </ItemGroup>
 
 </Project>

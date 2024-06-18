@@ -15,6 +15,8 @@ namespace Zafiro.Avalonia.FileExplorer.NextGen.ViewModels;
 
 public class PathNavigatorViewModel : ReactiveObject, IPathNavigator
 {
+    private readonly ObservableAsPropertyHelper<Maybe<IRooted<IMutableDirectory>>> currentDirectory;
+
     public PathNavigatorViewModel(IFileSystem fileSystem, INotificationService notificationService)
     {
         LoadRequestedPath = ReactiveCommand.CreateFromTask(() => RequestedPath.Map(fileSystem.Get));
@@ -29,19 +31,24 @@ public class PathNavigatorViewModel : ReactiveObject, IPathNavigator
             .ToSignal()
             .InvokeCommand(LoadRequestedPath);
         
-        CurrentDirectory = LoadRequestedPath.Successes().Select(Maybe.From);
-        CurrentDirectory
+         
+        Directories = LoadRequestedPath.Successes().Select(Maybe.From);
+        Directories
             .Do(maybe => maybe.Execute(x => RequestedPathString = x.Path.ToString()))
             .Subscribe();
+
+        currentDirectory = Directories.ToProperty(this, x => x.CurrentDirectory);
         
         RequestedPathString = string.Empty;
     }
+
+    public Maybe<IRooted<IMutableDirectory>> CurrentDirectory => currentDirectory.Value;
 
     private Result<ZafiroPath> RequestedPath => RequestedPathString.Trim() == "" ? Result.Success(ZafiroPath.Empty) : ZafiroPath.Create(RequestedPathString!);
 
     public ReactiveCommandBase<Unit, Result<IRooted<IMutableDirectory>>> LoadRequestedPath { get; }
 
-    public IObservable<Maybe<IRooted<IMutableDirectory>>> CurrentDirectory { get; }
+    public IObservable<Maybe<IRooted<IMutableDirectory>>> Directories { get; }
 
     public ReactiveCommand<Unit, Unit> GoBack { get; set; }
 
