@@ -81,7 +81,7 @@
         </Button>
         <Button Theme="{StaticResource TransparentButton}" Command="{Binding GoUp}" DockPanel.Dock="Left">
             <Button.Content>
-                <PathIcon Foreground="{DynamicResource Accent}" Height="14" Data="M 12 6.00018 A 1.0001 1.0001 0 0 0 11.2929 6.29297 L 10.6914 6.89455 L 7.29299 10.293 A 1 1 0 0 0 7.29299 11.707 A 1 1 0 0 0 8.70703 11.707 L 11 9.41408 L 11 17 A 1 1 0 0 0 12 18 A 1 1 0 0 0 13 17 L 13 9.41408 L 15.293 11.707 A 1 1 0 0 0 16.707 11.707 A 1 1 0 0 0 16.707 10.293 L 12.7071 6.29297 A 1.0001 1.0001 0 0 0 12 6.00018 z" />
+                <PathIcon Foreground="{DynamicResource Accent}" Height="15" Data="M 12 1.99998 A 1 1 0 0 0 11.9965 2.00068 A 1.0001 1.0001 0 0 0 11.6613 2.06736 A 1 1 0 0 0 11.5801 2.101 A 1.0001 1.0001 0 0 0 11.2939 2.29219 A 1 1 0 0 0 11.2927 2.29324 L 8.29295 5.29295 A 1 1 0 0 0 8.29295 6.70705 A 1 1 0 0 0 9.70705 6.70705 L 11 5.41406 L 11 21 A 1 1 0 0 0 12 22 A 1 1 0 0 0 13 21 L 13 5.41406 L 14.2929 6.70705 A 1 1 0 0 0 15.7071 6.70705 A 1 1 0 0 0 15.7071 5.29295 L 12.7079 2.29383 A 1 1 0 0 0 12 1.99998 z" />
             </Button.Content>
         </Button>
         <Button Theme="{StaticResource TransparentButton}" Command="{Binding LoadRequestedPath}" DockPanel.Dock="Right">
