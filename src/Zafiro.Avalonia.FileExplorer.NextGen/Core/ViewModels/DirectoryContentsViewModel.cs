@@ -20,7 +20,7 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
     public IRooted<IMutableDirectory> Directory { get; }
     public ExplorerContext Context { get; }
     private readonly CompositeDisposable disposable = new();
-    private readonly SourceCache<IEntry, string> entriesCache = new(x => x.Name);
+    private readonly SourceCache<IDirectoryItem, string> entriesCache = new(x => x.Name);
 
     public DirectoryContentsViewModel(IRooted<IMutableDirectory> directory,
         ExplorerContext context)
@@ -31,8 +31,15 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
 
         entriesCache
             .Connect()
-            .Sort(SortExpressionComparer<IEntry>.Descending(p => p is DirectoryViewModel).ThenByAscending(p => p.Name))
+            .Sort(SortExpressionComparer<IDirectoryItem>.Descending(p => p is DirectoryViewModel).ThenByAscending(p => p.Name))
             .Bind(out var itemCollection)
+            .Subscribe()
+            .DisposeWith(disposable);
+
+        entriesCache
+            .Connect()
+            .Transform(item => item.Deleted.Do(_ => entriesCache.Remove(item)).Subscribe())
+            .DisposeMany()
             .Subscribe()
             .DisposeWith(disposable);
 
@@ -48,20 +55,20 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
             .DisposeWith(disposable);
     }
 
-    private Task<Result<IEnumerable<IEntry>>> Update()
+    private Task<Result<IEnumerable<IDirectoryItem>>> Update()
     {
         var fileVms = Directory.Value.MutableFiles().Map(files => files.Where(file => !file.IsHidden))
-            .MapEach(x => (IEntry)new FileViewModel(Directory, x));
+            .MapEach(x => (IDirectoryItem)new FileViewModel(Directory, x));
         var dirVms = Directory.Value.MutableDirectories().Map(files => files.Where(file => !file.IsHidden))
-            .MapEach(x => (IEntry)new DirectoryViewModel(Directory, x, Context));
+            .MapEach(x => (IDirectoryItem)new DirectoryViewModel(Directory, x, Context));
 
         return dirVms.CombineAndMap(fileVms, (a, b) => a.Concat(b));
     }
 
-    public ReadOnlyObservableCollection<IEntry> Items { get; set; }
+    public ReadOnlyObservableCollection<IDirectoryItem> Items { get; set; }
 
     public ReactiveCommand<Unit, Result> CreateFile { get; set; }
-    public SelectionModel<IEntry> Selection { get; } = new() { SingleSelect = false };
+    public SelectionModel<IDirectoryItem> Selection { get; } = new() { SingleSelect = false };
 
     public void Dispose()
     {

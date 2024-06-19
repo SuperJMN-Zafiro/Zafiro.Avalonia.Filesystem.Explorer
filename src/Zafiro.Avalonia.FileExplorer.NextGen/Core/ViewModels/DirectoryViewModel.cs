@@ -1,5 +1,6 @@
 using System.Reactive;
 using System.Reactive.Linq;
+using System.Reactive.Subjects;
 using CSharpFunctionalExtensions;
 using ReactiveUI;
 using Zafiro.Avalonia.Dialogs;
@@ -10,8 +11,9 @@ using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 
-public class DirectoryViewModel: ReactiveObject, IEntry
+public class DirectoryViewModel: ReactiveObject, IDirectoryItem
 {
+    private readonly Subject<Unit> deleteSubject = new();
     public IRooted<IMutableDirectory> Parent { get; }
     public IMutableDirectory Directory { get; }
     public ExplorerContext Context { get; }
@@ -31,7 +33,7 @@ public class DirectoryViewModel: ReactiveObject, IEntry
             return Observable.FromAsync(() => context.Dialog.ShowConfirmation($"Delete {Name}",
                 $"Do you really want to delete the folder {Name}?"))
                 .Trues()
-                .SelectMany(_ => directory.Delete());
+                .SelectMany(_ => directory.Delete().Tap(() => deleteSubject.OnNext(Unit.Default)));
         });
 
         Delete.HandleErrorsWith(context.NotificationService);
@@ -43,4 +45,5 @@ public class DirectoryViewModel: ReactiveObject, IEntry
 
     public string Name => Directory.Name;
     public string Key => Directory.Name + "/";
+    public IObservable<Unit> Deleted => deleteSubject.AsObservable();
 }
