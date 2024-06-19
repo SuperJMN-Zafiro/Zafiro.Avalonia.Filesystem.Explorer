@@ -17,7 +17,7 @@ public class MainViewModel : ViewModelBase
         FileExplorer = new FileExplorer(fileSystem, notificationService, dialogService);
         Observable.Timer(TimeSpan.FromSeconds(5), RxApp.MainThreadScheduler).SelectMany(l =>
         {
-            return Observable.FromAsync(() => dialogService.ShowMessage("hola, tÌo", "holas"));
+            return Observable.FromAsync(() => dialogService.ShowMessage("hola, t√≠o", "holas"));
         }).Subscribe();
     }
 
