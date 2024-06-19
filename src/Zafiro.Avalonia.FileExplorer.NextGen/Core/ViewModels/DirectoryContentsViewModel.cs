@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using Avalonia.Controls.Selection;
 using CSharpFunctionalExtensions;
 using DynamicData;
+using DynamicData.Binding;
 using ReactiveUI;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem.Core;
@@ -30,6 +31,7 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
 
         entriesCache
             .Connect()
+            .Sort(SortExpressionComparer<IEntry>.Descending(p => p is DirectoryViewModel).ThenByAscending(p => p.Name))
             .Bind(out var itemCollection)
             .Subscribe()
             .DisposeWith(disposable);
