@@ -13,11 +13,11 @@ namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 
 public class ToolBarViewModel : ReactiveValidationObject
 {
-    private readonly ObservableAsPropertyHelper<IRooted<IMutableDirectory>> currentDirectory;
+    private readonly ObservableAsPropertyHelper<DirectoryContentsViewModel> currentDirectory;
 
     public ToolBarViewModel(ExplorerContext context)
     {
-        currentDirectory = context.PathNavigator.Directories.Values().ToProperty(this, x => x.CurrentDirectory);
+        currentDirectory = context.Directory.ToProperty(this, x => x.CurrentDirectory);
         
         CreateDirectory = ReactiveCommand.CreateFromTask(async () =>
         {
@@ -27,7 +27,8 @@ public class ToolBarViewModel : ReactiveValidationObject
                 x.Width = 300;
                 x.Height = double.NaN;
             }));
-            return await result.Map(name => CurrentDirectory.Value.CreateDirectory(name));
+            
+            return await result.Map(name => CurrentDirectory.CreateDirectory(name));
         });
 
         CreateDirectory.Values().HandleErrorsWith(context.NotificationService);
@@ -36,5 +37,5 @@ public class ToolBarViewModel : ReactiveValidationObject
     public ReactiveCommand<Unit, Maybe<Result<IMutableDirectory>>> CreateDirectory { get; set; }
 
 
-    public IRooted<IMutableDirectory> CurrentDirectory => currentDirectory.Value;
+    public DirectoryContentsViewModel CurrentDirectory => currentDirectory.Value;
 }

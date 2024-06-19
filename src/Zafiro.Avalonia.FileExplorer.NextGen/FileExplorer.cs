@@ -21,12 +21,7 @@ public class FileExplorer : ReactiveObject
         var context = new ExplorerContext(PathNavigator, notificationService, fileSystem, dialog);
         
         ToolBar = new ToolBarViewModel(context);
-        
-        contents = PathNavigator.Directories.Values()
-            .Select(rooted => new DirectoryContentsViewModel(rooted, context))
-            .DisposePrevious()
-            .ToProperty(this, x => x.Contents);
-
+        contents = context.Directory.ToProperty(this, x => x.Contents);
         PathNavigator.SetAndLoad(fileSystem.InitialPath);
     }
 

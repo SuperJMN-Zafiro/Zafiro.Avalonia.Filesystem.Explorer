@@ -1,17 +1,16 @@
 ﻿using System.Collections.ObjectModel;
-using System.Reactive;
+using System.Collections.Specialized;
+using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Avalonia.Controls.Selection;
 using CSharpFunctionalExtensions;
 using DynamicData;
 using DynamicData.Binding;
-using ReactiveUI;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem.Core;
 using Zafiro.FileSystem.Mutable;
-using Zafiro.UI;
-using File = Zafiro.FileSystem.Readonly.File;
+using Zafiro.Mixins;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 
@@ -29,30 +28,35 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
         Context = context;
         Update().Tap(files => entriesCache.AddOrUpdate(files));
 
-        entriesCache
-            .Connect()
+        var entries = entriesCache
+            .Connect();
+        
+        entries
             .Sort(SortExpressionComparer<IDirectoryItem>.Descending(p => p is DirectoryViewModel).ThenByAscending(p => p.Name))
-            .Bind(out var itemCollection)
+            .Bind(out var itemsCollection)
+            .DisposeMany()
             .Subscribe()
             .DisposeWith(disposable);
 
-        entriesCache
-            .Connect()
+        entries.Subscribe(set =>
+        {
+            Debug.WriteLine(set.JoinWithLines());
+        });
+        
+        entries
             .Transform(item => item.Deleted.Do(_ => entriesCache.Remove(item)).Subscribe())
             .DisposeMany()
             .Subscribe()
             .DisposeWith(disposable);
 
-        Observable.Interval(TimeSpan.FromSeconds(5))
-            .Do(_ => { Update().Tap(entries => entriesCache.EditDiff(entries, (a, b) => Equals(a.Key, b.Key))); })
-            .Subscribe()
-            .DisposeWith(disposable);
+        // Observable.Interval(TimeSpan.FromSeconds(5))
+        //     .Do(_ => { Update().Tap(entries => entriesCache.EditDiff(entries, (a, b) => Equals(a.Key, b.Key))); })
+        //     .Subscribe()
+        //     .DisposeWith(disposable);
 
-        Items = itemCollection;
-        CreateFile = ReactiveCommand.CreateFromTask(() => directory.Value.AddOrUpdate(new File("Random", "Content")));
-        CreateFile
-            .HandleErrorsWith(context.NotificationService)
-            .DisposeWith(disposable);
+        Items = itemsCollection;
+
+        ((INotifyCollectionChanged)Items).CollectionChanged += (sender, args) => { };
     }
 
     private Task<Result<IEnumerable<IDirectoryItem>>> Update()
@@ -67,12 +71,19 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
 
     public ReadOnlyObservableCollection<IDirectoryItem> Items { get; set; }
 
-    public ReactiveCommand<Unit, Result> CreateFile { get; set; }
     public SelectionModel<IDirectoryItem> Selection { get; } = new() { SingleSelect = false };
 
     public void Dispose()
     {
         disposable.Dispose();
-        CreateFile.Dispose();
+    }
+
+    public Task<Result<IMutableDirectory>> CreateDirectory(string name)
+    {
+        return Directory.Value.CreateDirectory(name)
+            .Tap(dir =>
+            {
+                entriesCache.AddOrUpdate(new DirectoryViewModel(Directory, dir, Context));
+            });
     }
 }
