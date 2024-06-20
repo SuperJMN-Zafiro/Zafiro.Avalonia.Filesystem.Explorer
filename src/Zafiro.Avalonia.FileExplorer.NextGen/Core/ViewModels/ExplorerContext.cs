@@ -4,6 +4,7 @@ using ReactiveUI.Fody.Helpers;
 using Zafiro.Avalonia.Dialogs.Simple;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem.Mutable;
+using Zafiro.Reactive;
 using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
@@ -24,10 +25,10 @@ public class ExplorerContext : IDisposable
         FileSystem = fileSystem;
         Dialog = dialog;
         var directories = pathNavigator.Directories.Values()
-            .Select(rooted => new DirectoryContentsViewModel(rooted, this)).Replay();
+            .Select(rooted => new DirectoryContentsViewModel(rooted, this)).ReplayLastActive();
         Directory = directories;
         SelectionContext = new SelectionContext(directories);
-        directories.Connect().DisposeWith(disposable);
+        //directories.Connect().DisposeWith(disposable);
     }
 
     public SelectionContext SelectionContext { get; set; }

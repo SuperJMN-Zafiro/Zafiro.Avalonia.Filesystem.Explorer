@@ -161,7 +161,6 @@
         		</DockPanel>
         	</ToggleButton.Content>
         </ToggleButton>
-        <Button Command="{Binding Context.SelectionContext.SelectAll}" />
         <controls:SelectionControl Selection="{Binding Context.SelectionContext}" IsVisible="{Binding #ToggleButton.IsChecked}" />
     </StackPanel>
 </UserControl>
