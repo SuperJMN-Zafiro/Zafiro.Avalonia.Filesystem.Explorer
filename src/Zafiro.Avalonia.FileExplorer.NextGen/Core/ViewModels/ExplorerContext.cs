@@ -8,8 +8,10 @@ using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Zafiro.Avalonia.Controls;
 using Zafiro.Avalonia.Dialogs.Simple;
+using Zafiro.Avalonia.Misc;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem.Mutable;
+using Zafiro.Reactive;
 using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
@@ -31,12 +33,9 @@ public class ExplorerContext : IDisposable
         Dialog = dialog;
         var directories = pathNavigator.Directories.Values().Select(rooted => new DirectoryContentsViewModel(rooted, this)).Publish();
         Directory = directories;
-        
-        // var selectionModel = directories.Select(x => x.Selection);
-        // var selectionHandler = new SelectionHandler2<IDirectoryItem, string>(selectionModel, x => x.Key);
-        // selectionHandler.SelectionChanges.Subscribe(set => { });
+        directories.Select(x => x.Selection).Subscribe(model => { });
+        SelectionContext = new SelectionContext(directories);
         directories.Connect().DisposeWith(disposable);
-        // this.SelectionContext = new SelectionContext(selectionHandler);
     }
 
     public SelectionContext SelectionContext { get; set; }

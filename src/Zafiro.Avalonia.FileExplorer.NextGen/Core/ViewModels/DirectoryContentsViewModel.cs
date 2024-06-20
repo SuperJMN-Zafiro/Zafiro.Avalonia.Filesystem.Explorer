@@ -1,5 +1,4 @@
 ﻿using System.Collections.ObjectModel;
-using System.Collections.Specialized;
 using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
@@ -28,10 +27,10 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
         Context = context;
         Update().Tap(files => entriesCache.AddOrUpdate(files));
 
-        var entries = entriesCache
+        Entries = entriesCache
             .Connect();
 
-        entries
+        Entries
             .Sort(SortExpressionComparer<IDirectoryItem>.Descending(p => p is DirectoryViewModel)
                 .ThenByAscending(p => p.Name))
             .Bind(out var itemsCollection)
@@ -39,23 +38,23 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
             .Subscribe()
             .DisposeWith(disposable);
 
-        entries.Subscribe(set => { Debug.WriteLine(set.JoinWithLines()); });
+        Items = itemsCollection;
 
-        entries
+        Entries.Subscribe(set => { Debug.WriteLine(set.JoinWithLines()); });
+
+        Entries
             .Transform(item => item.Deleted.Do(_ => entriesCache.Remove(item)).Subscribe())
             .DisposeMany()
             .Subscribe()
             .DisposeWith(disposable);
 
-        // Observable.Interval(TimeSpan.FromSeconds(5))
-        //     .Do(_ => { Update().Tap(entries => entriesCache.EditDiff(entries, (a, b) => Equals(a.Key, b.Key))); })
-        //     .Subscribe()
-        //     .DisposeWith(disposable);
-
-        Items = itemsCollection;
-
-        Selection.SelectionChanged += (sender, args) => { };
+        Observable.Interval(TimeSpan.FromSeconds(5))
+            .Do(_ => { Update().Tap(items => entriesCache.EditDiff(items, (a, b) => Equals(a.Key, b.Key))); })
+            .Subscribe()
+            .DisposeWith(disposable);
     }
+
+    public IObservable<IChangeSet<IDirectoryItem,string>> Entries { get; }
 
     private Task<Result<IEnumerable<IDirectoryItem>>> Update()
     {
@@ -67,7 +66,7 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
         return dirVms.CombineAndMap(fileVms, (a, b) => a.Concat(b));
     }
 
-    public ReadOnlyObservableCollection<IDirectoryItem> Items { get; set; }
+    public ReadOnlyObservableCollection<IDirectoryItem> Items { get; }
 
     public SelectionModel<IDirectoryItem> Selection { get; } = new() { SingleSelect = false };
 

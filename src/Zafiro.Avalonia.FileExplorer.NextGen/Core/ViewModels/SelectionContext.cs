@@ -1,24 +1,38 @@
+using System.Reactive;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using DynamicData;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
+using Zafiro.Avalonia.Misc;
+using Zafiro.Reactive;
 using Zafiro.UI;
+using DynamicData.Aggregation;
+using Optional;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 
-public class SelectionContext : ReactiveObject
+public class SelectionContext : ReactiveObject, ISelectionHandler
 {
-    public ISelectionHandler SelectionHandler { get; }
     private readonly CompositeDisposable disposables = new();
+    private readonly ObservableAsPropertyHelper<ReactiveCommand<Unit,Unit>> selectAll;
+    private readonly ObservableAsPropertyHelper<ReactiveCommand<Unit,Unit>> selectNone;
 
-    public SelectionContext(ISelectionHandler<IDirectoryItem, string> selectionHandler)
+    public SelectionContext(IObservable<DirectoryContentsViewModel> directories)
     {
-        SelectionHandler = selectionHandler;
-        selectionHandler.SelectionChanges
-            .Bind(out var selectedEntries)
-            .Subscribe()
-            .DisposeWith(disposables);
+        var selectionChanges = directories
+            .Select(x => new ObservableSelectionModel<IDirectoryItem, string>(x.Selection, item => item.Key))
+            .DisposePrevious()
+            .Select(x => x.Selection)
+            .Switch();
+
+        SelectionCount = selectionChanges.Count().Replay().RefCount();
+        TotalCount = directories.Select(x => x.Entries).Switch().Count().Replay().RefCount();
         
+        SelectionChanges = selectionChanges;
+        selectAll = directories.Select(model => ReactiveCommand.Create(() => model.Selection.SelectAll())).DisposePrevious().ToProperty(this, x => x.SelectAll);
+        selectNone = directories.Select(model => ReactiveCommand.Create(() => model.Selection.Clear())).DisposePrevious().ToProperty(this, x => x.SelectNone);
+
         // Copy = CreateCopyCommand(selectionHandler, explorerContext.Clipboard, selectedEntries);
         // Paste = CreatePasteCommand(directories, explorerContext.Clipboard, explorerContext.TransferManager);
         // Delete = CreateDeleteCommand(selectionHandler, explorerContext.TransferManager);
@@ -63,4 +77,9 @@ public class SelectionContext : ReactiveObject
     //     var deleteViewModel = new DeleteViewModel(selectionHandler.SelectionChanges, transferManager);
     //     return deleteViewModel.Delete;
     // }
+    public ReactiveCommand<Unit, Unit> SelectNone => selectNone.Value;
+    public ReactiveCommand<Unit, Unit> SelectAll => selectAll.Value;
+    public IObservable<int> SelectionCount { get; }
+    public IObservable<int> TotalCount { get; }
+    public IObservable<IChangeSet<IDirectoryItem, string>> SelectionChanges { get; }
 }
