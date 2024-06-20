@@ -5,7 +5,6 @@ using ReactiveUI.Validation.Extensions;
 using ReactiveUI.Validation.Helpers;
 using Zafiro.Avalonia.Dialogs;
 using Zafiro.CSharpFunctionalExtensions;
-using Zafiro.FileSystem.Core;
 using Zafiro.FileSystem.Mutable;
 using Zafiro.UI;
 
