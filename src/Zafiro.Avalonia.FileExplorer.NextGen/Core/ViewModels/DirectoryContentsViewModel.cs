@@ -30,19 +30,17 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
 
         var entries = entriesCache
             .Connect();
-        
+
         entries
-            .Sort(SortExpressionComparer<IDirectoryItem>.Descending(p => p is DirectoryViewModel).ThenByAscending(p => p.Name))
+            .Sort(SortExpressionComparer<IDirectoryItem>.Descending(p => p is DirectoryViewModel)
+                .ThenByAscending(p => p.Name))
             .Bind(out var itemsCollection)
             .DisposeMany()
             .Subscribe()
             .DisposeWith(disposable);
 
-        entries.Subscribe(set =>
-        {
-            Debug.WriteLine(set.JoinWithLines());
-        });
-        
+        entries.Subscribe(set => { Debug.WriteLine(set.JoinWithLines()); });
+
         entries
             .Transform(item => item.Deleted.Do(_ => entriesCache.Remove(item)).Subscribe())
             .DisposeMany()
@@ -56,7 +54,7 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
 
         Items = itemsCollection;
 
-        ((INotifyCollectionChanged)Items).CollectionChanged += (sender, args) => { };
+        Selection.SelectionChanged += (sender, args) => { };
     }
 
     private Task<Result<IEnumerable<IDirectoryItem>>> Update()

@@ -1,5 +1,12 @@
+using System.Collections.ObjectModel;
+using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using Avalonia;
+using Avalonia.Input.Platform;
+using ReactiveUI;
+using ReactiveUI.Fody.Helpers;
+using Zafiro.Avalonia.Controls;
 using Zafiro.Avalonia.Dialogs.Simple;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem.Mutable;
@@ -24,10 +31,19 @@ public class ExplorerContext : IDisposable
         Dialog = dialog;
         var directories = pathNavigator.Directories.Values().Select(rooted => new DirectoryContentsViewModel(rooted, this)).Publish();
         Directory = directories;
+        
+        // var selectionModel = directories.Select(x => x.Selection);
+        // var selectionHandler = new SelectionHandler2<IDirectoryItem, string>(selectionModel, x => x.Key);
+        // selectionHandler.SelectionChanges.Subscribe(set => { });
         directories.Connect().DisposeWith(disposable);
+        // this.SelectionContext = new SelectionContext(selectionHandler);
     }
 
+    public SelectionContext SelectionContext { get; set; }
+
     public IObservable<DirectoryContentsViewModel> Directory { get; }
+    
+    [Reactive] public bool IsSelectionEnabled { get; set; }
 
     public void Dispose()
     {

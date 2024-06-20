@@ -13,10 +13,12 @@ namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 
 public class ToolBarViewModel : ReactiveValidationObject
 {
+    public ExplorerContext Context { get; }
     private readonly ObservableAsPropertyHelper<DirectoryContentsViewModel> currentDirectory;
 
     public ToolBarViewModel(ExplorerContext context)
     {
+        Context = context;
         currentDirectory = context.Directory.ToProperty(this, x => x.CurrentDirectory);
         
         CreateDirectory = ReactiveCommand.CreateFromTask(async () =>
