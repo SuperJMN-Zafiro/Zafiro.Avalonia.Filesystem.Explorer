@@ -122,7 +122,7 @@
                 </DockPanel>
             </Button.Content>
         </Button>
-        <Button Theme="{StaticResource TransparentButton}" Command="{Binding Copy}">
+        <Button Theme="{StaticResource TransparentButton}" Command="{Binding Context.Copy^}">
         	<Button.Content>
         		<DockPanel>
         			<Image Source="{StaticResource di_copy_xaml}" />
@@ -130,7 +130,7 @@
         		</DockPanel>
         	</Button.Content>
         </Button>
-        <Button Theme="{StaticResource TransparentButton}" Command="{Binding Paste}">
+        <Button Theme="{StaticResource TransparentButton}" Command="{Binding Context.Paste}">
         	<Button.Content>
         		<Panel>
         			<DockPanel>

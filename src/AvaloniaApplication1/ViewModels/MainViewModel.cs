@@ -1,5 +1,6 @@
 using System;
 using System.Reactive.Linq;
+using Avalonia.Input.Platform;
 using ReactiveUI;
 using Zafiro.Avalonia.Dialogs;
 using Zafiro.Avalonia.Dialogs.Simple;
@@ -12,9 +13,9 @@ namespace AvaloniaApplication1.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    public MainViewModel(IFileSystem fileSystem, INotificationService notificationService, IDialog dialogService)
+    public MainViewModel(IFileSystem fileSystem, INotificationService notificationService, IDialog dialogService, IClipboard clipboard)
     {
-        FileExplorer = new FileExplorer(fileSystem, notificationService, dialogService);
+        FileExplorer = new FileExplorer(fileSystem, notificationService, dialogService, clipboard);
         Observable.Timer(TimeSpan.FromSeconds(5), RxApp.MainThreadScheduler).SelectMany(l =>
         {
             return Observable.FromAsync(() => dialogService.ShowMessage("hola, tío", "holas"));

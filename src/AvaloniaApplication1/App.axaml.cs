@@ -27,8 +27,9 @@ public partial class App : Application
             () => new MainView(), 
             mv =>
             {
-                var notificationService = new NotificationService(new WindowNotificationManager(TopLevel.GetTopLevel(mv)));
-                return new MainViewModel(new DotNetFileSystem(new FileSystem()), notificationService, new DesktopDialog(this));
+                var topLevel = TopLevel.GetTopLevel(mv)!;
+                var notificationService = new NotificationService(new WindowNotificationManager(topLevel));
+                return new MainViewModel(new DotNetFileSystem(new FileSystem()), notificationService, new DesktopDialog(this), topLevel.Clipboard!);
             }, () => new MainWindow());
     }
 }

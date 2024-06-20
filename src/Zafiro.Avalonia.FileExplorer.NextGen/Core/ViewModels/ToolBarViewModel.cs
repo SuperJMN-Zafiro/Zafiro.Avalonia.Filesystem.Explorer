@@ -1,6 +1,12 @@
 using System.Reactive;
+using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using Avalonia;
+using Avalonia.Controls;
+using Avalonia.Controls.ApplicationLifetimes;
+using Avalonia.Input;
 using CSharpFunctionalExtensions;
+using DynamicData;
 using ReactiveUI;
 using ReactiveUI.Validation.Extensions;
 using ReactiveUI.Validation.Helpers;
@@ -34,7 +40,13 @@ public class ToolBarViewModel : ReactiveValidationObject
         });
 
         CreateDirectory.Values().HandleErrorsWith(context.NotificationService);
-        Copy = ReactiveCommand.Create(() => { });
+        Copy = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var clipboard = (((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime)!).MainWindow!.Clipboard;
+            var dataObject = new DataObject();
+            dataObject.Set("x-special/zafiro-copied-files", Context.SelectionContext.SelectionChanges);
+            await clipboard.SetDataObjectAsync(dataObject);
+        });
         Paste = ReactiveCommand.Create(() => { });
         Delete = ReactiveCommand.Create(() => { });
     }

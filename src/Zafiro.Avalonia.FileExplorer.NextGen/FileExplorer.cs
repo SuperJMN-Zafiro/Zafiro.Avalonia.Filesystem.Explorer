@@ -1,3 +1,4 @@
+using Avalonia.Input.Platform;
 using ReactiveUI;
 using Zafiro.Avalonia.Dialogs.Simple;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
@@ -10,12 +11,12 @@ public class FileExplorer : ReactiveObject
 {
     private readonly ObservableAsPropertyHelper<DirectoryContentsViewModel> contents;
 
-    public FileExplorer(IFileSystem fileSystem, INotificationService notificationService, IDialog dialog)
+    public FileExplorer(IFileSystem fileSystem, INotificationService notificationService, IDialog dialog, IClipboard clipboard)
     {
         FileSystem = fileSystem;
         PathNavigator = new PathNavigatorViewModel(fileSystem, notificationService);
         
-        var context = new ExplorerContext(PathNavigator, notificationService, fileSystem, dialog);
+        var context = new ExplorerContext(PathNavigator, notificationService, fileSystem, dialog,  clipboard);
         
         ToolBar = new ToolBarViewModel(context);
         contents = context.Directory.ToProperty(this, x => x.Contents);
