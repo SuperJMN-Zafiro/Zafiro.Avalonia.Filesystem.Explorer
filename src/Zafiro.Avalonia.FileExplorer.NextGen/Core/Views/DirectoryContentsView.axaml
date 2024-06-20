@@ -19,6 +19,6 @@
         </DataTemplate>
     </UserControl.DataTemplates>
     
-    <ListBox Theme="{StaticResource EasyListBox}" Selection="{Binding Selection}" c:Selection.EnableCheckBoxes="True" ItemsSource="{Binding Items}" />
+    <ListBox Theme="{StaticResource EasyListBox}" Selection="{Binding Selection}" c:Selection.EnableCheckBoxes="{Binding Context.IsSelectionEnabled}" ItemsSource="{Binding Items}" />
     
 </UserControl>

@@ -1,4 +1,5 @@
 using System.Reactive;
+using System.Reactive.Linq;
 using CSharpFunctionalExtensions;
 using ReactiveUI;
 using ReactiveUI.Validation.Extensions;
@@ -33,10 +34,18 @@ public class ToolBarViewModel : ReactiveValidationObject
         });
 
         CreateDirectory.Values().HandleErrorsWith(context.NotificationService);
+        Copy = ReactiveCommand.Create(() => { });
+        Paste = ReactiveCommand.Create(() => { });
+        Delete = ReactiveCommand.Create(() => { });
     }
+
+    public ReactiveCommand<Unit,Unit> Copy { get; }
+    public ReactiveCommand<Unit,Unit> Paste { get; }
+    public ReactiveCommand<Unit,Unit> Delete { get; }
 
     public ReactiveCommand<Unit, Maybe<Result<IMutableDirectory>>> CreateDirectory { get; set; }
 
 
     public DirectoryContentsViewModel CurrentDirectory => currentDirectory.Value;
+    public IObservable<bool> IsPasting => Observable.Return(false);
 }

@@ -2,8 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:nextGen="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen"
-             xmlns:behaviors="clr-namespace:Zafiro.Avalonia.Behaviors;assembly=Zafiro.Avalonia"
              xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels"
              xmlns:controls="clr-namespace:Zafiro.Avalonia.Controls;assembly=Zafiro.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
@@ -124,36 +122,36 @@
                 </DockPanel>
             </Button.Content>
         </Button>
-        <!-- <Button Theme="{StaticResource TransparentButton}" Command="{Binding Copy}"> -->
-        <!-- 	<Button.Content> -->
-        <!-- 		<DockPanel> -->
-        <!-- 			<Image Source="{StaticResource di_copy_xaml}" /> -->
-        <!-- 			<TextBlock>Copy</TextBlock> -->
-        <!-- 		</DockPanel> -->
-        <!-- 	</Button.Content> -->
-        <!-- </Button> -->
-        <!-- <Button Theme="{StaticResource TransparentButton}" Command="{Binding Paste}"> -->
-        <!-- 	<Button.Content> -->
-        <!-- 		<Panel> -->
-        <!-- 			<DockPanel> -->
-        <!-- 				<Image Source="{StaticResource di_paste_xaml}" /> -->
-        <!-- 				<TextBlock>Paste</TextBlock> -->
-        <!-- -->
-        <!-- 			</DockPanel> -->
-        <!-- 			<ProgressBar Margin="0 0 0 -3" IsIndeterminate="True" IsVisible="{Binding IsPasting^}" -->
-        <!--                                MinWidth="0" VerticalAlignment="Bottom" /> -->
-        <!-- 		</Panel> -->
-        <!-- 	</Button.Content> -->
-        <!-- </Button> -->
-        <!-- <Button Theme="{StaticResource TransparentButton}" Command="{Binding Delete}"> -->
-        <!-- 	<Button.Content> -->
-        <!-- 		<DockPanel> -->
-        <!-- 			<Image Source="{StaticResource di_bin_svgrepo_com_xaml}" /> -->
-        <!-- 			<TextBlock>Delete</TextBlock> -->
-        <!-- 		</DockPanel> -->
-        <!-- 	</Button.Content> -->
-        <!-- </Button> -->
-        <ToggleButton x:Name="ToggleButton" Theme="{StaticResource TransparentButton}" ToolTip.Tip="Enable Select Mode" IsChecked="{Binding Context.IsSelectionEnabled}">
+        <Button Theme="{StaticResource TransparentButton}" Command="{Binding Copy}">
+        	<Button.Content>
+        		<DockPanel>
+        			<Image Source="{StaticResource di_copy_xaml}" />
+        			<TextBlock>Copy</TextBlock>
+        		</DockPanel>
+        	</Button.Content>
+        </Button>
+        <Button Theme="{StaticResource TransparentButton}" Command="{Binding Paste}">
+        	<Button.Content>
+        		<Panel>
+        			<DockPanel>
+        				<Image Source="{StaticResource di_paste_xaml}" />
+        				<TextBlock>Paste</TextBlock>
+        
+        			</DockPanel>
+        			<ProgressBar Margin="0 0 0 -3" IsIndeterminate="True" IsVisible="{Binding IsPasting^}"
+                                       MinWidth="0" VerticalAlignment="Bottom" />
+        		</Panel>
+        	</Button.Content>
+        </Button>
+        <Button Theme="{StaticResource TransparentButton}" Command="{Binding Delete}">
+        	<Button.Content>
+        		<DockPanel>
+        			<Image Source="{StaticResource di_bin_svgrepo_com_xaml}" />
+        			<TextBlock>Delete</TextBlock>
+        		</DockPanel>
+        	</Button.Content>
+        </Button>
+        <ToggleButton x:Name="ToggleButton" Theme="{StaticResource TransparentButton}" ToolTip.Tip="Enable Select Mode" IsChecked="{Binding Context.IsSelectionEnabled, Mode=TwoWay}">
         	<ToggleButton.Content>
         		<DockPanel>
         			<PathIcon />

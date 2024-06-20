@@ -1,5 +1,6 @@
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Zafiro.Avalonia.Dialogs.Simple;
 using Zafiro.CSharpFunctionalExtensions;
@@ -9,7 +10,7 @@ using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 
-public class ExplorerContext : IDisposable
+public class ExplorerContext : ReactiveObject, IDisposable
 {
     private readonly CompositeDisposable disposable = new();
     public IPathNavigator PathNavigator { get; }
@@ -28,14 +29,14 @@ public class ExplorerContext : IDisposable
             .Select(rooted => new DirectoryContentsViewModel(rooted, this)).ReplayLastActive();
         Directory = directories;
         SelectionContext = new SelectionContext(directories);
-        //directories.Connect().DisposeWith(disposable);
     }
 
     public SelectionContext SelectionContext { get; set; }
 
     public IObservable<DirectoryContentsViewModel> Directory { get; }
 
-    [Reactive] public bool IsSelectionEnabled { get; set; }
+    [Reactive]
+    public bool IsSelectionEnabled { get; set; }
 
     public void Dispose()
     {
