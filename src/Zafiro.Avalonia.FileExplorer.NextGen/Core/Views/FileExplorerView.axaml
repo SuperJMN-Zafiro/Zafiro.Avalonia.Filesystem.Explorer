@@ -3,7 +3,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:nextGen="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen"
-             xmlns:views1="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.Views"
+             xmlns:v="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.Views"
+             xmlns:transfers="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers"
              mc:Ignorable="d" d:DesignWidth="400"
              x:Class="Zafiro.Avalonia.FileExplorer.NextGen.Core.Views.FileExplorerView"
              x:DataType="nextGen:FileExplorer"
@@ -20,8 +21,9 @@
     </UserControl.Styles>
     
     <DockPanel>
-        <views1:PathNavigatorView DataContext="{Binding PathNavigator}" DockPanel.Dock="Top" />
-        <views1:ToolBarView DataContext="{Binding ToolBar}" DockPanel.Dock="Top" />
-        <views1:DirectoryContentsView DataContext="{Binding Contents}" />
+        <v:PathNavigatorView DataContext="{Binding PathNavigator}" DockPanel.Dock="Top" />
+        <v:ToolBarView DataContext="{Binding ToolBar}" DockPanel.Dock="Top" />
+        <transfers:TransferManagerView DataContext="{Binding TransferManager}" DockPanel.Dock="Top" />
+        <v:DirectoryContentsView DataContext="{Binding Contents}" />
     </DockPanel>
 </UserControl>

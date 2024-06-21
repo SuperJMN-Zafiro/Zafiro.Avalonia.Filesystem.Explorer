@@ -6,6 +6,9 @@ using Avalonia.Markup.Xaml;
 using AvaloniaApplication1.ViewModels;
 using AvaloniaApplication1.Views;
 using Zafiro.Avalonia.Dialogs.Simple;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Clipboard;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers;
 using Zafiro.Avalonia.Mixins;
 using Zafiro.Avalonia.Notifications;
 using Zafiro.FileSystem.Local;
@@ -29,7 +32,11 @@ public partial class App : Application
             {
                 var topLevel = TopLevel.GetTopLevel(mv)!;
                 var notificationService = new NotificationService(new WindowNotificationManager(topLevel));
-                return new MainViewModel(new DotNetFileSystem(new FileSystem()), notificationService, new DesktopDialog(this), topLevel.Clipboard!);
+                var dotNetFileSystem = new DotNetFileSystem(new FileSystem());
+                var dialogService = new DesktopDialog(this);
+                ITransferManager transferManager = new TransferManager();
+                var clipboardService = new ClipboardService(topLevel.Clipboard!, transferManager);
+                return new MainViewModel(dotNetFileSystem, notificationService, dialogService, clipboardService, transferManager);
             }, () => new MainWindow());
     }
 }

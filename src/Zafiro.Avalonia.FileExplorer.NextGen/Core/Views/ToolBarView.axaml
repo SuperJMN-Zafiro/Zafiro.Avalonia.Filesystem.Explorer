@@ -130,7 +130,7 @@
         		</DockPanel>
         	</Button.Content>
         </Button>
-        <Button Theme="{StaticResource TransparentButton}" Command="{Binding Context.Paste}">
+        <Button Theme="{StaticResource TransparentButton}" Command="{Binding Context.Paste^}">
         	<Button.Content>
         		<Panel>
         			<DockPanel>

@@ -19,4 +19,11 @@
       <ProjectReference Include="..\..\..\Zafiro.UI\src\Zafiro.UI\Zafiro.UI.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Update="Core\ViewModels\Transfers\TransferManagerView.axaml.cs">
+        <DependentUpon>TransferManagerView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+
 </Project>
