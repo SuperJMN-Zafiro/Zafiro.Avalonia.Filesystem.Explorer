@@ -22,7 +22,7 @@ public class CreateDirectoryViewModel : ReactiveValidationObject
         this.ValidationRule(x => x.DirectoryName, s => !string.IsNullOrEmpty(s), "Can't be empty");
         var directories = context.PathNavigator.Directories.Values();
         var commands = directories.Select(dir =>
-            ReactiveCommand.CreateFromTask(() => dir.Value.CreateDirectory(DirectoryName!),
+            ReactiveCommand.CreateFromTask(() => dir.Value.CreateSubdirectory(DirectoryName!),
                 this.WhenAnyValue(x => x.DirectoryName).NotNull()));
         command = commands
             .ToProperty(this, x => x.CreateNewDirectory);

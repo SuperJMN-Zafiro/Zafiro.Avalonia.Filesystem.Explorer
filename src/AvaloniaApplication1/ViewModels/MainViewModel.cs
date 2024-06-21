@@ -14,10 +14,10 @@ namespace AvaloniaApplication1.ViewModels;
 
 public class MainViewModel : ViewModelBase
 {
-    public MainViewModel(IFileSystem fileSystem, INotificationService notificationService, IDialog dialogService,
+    public MainViewModel(IMutableFileSystem mutableFileSystem, INotificationService notificationService, IDialog dialogService,
         IClipboardService clipboardService, ITransferManager transferManager)
     {
-        FileExplorer = new FileExplorer(fileSystem, notificationService, dialogService, clipboardService, transferManager);
+        FileExplorer = new FileExplorer(mutableFileSystem, notificationService, dialogService, clipboardService, transferManager);
         Observable.Timer(TimeSpan.FromSeconds(5), RxApp.MainThreadScheduler).SelectMany(l =>
         {
             return Observable.FromAsync(() => dialogService.ShowMessage("hola, tío", "holas"));

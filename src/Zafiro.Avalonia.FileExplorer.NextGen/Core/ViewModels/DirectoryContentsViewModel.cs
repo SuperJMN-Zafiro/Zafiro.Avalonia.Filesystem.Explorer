@@ -77,7 +77,7 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
 
     public Task<Result<IMutableDirectory>> CreateDirectory(string name)
     {
-        return Directory.Value.CreateDirectory(name)
+        return Directory.Value.CreateSubdirectory(name)
             .Tap(dir =>
             {
                 entriesCache.AddOrUpdate(new DirectoryViewModel(Directory, dir, Context));

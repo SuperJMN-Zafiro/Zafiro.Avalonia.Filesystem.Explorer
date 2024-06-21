@@ -13,7 +13,12 @@ internal class TransferItem : ITransferItem
         Action = action;
     }
 
-    public string Key => Path.Combine(Name) + ItemType; 
+    public string Key => Path.Combine(Name) + ItemType;
+    public Task Start(CancellationToken cancellationToken)
+    {
+        return Action.Execute(cancellationToken);
+    }
+
     public ZafiroPath Path { get; }
     public string Name { get; }
 

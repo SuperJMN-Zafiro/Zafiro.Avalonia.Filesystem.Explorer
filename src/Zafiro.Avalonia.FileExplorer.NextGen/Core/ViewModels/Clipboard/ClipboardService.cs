@@ -11,7 +11,6 @@ using Zafiro.FileSystem.Actions;
 using Zafiro.FileSystem.Core;
 using Zafiro.FileSystem.Mutable;
 using IFile = Zafiro.FileSystem.Readonly.IFile;
-using IFileSystem = Zafiro.FileSystem.Mutable.IFileSystem;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Clipboard;
 
@@ -19,7 +18,7 @@ public class ClipboardService : IClipboardService
 {
     private const string MimeType = "x-special/zafiro-copied-files";
 
-    public ClipboardService(IClipboard clipboard, ITransferManager transferManager, IDictionary<string, Zafiro.FileSystem.Mutable.IFileSystem> fileSystems)
+    public ClipboardService(IClipboard clipboard, ITransferManager transferManager, IDictionary<string, Zafiro.FileSystem.Mutable.IMutableFileSystem> fileSystems)
     {
         Clipboard = clipboard;
         TransferManager = transferManager;
@@ -28,11 +27,11 @@ public class ClipboardService : IClipboardService
 
     public IClipboard Clipboard { get; }
     public ITransferManager TransferManager { get; }
-    public IDictionary<string, IFileSystem> FileSystems { get; }
+    public IDictionary<string, IMutableFileSystem> FileSystems { get; }
 
-    public async Task<Result> Copy(IEnumerable<IDirectoryItem> items, ZafiroPath sourcePath, IFileSystem fileSystem)
+    public async Task<Result> Copy(IEnumerable<IDirectoryItem> items, ZafiroPath sourcePath, IMutableFileSystem mutableFileSystem)
     {
-        var serialized = Serialize(items, sourcePath, fileSystem);
+        var serialized = Serialize(items, sourcePath, mutableFileSystem);
         var dataObject = new DataObject();
         dataObject.Set(MimeType, serialized);
         await Clipboard.SetDataObjectAsync(dataObject);
@@ -50,7 +49,7 @@ public class ClipboardService : IClipboardService
         return data;
     }
 
-    private string Serialize(IEnumerable<IDirectoryItem> selectedItems, ZafiroPath parentPath, IFileSystem fileSystem)
+    private string Serialize(IEnumerable<IDirectoryItem> selectedItems, ZafiroPath parentPath, IMutableFileSystem mutableFileSystem)
     {
         var toSerializationModel = ToSerializationModel(selectedItems, parentPath);
         return JsonSerializer.Serialize(toSerializationModel);
@@ -64,19 +63,18 @@ public class ClipboardService : IClipboardService
 
     public async Task<Result> Paste(List<CopiedClipboardEntry> items, IMutableDirectory destination)
     {
-        var combine = items.Select(x => Item(x, destination)).Combine();
-        var result = await combine;
-        result.Tap(enumerable =>
+        var combineResult = await items.Select(x => ToTransferItem(x, destination)).Combine();
+        combineResult.Tap(enumerable =>
         {
             TransferManager.Add(enumerable.ToArray());
         });
-        return result;
+        return combineResult;
     }
 
-    private Task<Result<ITransferItem>> Item(CopiedClipboardEntry entry, IMutableDirectory directory)
+    private Task<Result<ITransferItem>> ToTransferItem(CopiedClipboardEntry entry, IMutableDirectory directory)
     {
         var source = FromEntry(entry);
-        var destination = directory.CreateFile(entry.Name);
+        var destination = directory.Get(entry.Name);
 
         var copyAction = source.CombineAndMap(destination, (src, dst) => new CopyFileAction(src, dst));
         return copyAction.Map(action => (ITransferItem) new TransferItem(entry.Name, entry.ParentPath, entry.Type, action));

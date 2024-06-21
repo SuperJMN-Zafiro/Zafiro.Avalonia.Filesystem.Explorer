@@ -26,15 +26,15 @@ public class ExplorerContext : ReactiveObject, IDisposable
     private readonly CompositeDisposable disposable = new();
     public IPathNavigator PathNavigator { get; }
     public INotificationService NotificationService { get; }
-    public IFileSystem FileSystem { get; }
+    public IMutableFileSystem MutableFileSystem { get; }
     public IDialog Dialog { get; }
 
     public ExplorerContext(IPathNavigator pathNavigator, INotificationService notificationService,
-        IFileSystem fileSystem, IDialog dialog, IClipboardService clipboardService)
+        IMutableFileSystem mutableFileSystem, IDialog dialog, IClipboardService clipboardService)
     {
         PathNavigator = pathNavigator;
         NotificationService = notificationService;
-        FileSystem = fileSystem;
+        MutableFileSystem = mutableFileSystem;
         Dialog = dialog;
         var directories = pathNavigator.Directories.Values().Select(rooted => new DirectoryContentsViewModel(rooted, this)).ReplayLastActive();
         Directory = directories;
@@ -42,7 +42,7 @@ public class ExplorerContext : ReactiveObject, IDisposable
 
         SelectionContext.SelectionChanges.Bind(out var selectedItems).Subscribe().DisposeWith(disposable);
         
-        Copy = directories.Select(d => ReactiveCommand.CreateFromTask(() => clipboardService.Copy(selectedItems, d.Directory.Path, FileSystem)));
+        Copy = directories.Select(d => ReactiveCommand.CreateFromTask(() => clipboardService.Copy(selectedItems, d.Directory.Path, MutableFileSystem)));
         Paste = directories.Select(d => ReactiveCommand.CreateFromTask(() => clipboardService.Paste(d.Directory.Value)));
     }
     

@@ -33,12 +33,12 @@ public partial class App : Application
             {
                 var topLevel = TopLevel.GetTopLevel(mv)!;
                 var notificationService = new NotificationService(new WindowNotificationManager(topLevel));
-                var dotNetFileSystem = new DotNetFileSystem(new FileSystem());
+                var dotNetFileSystem = new DotNetMutableFileSystem(new FileSystem());
                 var dialogService = new DesktopDialog(this);
                 ITransferManager transferManager = new TransferManager();
-                var clipboardService = new ClipboardService(topLevel.Clipboard!, transferManager, new Dictionary<string, Zafiro.FileSystem.Mutable.IFileSystem>()
+                var clipboardService = new ClipboardService(topLevel.Clipboard!, transferManager, new Dictionary<string, Zafiro.FileSystem.Mutable.IMutableFileSystem>()
                 {
-                    ["local"] = (Zafiro.FileSystem.Mutable.IFileSystem)new DotNetFileSystem(new FileSystem()),
+                    ["local"] = (Zafiro.FileSystem.Mutable.IMutableFileSystem)new DotNetMutableFileSystem(new FileSystem()),
                 });
                 return new MainViewModel(dotNetFileSystem, notificationService, dialogService, clipboardService, transferManager);
             }, () => new MainWindow());

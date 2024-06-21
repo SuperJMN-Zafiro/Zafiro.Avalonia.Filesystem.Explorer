@@ -15,9 +15,9 @@ public class PathNavigatorViewModel : ReactiveObject, IPathNavigator
 {
     private readonly ObservableAsPropertyHelper<Maybe<IRooted<IMutableDirectory>>> currentDirectory;
 
-    public PathNavigatorViewModel(IFileSystem fileSystem, INotificationService notificationService)
+    public PathNavigatorViewModel(IMutableFileSystem mutableFileSystem, INotificationService notificationService)
     {
-        LoadRequestedPath = ReactiveCommand.CreateFromTask(() => RequestedPath.Map(fileSystem.Get));
+        LoadRequestedPath = ReactiveCommand.CreateFromTask(() => RequestedPath.Map(mutableFileSystem.Get));
         LoadRequestedPath.HandleErrorsWith(notificationService);
         IsNavigating = LoadRequestedPath.IsExecuting;
         History = new History();
