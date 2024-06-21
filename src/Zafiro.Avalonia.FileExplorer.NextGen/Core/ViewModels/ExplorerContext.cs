@@ -43,7 +43,7 @@ public class ExplorerContext : ReactiveObject, IDisposable
         SelectionContext.SelectionChanges.Bind(out var selectedItems).Subscribe().DisposeWith(disposable);
         
         Copy = directories.Select(d => ReactiveCommand.CreateFromTask(() => clipboardService.Copy(selectedItems, d.Directory.Path, FileSystem)));
-        Paste = directories.Select(_ => ReactiveCommand.CreateFromTask(() => clipboardService.Paste()));
+        Paste = directories.Select(d => ReactiveCommand.CreateFromTask(() => clipboardService.Paste(d.Directory.Value)));
     }
     
     public IObservable<ReactiveCommand<Unit, Result>> Paste { get; set; }

@@ -7,5 +7,5 @@ namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Clipboard;
 public interface IClipboardService
 {
     public Task<Result> Copy(IEnumerable<IDirectoryItem> items, ZafiroPath sourcePath, IFileSystem fileSystem);
-    public Task<Result> Paste();
+    public Task<Result> Paste(IMutableDirectory destination);
 }

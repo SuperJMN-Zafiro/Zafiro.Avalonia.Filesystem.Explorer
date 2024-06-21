@@ -21,7 +21,7 @@ public class TransferManager : ITransferManager, IDisposable
 
     public ReadOnlyObservableCollection<ITransferItem> Transfers { get; }
 
-    public void Add(ITransferItem item)
+    public void Add(params ITransferItem[] item)
     {
         cache.AddOrUpdate(item);
     }

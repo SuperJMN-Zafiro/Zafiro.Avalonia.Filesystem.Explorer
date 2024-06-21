@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.IO.Abstractions;
 using Avalonia;
 using Avalonia.Controls;
@@ -35,7 +36,10 @@ public partial class App : Application
                 var dotNetFileSystem = new DotNetFileSystem(new FileSystem());
                 var dialogService = new DesktopDialog(this);
                 ITransferManager transferManager = new TransferManager();
-                var clipboardService = new ClipboardService(topLevel.Clipboard!, transferManager);
+                var clipboardService = new ClipboardService(topLevel.Clipboard!, transferManager, new Dictionary<string, Zafiro.FileSystem.Mutable.IFileSystem>()
+                {
+                    ["local"] = (Zafiro.FileSystem.Mutable.IFileSystem)new DotNetFileSystem(new FileSystem()),
+                });
                 return new MainViewModel(dotNetFileSystem, notificationService, dialogService, clipboardService, transferManager);
             }, () => new MainWindow());
     }
