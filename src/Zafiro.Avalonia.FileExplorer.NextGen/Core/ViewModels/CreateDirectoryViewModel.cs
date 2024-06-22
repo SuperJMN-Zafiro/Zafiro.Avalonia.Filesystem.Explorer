@@ -1,13 +1,9 @@
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using CSharpFunctionalExtensions;
-using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using ReactiveUI.Validation.Extensions;
 using ReactiveUI.Validation.Helpers;
 using Zafiro.CSharpFunctionalExtensions;
-using Zafiro.FileSystem.Mutable;
 using Zafiro.Reactive;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;

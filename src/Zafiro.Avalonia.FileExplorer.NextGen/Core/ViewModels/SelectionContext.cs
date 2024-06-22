@@ -1,8 +1,6 @@
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using DynamicData;
-using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Zafiro.Avalonia.Misc;
 using Zafiro.Reactive;

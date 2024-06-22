@@ -1,18 +1,14 @@
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Input;
-using CSharpFunctionalExtensions;
 using DynamicData;
-using ReactiveUI;
 using ReactiveUI.Validation.Extensions;
 using ReactiveUI.Validation.Helpers;
 using Zafiro.Avalonia.Dialogs;
 using Zafiro.CSharpFunctionalExtensions;
-using Zafiro.FileSystem.Mutable;
 using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;

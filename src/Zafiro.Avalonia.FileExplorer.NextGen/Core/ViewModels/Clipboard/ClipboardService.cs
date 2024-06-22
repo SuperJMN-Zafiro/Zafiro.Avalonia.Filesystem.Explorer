@@ -3,13 +3,10 @@ using System.Text;
 using System.Text.Json;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
-using CSharpFunctionalExtensions;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.DataModel;
 using Zafiro.FileSystem.Actions;
-using Zafiro.FileSystem.Core;
-using Zafiro.FileSystem.Mutable;
 using IFile = Zafiro.FileSystem.Readonly.IFile;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Clipboard;

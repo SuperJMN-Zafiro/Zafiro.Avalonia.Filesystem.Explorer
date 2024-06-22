@@ -1,11 +1,6 @@
-using System.Reactive;
 using System.Reactive.Linq;
 using System.Reactive.Subjects;
-using CSharpFunctionalExtensions;
-using ReactiveUI;
 using Zafiro.Avalonia.Dialogs;
-using Zafiro.FileSystem.Core;
-using Zafiro.FileSystem.Mutable;
 using Zafiro.Reactive;
 using Zafiro.UI;
 

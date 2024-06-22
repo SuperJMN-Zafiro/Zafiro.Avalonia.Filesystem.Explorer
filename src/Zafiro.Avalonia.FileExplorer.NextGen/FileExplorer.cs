@@ -1,9 +1,7 @@
-using ReactiveUI;
 using Zafiro.Avalonia.Dialogs.Simple;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Clipboard;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers;
-using Zafiro.FileSystem.Mutable;
 using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen;

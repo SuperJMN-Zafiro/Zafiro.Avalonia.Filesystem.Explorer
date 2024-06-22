@@ -3,12 +3,9 @@ using System.Diagnostics;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using Avalonia.Controls.Selection;
-using CSharpFunctionalExtensions;
 using DynamicData;
 using DynamicData.Binding;
 using Zafiro.CSharpFunctionalExtensions;
-using Zafiro.FileSystem.Core;
-using Zafiro.FileSystem.Mutable;
 using Zafiro.Mixins;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
@@ -59,7 +56,7 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
     private Task<Result<IEnumerable<IDirectoryItem>>> Update()
     {
         var fileVms = Directory.Value.MutableFiles().Map(files => files.Where(file => !file.IsHidden))
-            .MapEach(x => (IDirectoryItem)new FileViewModel(Directory, x));
+            .MapEach(x => (IDirectoryItem)new FileViewModel(x));
         var dirVms = Directory.Value.MutableDirectories().Map(files => files.Where(file => !file.IsHidden))
             .MapEach(x => (IDirectoryItem)new DirectoryViewModel(Directory, x, Context));
 

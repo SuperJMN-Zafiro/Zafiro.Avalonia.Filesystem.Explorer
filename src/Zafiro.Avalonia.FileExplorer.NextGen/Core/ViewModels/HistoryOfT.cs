@@ -1,5 +1,3 @@
-﻿using Zafiro.FileSystem.Core;
-
-namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
+﻿namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 
 public class History : History<ZafiroPath>;

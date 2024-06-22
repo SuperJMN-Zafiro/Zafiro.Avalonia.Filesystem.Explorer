@@ -1,7 +1,3 @@
-using System.Reactive;
-using CSharpFunctionalExtensions;
-using ReactiveUI;
-
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 
 public class History<T> : ReactiveObject, IHistory<T>

@@ -1,5 +1,4 @@
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers;
-using Zafiro.FileSystem.Core;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Clipboard;
 

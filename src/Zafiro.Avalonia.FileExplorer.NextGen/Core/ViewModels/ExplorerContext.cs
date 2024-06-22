@@ -1,21 +1,10 @@
-using System.Collections.ObjectModel;
-using System.Reactive;
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Text.Unicode;
-using Avalonia.Input;
-using CSharpFunctionalExtensions;
 using DynamicData;
-using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Zafiro.Avalonia.Dialogs.Simple;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Clipboard;
 using Zafiro.CSharpFunctionalExtensions;
-using Zafiro.FileSystem.Core;
-using Zafiro.FileSystem.Mutable;
-using Zafiro.Mixins;
 using Zafiro.Reactive;
 using Zafiro.UI;
 
@@ -44,11 +33,19 @@ public class ExplorerContext : ReactiveObject, IDisposable
         
         Copy = directories.Select(d => ReactiveCommand.CreateFromTask(() => clipboardService.Copy(selectedItems, d.Directory.Path, MutableFileSystem)));
         Paste = directories.Select(d => ReactiveCommand.CreateFromTask(() => clipboardService.Paste(d.Directory.Value)));
+        Delete = ReactiveCommand.CreateFromTask(async () =>
+        {
+            var deletes = selectedItems.Select(item => item.Delete);
+            IEnumerable<IObservable<Result>> executes = deletes.Select(x => x.Execute());
+            var merged = executes.Merge();
+            var list = await merged.ToList();
+            return list.Combine();
+        });
     }
     
-    public IObservable<ReactiveCommand<Unit, Result>> Paste { get; set; }
+    public IObservable<ReactiveCommand<Unit, Result>> Paste { get; }
 
-    public IObservable<ReactiveCommand<Unit, Result>> Copy { get; set; }
+    public IObservable<ReactiveCommand<Unit, Result>> Copy { get; }
 
     public SelectionContext SelectionContext { get; set; }
 
@@ -56,6 +53,8 @@ public class ExplorerContext : ReactiveObject, IDisposable
 
     [Reactive]
     public bool IsSelectionEnabled { get; set; }
+
+    public ReactiveCommand<Unit, Result> Delete { get; }
 
     public void Dispose()
     {
