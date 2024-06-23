@@ -13,10 +13,9 @@ public class TransferManager : ITransferManager, IDisposable
     {
         cache.Connect()
             .Bind(out var transfers)
-            .OnItemAdded(x => x.Start(CancellationToken.None))
             .Subscribe()
             .DisposeWith(disposable);
-        
+
         Transfers = transfers;
     }
 

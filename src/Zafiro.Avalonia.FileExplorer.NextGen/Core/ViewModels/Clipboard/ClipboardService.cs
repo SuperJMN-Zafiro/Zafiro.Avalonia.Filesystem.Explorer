@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.Json;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
+using MoreLinq.Extensions;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.DataModel;
@@ -38,6 +39,7 @@ public class ClipboardService : IClipboardService
     public Task<Result> Paste(IMutableDirectory destination)
     {
         var data = Result.Try(() => Clipboard.GetDataAsync(MimeType))
+            .EnsureNotNull("Nothing to paste")
             .Map(o => (byte[]?)o!)
             .Map(bytes => Encoding.UTF8.GetString(bytes))
             .Map(s => JsonSerializer.Deserialize<List<CopiedClipboardEntry>>(s))
@@ -61,9 +63,11 @@ public class ClipboardService : IClipboardService
     public async Task<Result> Paste(List<CopiedClipboardEntry> items, IMutableDirectory destination)
     {
         var combineResult = await items.Select(x => ToTransferItem(x, destination)).Combine();
-        combineResult.Tap(enumerable =>
+        combineResult.Tap(transferItems =>
         {
-            TransferManager.Add(enumerable.ToArray());
+            var transferItemsArray = transferItems.ToArray();
+            TransferManager.Add(transferItemsArray);
+            transferItemsArray.ForEach(x => x.StartCommand.Start.Execute().Subscribe());
         });
         return combineResult;
     }
