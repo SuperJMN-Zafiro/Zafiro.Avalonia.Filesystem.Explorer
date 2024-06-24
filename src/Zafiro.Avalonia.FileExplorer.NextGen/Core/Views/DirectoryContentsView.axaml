@@ -22,7 +22,7 @@
     <UserControl.KeyBindings>
         <KeyBinding Command="{Binding Context.Copy^}" Gesture="Ctrl+C" />
         <KeyBinding Command="{Binding Context.Paste^}" Gesture="Ctrl+V" />
-        <KeyBinding Command="{Binding Context.Delete}" Gesture="Delete" />
+        <KeyBinding Command="{Binding Context.Delete^}" Gesture="Delete" />
     </UserControl.KeyBindings>
     
     <ListBox Theme="{StaticResource EasyListBox}" Selection="{Binding Selection}" c:Selection.EnableCheckBoxes="{Binding Context.IsSelectionEnabled}" ItemsSource="{Binding Items}" />

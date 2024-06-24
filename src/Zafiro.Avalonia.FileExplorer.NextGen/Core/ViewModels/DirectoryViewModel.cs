@@ -23,12 +23,9 @@ public class DirectoryViewModel: ReactiveObject, IDirectoryItem
             context.PathNavigator.SetAndLoad(parent.Path.Combine(directory.Name));
         });
         
-        Delete = ReactiveCommand.CreateFromObservable(() =>
+        Delete = ReactiveCommand.CreateFromTask(() =>
         {
-            return Observable.FromAsync(() => context.Dialog.ShowConfirmation($"Delete {Name}",
-                $"Do you really want to delete the folder {Name}?"))
-                .Trues()
-                .SelectMany(_ => directory.Delete().Tap(() => deleteSubject.OnNext(Unit.Default)));
+            return directory.Delete().Tap(() => deleteSubject.OnNext(Unit.Default));
         });
 
         Delete.HandleErrorsWith(context.NotificationService);

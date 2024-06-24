@@ -36,20 +36,7 @@ public class ToolBarViewModel : ReactiveValidationObject
         });
 
         CreateDirectory.Values().HandleErrorsWith(context.NotificationService);
-        Copy = ReactiveCommand.CreateFromTask(async () =>
-        {
-            var clipboard = (((IClassicDesktopStyleApplicationLifetime)Application.Current!.ApplicationLifetime)!).MainWindow!.Clipboard;
-            var dataObject = new DataObject();
-            dataObject.Set("x-special/zafiro-copied-files", Context.SelectionContext.SelectionChanges);
-            await clipboard.SetDataObjectAsync(dataObject);
-        });
-        Paste = ReactiveCommand.Create(() => { });
-        Delete = ReactiveCommand.Create(() => { });
     }
-
-    public ReactiveCommand<Unit,Unit> Copy { get; }
-    public ReactiveCommand<Unit,Unit> Paste { get; }
-    public ReactiveCommand<Unit,Unit> Delete { get; }
 
     public ReactiveCommand<Unit, Maybe<Result<IMutableDirectory>>> CreateDirectory { get; set; }
 

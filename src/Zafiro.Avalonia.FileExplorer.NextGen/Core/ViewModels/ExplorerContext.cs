@@ -2,6 +2,7 @@ using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using DynamicData;
 using ReactiveUI.Fody.Helpers;
+using Zafiro.Avalonia.Dialogs;
 using Zafiro.Avalonia.Dialogs.Simple;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Clipboard;
 using Zafiro.CSharpFunctionalExtensions;
@@ -39,14 +40,19 @@ public class ExplorerContext : ReactiveObject, IDisposable
         }));
         
         Paste = directories.Select(d => ReactiveCommand.CreateFromTask(() => clipboardService.Paste(d.Directory.Value)));
-        Delete = ReactiveCommand.CreateFromTask(async () =>
+        Delete = directories.Select(d => ReactiveCommand.CreateFromTask(async () =>
         {
-            var deletes = selectedItems.Select(item => item.Delete);
-            IEnumerable<IObservable<Result>> executes = deletes.Select(x => x.Execute());
-            var merged = executes.Merge();
-            var list = await merged.ToList();
-            return list.Combine();
-        });
+            var confirm = await Dialog.ShowConfirmation($"Delete", $"Do you really want to delete the selected items?");
+            if (confirm)
+            {
+                var deletes = selectedItems.Select(item => item.Delete).ToList();
+                var executes = deletes.Select(x => x.Execute());
+                var executionResults = await executes.Merge().ToList();
+                return executionResults.Combine();
+            }
+
+            return Result.Success();
+        }));
     }
     
     public IObservable<ReactiveCommand<Unit, Result>> Paste { get; }
@@ -60,7 +66,7 @@ public class ExplorerContext : ReactiveObject, IDisposable
     [Reactive]
     public bool IsSelectionEnabled { get; set; }
 
-    public ReactiveCommand<Unit, Result> Delete { get; }
+    public IObservable<ReactiveCommand<Unit, Result>> Delete { get; }
 
     public void Dispose()
     {
