@@ -5,6 +5,7 @@
              xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels"
              xmlns:controls="clr-namespace:Zafiro.Avalonia.Controls;assembly=Zafiro.Avalonia"
              xmlns:transfers="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers"
+             xmlns:converters="clr-namespace:Zafiro.Avalonia.Converters;assembly=Zafiro.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.NextGen.Core.Views.ToolBarView"
              x:CompileBindings="True"
@@ -160,13 +161,18 @@
         </ToggleButton>
         <controls:SelectionControl Selection="{Binding Context.SelectionContext}"
                                    IsVisible="{Binding #ToggleButton.IsChecked}" />
-        <Button Theme="{StaticResource TransparentButton}" Padding="0" x:Name="TransfersButtom">
+        <Button Opacity="{Binding IsTransferring^, FallbackValue=0, Converter={x:Static converters:BoolOpacityConverters.BoolToOpacity}}" DataContext="{Binding Context.TransferManager}" Theme="{StaticResource TransparentButton}" Padding="0" x:Name="TransfersButton">
             <Button.Flyout>
-                <Flyout Target="TransfersButtom" Placement="Bottom">
-                    <transfers:TransferManagerView DataContext="{Binding Context.TransferManager}" />
+                <Flyout Placement="Bottom">
+                    <transfers:TransferManagerView  />
                 </Flyout>
             </Button.Flyout>
-            <controls:ProgressCircle Width="25" Height="25" Progress="{Binding Context.TransferManager.Progress^}" />
+            <controls:ProgressCircle Width="25" Height="25" Progress="{Binding Progress^}" />
+            <Button.Transitions>
+                <Transitions>
+                    <DoubleTransition Property="Opacity" Duration="0:0:1"></DoubleTransition>
+                </Transitions>
+            </Button.Transitions>
         </Button>
     </StackPanel>
 </UserControl>

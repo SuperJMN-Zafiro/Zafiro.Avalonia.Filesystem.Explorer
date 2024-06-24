@@ -1,3 +1,4 @@
+using System.Reactive.Concurrency;
 using System.Reactive.Linq;
 using Zafiro.Actions;
 using Zafiro.UI;
@@ -10,7 +11,7 @@ internal class TransferItem : ReactiveObject, ITransferItem
     {
         Description = description;
         Action = action;
-        Start = ReactiveCommand.CreateFromTask(ct => Action.Execute(ct));
+        Start = ReactiveCommand.CreateFromTask(ct => Action.Execute(ct, NewThreadScheduler.Default));
         Progress = action.Progress;
     }
 

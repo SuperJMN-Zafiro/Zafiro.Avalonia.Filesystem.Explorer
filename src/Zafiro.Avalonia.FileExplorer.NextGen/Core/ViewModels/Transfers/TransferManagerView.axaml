@@ -12,11 +12,15 @@
         <ListBox ItemsSource="{Binding Transfers}">
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="transfers:ITransferItem">
-                    <DockPanel>
-                        <Button Content="Start" Command="{Binding Start}" DockPanel.Dock="Right" VerticalAlignment="Center" />
-                        <controls:ProgressCircle Width="120" Progress="{Binding Progress^.Value}" DockPanel.Dock="Right" />
-                        <TextBlock Text="{Binding Description}" />
-                    </DockPanel>
+                    <StackPanel>
+                        <TextBlock FontSize="12" Text="{Binding Description}" />
+                        <DockPanel>
+                            <Button Content="x" Command="{Binding Start}" DockPanel.Dock="Right"
+                                    VerticalAlignment="Center" />
+                            <ProgressBar Width="100" Maximum="{Binding Progress^.Total}"
+                                         Value="{Binding Progress^.Current}" DockPanel.Dock="Right" />
+                        </DockPanel>
+                    </StackPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

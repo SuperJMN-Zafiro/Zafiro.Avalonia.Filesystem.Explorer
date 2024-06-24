@@ -24,7 +24,14 @@ public class TransferManager : ITransferManager, IDisposable
         // var total = items.Connect().TransformOnObservable(item => item.Progress.Select(x => x.Total)).Sum(l => l);
         // Progress = total.Where(l => l > 0).WithLatestFrom(current, (t, c) => c / t);
         Progress = items.Connect().TransformOnObservable(x => x.Progress.Select(y => y.Value)).Avg(d => d);
+        
+        IsTransferring = items.Connect(suppressEmptyChangeSets: false)
+            .FilterOnObservable(x => x.Start.IsExecuting)
+            .Count()
+            .Select(i => i > 0);
     }
+
+    public IObservable<bool> IsTransferring { get; }
 
     public IObservable<double> Progress { get; }
 

@@ -24,7 +24,6 @@
     <DockPanel>
         <v:PathNavigatorView DataContext="{Binding PathNavigator}" DockPanel.Dock="Top" />
         <v:ToolBarView DataContext="{Binding ToolBar}" DockPanel.Dock="Top" />
-        <vt:TransferManagerView DataContext="{Binding TransferManager}" DockPanel.Dock="Top" />
         <v:DirectoryContentsView DataContext="{Binding Contents}" />
     </DockPanel>
 </UserControl>
