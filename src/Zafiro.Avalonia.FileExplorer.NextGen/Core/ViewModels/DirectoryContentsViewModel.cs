@@ -55,10 +55,10 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
 
     private Task<Result<IEnumerable<IDirectoryItem>>> Update()
     {
-        var fileVms = Directory.Value.MutableFiles().Map(files => files.Where(file => !file.IsHidden))
-            .MapEach(x => (IDirectoryItem)new FileViewModel(x));
-        var dirVms = Directory.Value.MutableDirectories().Map(files => files.Where(file => !file.IsHidden))
-            .MapEach(x => (IDirectoryItem)new DirectoryViewModel(Directory, x, Context));
+        Func<IMutableFile, IDirectoryItem> selector = x => (IDirectoryItem)new FileViewModel(x);
+        var fileVms = FunctionalMixin.ManyMap(Directory.Value.MutableFiles().Map(files => files.Where(file => !file.IsHidden)), selector);
+        Func<IMutableDirectory, IDirectoryItem> selector1 = x => (IDirectoryItem)new DirectoryViewModel(Directory, x, Context);
+        var dirVms = FunctionalMixin.ManyMap(Directory.Value.MutableDirectories().Map(files => files.Where(file => !file.IsHidden)), selector1);
 
         return dirVms.CombineAndMap(fileVms, (a, b) => a.Concat(b));
     }

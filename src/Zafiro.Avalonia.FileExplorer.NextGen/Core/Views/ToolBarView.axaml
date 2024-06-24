@@ -123,42 +123,44 @@
             </Button.Content>
         </Button>
         <Button Theme="{StaticResource TransparentButton}" Command="{Binding Context.Copy^}">
-        	<Button.Content>
-        		<DockPanel>
-        			<Image Source="{StaticResource di_copy_xaml}" />
-        			<TextBlock>Copy</TextBlock>
-        		</DockPanel>
-        	</Button.Content>
+            <Button.Content>
+                <DockPanel>
+                    <Image Source="{StaticResource di_copy_xaml}" />
+                    <TextBlock>Copy</TextBlock>
+                </DockPanel>
+            </Button.Content>
         </Button>
         <Button Theme="{StaticResource TransparentButton}" Command="{Binding Context.Paste^}">
-        	<Button.Content>
-        		<Panel>
-        			<DockPanel>
-        				<Image Source="{StaticResource di_paste_xaml}" />
-        				<TextBlock>Paste</TextBlock>
-        
-        			</DockPanel>
-        			<ProgressBar Margin="0 0 0 -3" IsIndeterminate="True" IsVisible="{Binding IsPasting^}"
-                                       MinWidth="0" VerticalAlignment="Bottom" />
-        		</Panel>
-        	</Button.Content>
+            <Button.Content>
+                <Panel>
+                    <DockPanel>
+                        <Image Source="{StaticResource di_paste_xaml}" />
+                        <TextBlock>Paste</TextBlock>
+
+                    </DockPanel>
+                    <ProgressBar Margin="0 0 0 -3" IsIndeterminate="True" IsVisible="{Binding IsPasting^}"
+                                 MinWidth="0" VerticalAlignment="Bottom" />
+                </Panel>
+            </Button.Content>
         </Button>
         <Button Theme="{StaticResource TransparentButton}" Command="{Binding Context.Delete}">
-        	<Button.Content>
-        		<DockPanel>
-        			<Image Source="{StaticResource di_bin_svgrepo_com_xaml}" />
-        			<TextBlock>Delete</TextBlock>
-        		</DockPanel>
-        	</Button.Content>
+            <Button.Content>
+                <DockPanel>
+                    <Image Source="{StaticResource di_bin_svgrepo_com_xaml}" />
+                    <TextBlock>Delete</TextBlock>
+                </DockPanel>
+            </Button.Content>
         </Button>
-        <ToggleButton x:Name="ToggleButton" Theme="{StaticResource TransparentButton}" ToolTip.Tip="Enable Select Mode" IsChecked="{Binding Context.IsSelectionEnabled, Mode=TwoWay}">
-        	<ToggleButton.Content>
-        		<DockPanel>
-        			<PathIcon />
-        			<TextBlock VerticalAlignment="Center">Select</TextBlock>
-        		</DockPanel>
-        	</ToggleButton.Content>
+        <ToggleButton x:Name="ToggleButton" Theme="{StaticResource TransparentButton}" ToolTip.Tip="Enable Select Mode"
+                      IsChecked="{Binding Context.IsSelectionEnabled, Mode=TwoWay}">
+            <ToggleButton.Content>
+                <DockPanel>
+                    <PathIcon />
+                    <TextBlock VerticalAlignment="Center">Select</TextBlock>
+                </DockPanel>
+            </ToggleButton.Content>
         </ToggleButton>
-        <controls:SelectionControl Selection="{Binding Context.SelectionContext}" IsVisible="{Binding #ToggleButton.IsChecked}" />
+        <controls:SelectionControl Selection="{Binding Context.SelectionContext}"
+                                   IsVisible="{Binding #ToggleButton.IsChecked}" />
     </StackPanel>
 </UserControl>

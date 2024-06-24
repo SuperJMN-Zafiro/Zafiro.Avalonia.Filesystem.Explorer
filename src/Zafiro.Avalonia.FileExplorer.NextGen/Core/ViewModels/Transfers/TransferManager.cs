@@ -6,12 +6,12 @@ namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers;
 
 public class TransferManager : ITransferManager, IDisposable
 {
-    private SourceCache<ITransferItem, string> cache = new(item => item.Key);
+    private readonly SourceList<ITransferItem> items = new();
     private readonly CompositeDisposable disposable = new();
 
     public TransferManager()
     {
-        cache.Connect()
+        items.Connect()
             .Bind(out var transfers)
             .Subscribe()
             .DisposeWith(disposable);
@@ -23,12 +23,12 @@ public class TransferManager : ITransferManager, IDisposable
 
     public void Add(params ITransferItem[] item)
     {
-        cache.AddOrUpdate(item);
+        items.AddRange(item);
     }
 
     public void Dispose()
     {
-        cache.Dispose();
+        items.Dispose();
         disposable.Dispose();
     }
 }

@@ -1,12 +1,10 @@
-using System.IO.Abstractions;
 using System.Text;
 using System.Text.Json;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
-using MoreLinq.Extensions;
+using Zafiro.Actions;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers;
 using Zafiro.CSharpFunctionalExtensions;
-using Zafiro.DataModel;
 using Zafiro.FileSystem.Actions;
 using IFile = Zafiro.FileSystem.Readonly.IFile;
 
@@ -29,7 +27,7 @@ public class ClipboardService : IClipboardService
 
     public async Task<Result> Copy(IEnumerable<IDirectoryItem> items, ZafiroPath sourcePath, IMutableFileSystem mutableFileSystem)
     {
-        var serialized = Serialize(items, sourcePath, mutableFileSystem);
+        var serialized = Serialize(items, sourcePath);
         var dataObject = new DataObject();
         dataObject.Set(MimeType, serialized);
         await Clipboard.SetDataObjectAsync(dataObject);
@@ -48,7 +46,7 @@ public class ClipboardService : IClipboardService
         return data;
     }
 
-    private string Serialize(IEnumerable<IDirectoryItem> selectedItems, ZafiroPath parentPath, IMutableFileSystem mutableFileSystem)
+    private string Serialize(IEnumerable<IDirectoryItem> selectedItems, ZafiroPath parentPath)
     {
         var toSerializationModel = ToSerializationModel(selectedItems, parentPath);
         return JsonSerializer.Serialize(toSerializationModel);
@@ -62,23 +60,31 @@ public class ClipboardService : IClipboardService
 
     public async Task<Result> Paste(List<CopiedClipboardEntry> items, IMutableDirectory destination)
     {
-        var combineResult = await items.Select(x => ToTransferItem(x, destination)).Combine();
-        combineResult.Tap(transferItems =>
+        var transferItemResult = await GetAction(items, destination)
+            .Map(action => (ITransferItem)new TransferItem($"Copiando {action.Actions.Count} elementos a {destination}", action));
+        
+        transferItemResult.Tap(transferItem =>
         {
-            var transferItemsArray = transferItems.ToArray();
-            TransferManager.Add(transferItemsArray);
-            transferItemsArray.ForEach(x => x.StartCommand.Start.Execute().Subscribe());
+            TransferManager.Add(transferItem);
+            transferItem.StartCommand.Start.Execute().Subscribe();
         });
-        return combineResult;
+        
+        return transferItemResult;
     }
 
-    private Task<Result<ITransferItem>> ToTransferItem(CopiedClipboardEntry entry, IMutableDirectory directory)
+    private Task<Result<CompositeAction>> GetAction(List<CopiedClipboardEntry> items, IMutableDirectory directory)
+    {
+        var results = items.Select(entry => ToCopyAction(entry, directory));
+        var combine = results.Combine();
+        return combine.Map(actions => new CompositeAction(actions.ToArray()));
+    }
+
+    private Task<Result<IAction<LongProgress>>> ToCopyAction(CopiedClipboardEntry entry, IMutableDirectory directory)
     {
         var source = FromEntry(entry);
         var destination = directory.Get(entry.Name);
 
-        var copyAction = source.CombineAndMap(destination, (src, dst) => new CopyFileAction(src, dst));
-        return copyAction.Map(action => (ITransferItem) new TransferItem(entry.Name, entry.ParentPath, entry.Type, action));
+        return source.CombineAndMap(destination, (src, dst) => (IAction<LongProgress>)new CopyFileAction(src, dst));
     }
 
     private Task<Result<IFile>> FromEntry(CopiedClipboardEntry entry)
