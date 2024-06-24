@@ -23,7 +23,7 @@ public class TransferManager : ITransferManager, IDisposable
         // var current = items.Connect().TransformOnObservable(item => item.Progress.Select(x => x.Current)).Sum(l => l);
         // var total = items.Connect().TransformOnObservable(item => item.Progress.Select(x => x.Total)).Sum(l => l);
         // Progress = total.Where(l => l > 0).WithLatestFrom(current, (t, c) => c / t);
-        Progress = items.Connect().TransformOnObservable(x => x.Progress.Select(y => y.Value)).Avg(d => d);
+        Progress = items.Connect().TransformOnObservable(x => x.Progress.Select(y => y.Value)).Avg(d => d).Sample(TimeSpan.FromSeconds(1), RxApp.MainThreadScheduler);
         
         IsTransferring = items.Connect(suppressEmptyChangeSets: false)
             .FilterOnObservable(x => x.Start.IsExecuting)

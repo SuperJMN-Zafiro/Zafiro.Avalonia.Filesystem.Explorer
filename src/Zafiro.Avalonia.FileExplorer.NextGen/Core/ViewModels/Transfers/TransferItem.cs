@@ -1,7 +1,5 @@
 using System.Reactive.Concurrency;
-using System.Reactive.Linq;
 using Zafiro.Actions;
-using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers;
 
@@ -11,7 +9,11 @@ internal class TransferItem : ReactiveObject, ITransferItem
     {
         Description = description;
         Action = action;
-        Start = ReactiveCommand.CreateFromTask(ct => Action.Execute(ct, NewThreadScheduler.Default));
+        Start = ReactiveCommand.CreateFromTask(ct => Action.Execute(ct, new NewThreadScheduler(start => new Thread(start)
+        {
+             Priority = ThreadPriority.Normal,
+             IsBackground = true,
+        })));
         Progress = action.Progress;
     }
 
