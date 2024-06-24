@@ -1,12 +1,14 @@
 using System.Collections.ObjectModel;
 using System.Reactive.Disposables;
+using System.Reactive.Linq;
 using DynamicData;
+using DynamicData.Aggregation;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers;
 
 public class TransferManager : ITransferManager, IDisposable
 {
-    private readonly SourceList<ITransferItem> items = new();
+    private readonly SourceCache<ITransferItem, object> items = new(item => item);
     private readonly CompositeDisposable disposable = new();
 
     public TransferManager()
@@ -17,13 +19,20 @@ public class TransferManager : ITransferManager, IDisposable
             .DisposeWith(disposable);
 
         Transfers = transfers;
+
+        // var current = items.Connect().TransformOnObservable(item => item.Progress.Select(x => x.Current)).Sum(l => l);
+        // var total = items.Connect().TransformOnObservable(item => item.Progress.Select(x => x.Total)).Sum(l => l);
+        // Progress = total.Where(l => l > 0).WithLatestFrom(current, (t, c) => c / t);
+        Progress = items.Connect().TransformOnObservable(x => x.Progress.Select(y => y.Value)).Avg(d => d);
     }
+
+    public IObservable<double> Progress { get; }
 
     public ReadOnlyObservableCollection<ITransferItem> Transfers { get; }
 
     public void Add(params ITransferItem[] item)
     {
-        items.AddRange(item);
+        items.AddOrUpdate(item);
     }
 
     public void Dispose()

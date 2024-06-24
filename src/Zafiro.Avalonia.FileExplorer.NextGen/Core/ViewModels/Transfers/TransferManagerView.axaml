@@ -13,7 +13,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate DataType="transfers:ITransferItem">
                     <DockPanel>
-                        <controls:StoppableControl Content="Start" Command="{Binding StartCommand}" DockPanel.Dock="Right" VerticalAlignment="Center" />
+                        <Button Content="Start" Command="{Binding Start}" DockPanel.Dock="Right" VerticalAlignment="Center" />
                         <controls:ProgressCircle Width="120" Progress="{Binding Progress^.Value}" DockPanel.Dock="Right" />
                         <TextBlock Text="{Binding Description}" />
                     </DockPanel>

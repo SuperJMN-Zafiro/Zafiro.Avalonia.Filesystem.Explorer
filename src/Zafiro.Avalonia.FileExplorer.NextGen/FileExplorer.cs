@@ -17,7 +17,7 @@ public class FileExplorer : ReactiveObject
         TransferManager = transferManager;
         PathNavigator = new PathNavigatorViewModel(mutableFileSystem, notificationService);
 
-        var context = new ExplorerContext(PathNavigator, notificationService, mutableFileSystem, dialog, clipboardService);
+        var context = new ExplorerContext(PathNavigator, TransferManager, notificationService, mutableFileSystem, dialog, clipboardService);
 
         ToolBar = new ToolBarViewModel(context);
         contents = context.Directory.ToProperty(this, x => x.Contents);

@@ -5,6 +5,7 @@
              xmlns:nextGen="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen"
              xmlns:v="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.Views"
              xmlns:vt="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers"
+             xmlns:controls="clr-namespace:Zafiro.Avalonia.Controls;assembly=Zafiro.Avalonia"
              mc:Ignorable="d" d:DesignWidth="400"
              x:Class="Zafiro.Avalonia.FileExplorer.NextGen.Core.Views.FileExplorerView"
              x:DataType="nextGen:FileExplorer"

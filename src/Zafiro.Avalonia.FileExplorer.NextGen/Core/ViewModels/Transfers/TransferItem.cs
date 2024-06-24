@@ -10,13 +10,13 @@ internal class TransferItem : ReactiveObject, ITransferItem
     {
         Description = description;
         Action = action;
-        StartCommand = StoppableCommand.CreateFromTask(ct => Action.Execute(ct), Maybe.From(Observable.Return(true)));
+        Start = ReactiveCommand.CreateFromTask(ct => Action.Execute(ct));
         Progress = action.Progress;
     }
 
     public IObservable<LongProgress> Progress { get; }
 
-    public IStoppableCommand<Unit,Result> StartCommand { get; set; }
+    public ReactiveCommand<Unit, Result> Start { get; set; }
 
     public string Description { get; }
 

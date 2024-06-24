@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels"
              xmlns:controls="clr-namespace:Zafiro.Avalonia.Controls;assembly=Zafiro.Avalonia"
+             xmlns:transfers="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.NextGen.Core.Views.ToolBarView"
              x:CompileBindings="True"
@@ -154,13 +155,18 @@
         <ToggleButton x:Name="ToggleButton" Theme="{StaticResource TransparentButton}" ToolTip.Tip="Enable Select Mode"
                       IsChecked="{Binding Context.IsSelectionEnabled, Mode=TwoWay}">
             <ToggleButton.Content>
-                <DockPanel>
-                    <PathIcon />
-                    <TextBlock VerticalAlignment="Center">Select</TextBlock>
-                </DockPanel>
+                <TextBlock VerticalAlignment="Center">Select</TextBlock>
             </ToggleButton.Content>
         </ToggleButton>
         <controls:SelectionControl Selection="{Binding Context.SelectionContext}"
                                    IsVisible="{Binding #ToggleButton.IsChecked}" />
+        <Button Theme="{StaticResource TransparentButton}" Padding="0" x:Name="TransfersButtom">
+            <Button.Flyout>
+                <Flyout Target="TransfersButtom" Placement="Bottom">
+                    <transfers:TransferManagerView DataContext="{Binding Context.TransferManager}" />
+                </Flyout>
+            </Button.Flyout>
+            <controls:ProgressCircle Width="25" Height="25" Progress="{Binding Context.TransferManager.Progress^}" />
+        </Button>
     </StackPanel>
 </UserControl>

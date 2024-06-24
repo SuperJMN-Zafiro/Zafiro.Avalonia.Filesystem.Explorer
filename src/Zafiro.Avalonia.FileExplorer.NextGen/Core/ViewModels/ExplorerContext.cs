@@ -5,6 +5,7 @@ using ReactiveUI.Fody.Helpers;
 using Zafiro.Avalonia.Dialogs;
 using Zafiro.Avalonia.Dialogs.Simple;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Clipboard;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.Reactive;
 using Zafiro.UI;
@@ -15,14 +16,17 @@ public class ExplorerContext : ReactiveObject, IDisposable
 {
     private readonly CompositeDisposable disposable = new();
     public IPathNavigator PathNavigator { get; }
+    public ITransferManager TransferManager { get; }
     public INotificationService NotificationService { get; }
     public IMutableFileSystem MutableFileSystem { get; }
     public IDialog Dialog { get; }
 
-    public ExplorerContext(IPathNavigator pathNavigator, INotificationService notificationService,
+    public ExplorerContext(IPathNavigator pathNavigator, ITransferManager transferManager,
+        INotificationService notificationService,
         IMutableFileSystem mutableFileSystem, IDialog dialog, IClipboardService clipboardService)
     {
         PathNavigator = pathNavigator;
+        TransferManager = transferManager;
         NotificationService = notificationService;
         MutableFileSystem = mutableFileSystem;
         Dialog = dialog;
