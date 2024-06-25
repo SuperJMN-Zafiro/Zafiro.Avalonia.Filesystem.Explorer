@@ -28,7 +28,7 @@ public partial class App : Application
         base.OnFrameworkInitializationCompleted();
         
         this.Connect(
-            () => new MainView(), 
+            () => new TestView(), 
             mv =>
             {
                 var topLevel = TopLevel.GetTopLevel(mv)!;
@@ -40,7 +40,7 @@ public partial class App : Application
                 {
                     ["local"] = (Zafiro.FileSystem.Mutable.IMutableFileSystem)new DotNetMutableFileSystem(new FileSystem()),
                 });
-                return new MainViewModel(dotNetFileSystem, notificationService, dialogService, clipboardService, transferManager);
+                return new TestViewModel(dotNetFileSystem, notificationService);
             }, () => new MainWindow());
     }
 }

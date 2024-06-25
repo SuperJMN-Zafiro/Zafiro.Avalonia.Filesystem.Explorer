@@ -89,7 +89,7 @@ public class ClipboardService : IClipboardService
 
     private Task<Result<IFile>> FromEntry(CopiedClipboardEntry entry)
     {
-        var folder = FileSystems[entry.FileSystemKey].Get((ZafiroPath)entry.ParentPath).Map(x => x.Value);
+        var folder = FileSystems[entry.FileSystemKey].GetDirectory((ZafiroPath)entry.ParentPath).Map(x => x.Value);
         return folder.Bind(x => x.Files().Bind(x => x.TryFirst(x => Equals(x.Name, entry.Name)).ToResult("Not found")));
     }
 }
