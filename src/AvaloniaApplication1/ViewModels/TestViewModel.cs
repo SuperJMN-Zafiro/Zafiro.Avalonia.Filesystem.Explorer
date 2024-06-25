@@ -22,8 +22,8 @@ public class TestViewModel
         Copy = ReactiveCommand.CreateFromTask(() =>
         {
             var file1 = fs.GetFile(
-                "home/jmn/Descargas/15 Clasicos de Disney (Parte 2 de 3) (DVDRip) (EliteTorrent.net)/La Dama y el Vagabundo (1955).divx");
-            var file2 = fs.GetFile("home/jmn/Escritorio/Copied.divx");
+                "D:/Películas/Vaiana (microHD) (EliteTorrent.net).mkv");
+            var file2 = fs.GetFile("c:/users/jmn/Desktop/Copied.divx");
 
             return file1.CombineAndBind(file2, (a, b) => a.Value.GetContents()
                 .Map(data => new CopyFileAction(data, b.Value))
