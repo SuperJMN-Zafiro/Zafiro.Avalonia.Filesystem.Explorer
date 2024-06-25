@@ -9,5 +9,12 @@
              x:DataType="viewModels:TestViewModel">
     <DockPanel>
         <Button Command="{Binding Copy}" Content="Copy" />
+        <Button>
+            <Button.Flyout>
+                <Flyout>
+                    <ProgressBar IsIndeterminate="True" />
+                </Flyout>
+            </Button.Flyout>
+        </Button>
     </DockPanel>
 </UserControl>
