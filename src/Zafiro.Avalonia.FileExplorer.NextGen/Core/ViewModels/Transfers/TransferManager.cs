@@ -26,7 +26,7 @@ public class TransferManager : ITransferManager, IDisposable
         Progress = items.Connect().TransformOnObservable(x => x.Progress.Select(y => y.Value)).Avg(d => d).Sample(TimeSpan.FromSeconds(1), RxApp.MainThreadScheduler);
         
         IsTransferring = items.Connect(suppressEmptyChangeSets: false)
-            .FilterOnObservable(x => x.Start.IsExecuting)
+            .FilterOnObservable(x => x.Transfer.IsExecuting)
             .Count()
             .Select(i => i > 0);
     }

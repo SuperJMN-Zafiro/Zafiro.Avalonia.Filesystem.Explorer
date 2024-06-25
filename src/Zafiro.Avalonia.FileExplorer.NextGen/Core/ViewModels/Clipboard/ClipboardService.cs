@@ -66,7 +66,7 @@ public class ClipboardService : IClipboardService
         transferItemResult.Tap(transferItem =>
         {
             TransferManager.Add(transferItem);
-            transferItem.Start.Execute().Subscribe();
+            transferItem.Transfer.Start.Execute().Subscribe();
         });
         
         return transferItemResult;

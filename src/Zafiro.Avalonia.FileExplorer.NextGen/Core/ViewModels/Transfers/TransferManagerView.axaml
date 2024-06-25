@@ -6,21 +6,16 @@
              xmlns:controls="clr-namespace:Zafiro.Avalonia.Controls;assembly=Zafiro.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers.TransferManagerView"
-             x:CompileBindings="True"
              x:DataType="transfers:ITransferManager">
     <Border>
         <ListBox ItemsSource="{Binding Transfers}">
             <ListBox.ItemTemplate>
-                <DataTemplate DataType="transfers:ITransferItem">
-                    <StackPanel>
-                        <TextBlock FontSize="12" Text="{Binding Description}" />
-                        <DockPanel>
-                            <Button Content="x" Command="{Binding Start}" DockPanel.Dock="Right"
-                                    VerticalAlignment="Center" />
-                            <ProgressBar Width="100" Maximum="{Binding Progress^.Total}"
-                                         Value="{Binding Progress^.Current}" DockPanel.Dock="Right" />
-                        </DockPanel>
-                    </StackPanel>
+                <DataTemplate DataType="transfers:TransferItem">
+                    <DockPanel>
+                        <TextBlock FontSize="12" Text="{Binding Description}" DockPanel.Dock="Top" />
+                        <Button Theme="{StaticResource TransparentButton}" Content="x" Command="{Binding Transfer.Stop}" DockPanel.Dock="Bottom" VerticalAlignment="Center" />
+                        <ProgressBar Width="100" Maximum="{Binding Progress^.Total}"  Value="{Binding Progress^.Current}" />
+                    </DockPanel>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>

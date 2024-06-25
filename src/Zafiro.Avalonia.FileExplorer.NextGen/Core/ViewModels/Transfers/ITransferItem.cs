@@ -6,7 +6,7 @@ namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers;
 public interface ITransferItem
 {
     public string Description { get; }
-    ReactiveCommand<Unit, Result> Start { get; }
+    IStoppableCommand<Unit, Result> Transfer { get; }
 
     IObservable<LongProgress> Progress { get; }
 }
