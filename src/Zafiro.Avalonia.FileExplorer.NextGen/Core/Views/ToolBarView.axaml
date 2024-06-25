@@ -167,7 +167,7 @@
                     <transfers:TransferManagerView  />
                 </Flyout>
             </Button.Flyout>
-            <ProgressBar Width="25" Height="25" Minimum="0" Maximum="1" Value="{Binding Progress^}" />
+            <controls:ProgressCircle Width="40" Height="40" Progress="{Binding Progress^}" />
             <Button.Transitions>
                 <Transitions>
                     <DoubleTransition Property="Opacity" Duration="0:0:1"></DoubleTransition>
