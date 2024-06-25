@@ -29,7 +29,7 @@ public class TestViewModel
                 .Map(data => new CopyFileAction(data, b.Value))
                 .Bind(async fileAction =>
                 {
-                    using (fileAction.Progress.Select(x => x.Value).Subscribe(progressSubject))
+                    using (fileAction.Progress.Select(x => x.Value).Sample(TimeSpan.FromSeconds(1), RxApp.MainThreadScheduler).Subscribe(progressSubject))
                     {
                         return await fileAction.Execute().ConfigureAwait(false);
                     }

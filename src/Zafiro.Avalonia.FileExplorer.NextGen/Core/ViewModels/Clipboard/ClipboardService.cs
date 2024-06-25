@@ -39,7 +39,7 @@ public class ClipboardService : IClipboardService
         var data = Result.Try(() => Clipboard.GetDataAsync(MimeType))
             .EnsureNotNull("Nothing to paste")
             .Map(o => (byte[]?)o!)
-            .Map(bytes => Encoding.UTF8.GetString(bytes))
+            .Map(bytes => Encoding.Unicode.GetString(bytes).TrimEnd('\0'))
             .Map(s => JsonSerializer.Deserialize<List<CopiedClipboardEntry>>(s))
             .Bind(list => Paste(list!, destination));
 
