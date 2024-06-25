@@ -7,6 +7,7 @@ using Zafiro.Avalonia.FileExplorer.NextGen;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Clipboard;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers;
+using Zafiro.FileSystem.Actions;
 using Zafiro.FileSystem.Mutable;
 using Zafiro.UI;
 
@@ -18,10 +19,6 @@ public class MainViewModel : ViewModelBase
         IClipboardService clipboardService, ITransferManager transferManager)
     {
         FileExplorer = new FileExplorer(mutableFileSystem, notificationService, dialogService, clipboardService, transferManager);
-        Observable.Timer(TimeSpan.FromSeconds(5), RxApp.MainThreadScheduler).SelectMany(l =>
-        {
-            return Observable.FromAsync(() => dialogService.ShowMessage("hola, tío", "holas"));
-        }).Subscribe();
     }
 
     public FileExplorer FileExplorer { get; }
