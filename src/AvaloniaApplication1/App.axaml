@@ -2,7 +2,6 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              x:Class="AvaloniaApplication1.App"
              xmlns:local="using:AvaloniaApplication1"
-             xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;assembly=Zafiro.Avalonia.FileExplorer.NextGen"
              xmlns:dialogs="clr-namespace:Zafiro.Avalonia.Dialogs;assembly=Zafiro.Avalonia.Dialogs"
              xmlns:directoryContent="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.DirectoryContent;assembly=Zafiro.Avalonia.FileExplorer.NextGen"
              RequestedThemeVariant="Default">

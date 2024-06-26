@@ -3,16 +3,12 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:behaviors="clr-namespace:Zafiro.Avalonia.Behaviors;assembly=Zafiro.Avalonia"
-             xmlns:viewModels1="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels"
              xmlns:navigator="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.Navigator"
              mc:Ignorable="d" d:DesignWidth="400"
              x:Class="Zafiro.Avalonia.FileExplorer.NextGen.Core.Navigator.PathNavigatorView"
              x:DataType="navigator:PathNavigatorViewModel"
              x:CompileBindings="True">
-
-
     <UserControl.Resources>
-
         <DrawingGroup x:Key="BackXaml">
             <DrawingGroup.ClipGeometry>
                 <RectangleGeometry Rect="0.0,0.0,365.66441,650.39211" />
