@@ -40,11 +40,26 @@ public class ClipboardService : IClipboardService
         var data = Result.Try(() => Clipboard.GetDataAsync(MimeType))
             .EnsureNotNull("Nothing to paste")
             .Map(o => (byte[]?)o!)
-            .Map(bytes => Encoding.Unicode.GetString(bytes).TrimEnd('\0'))
+            .Map(bytes => Decode(bytes))
             .Map(s => JsonSerializer.Deserialize<List<CopiedClipboardEntry>>(s))
             .Bind(list => Paste(list!, destination));
 
         return data;
+    }
+
+    private static string Decode(byte[] bytes)
+    {
+        if (OperatingSystem.IsLinux())
+        {
+            return Encoding.UTF8.GetString(bytes);
+        }
+
+        if (OperatingSystem.IsWindows())
+        {
+            return Encoding.Unicode.GetString(bytes).TrimEnd('\0');    
+        }
+
+        throw new NotSupportedException("Can't decode clipboards content");
     }
 
     private string Serialize(IEnumerable<IDirectoryItem> selectedItems, ZafiroPath parentPath)

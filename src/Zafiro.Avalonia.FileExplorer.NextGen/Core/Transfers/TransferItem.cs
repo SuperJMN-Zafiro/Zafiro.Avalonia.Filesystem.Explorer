@@ -1,4 +1,5 @@
 using System.Reactive.Concurrency;
+using System.Reactive.Linq;
 using Zafiro.Actions;
 using Zafiro.UI;
 
@@ -15,7 +16,7 @@ internal class TransferItem : ReactiveObject, ITransferItem
              Priority = ThreadPriority.Normal,
              IsBackground = true,
         })), Maybe<IObservable<bool>>.None);
-        Progress = action.Progress;
+        Progress = action.Progress.Sample(TimeSpan.FromSeconds(1), RxApp.MainThreadScheduler);
     }
 
     public IObservable<LongProgress> Progress { get; }
