@@ -1,0 +1,28 @@
+using System.Reactive.Concurrency;
+using Zafiro.Actions;
+using Zafiro.UI;
+
+namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.Transfers;
+
+internal class TransferItem : ReactiveObject, ITransferItem
+{
+    public TransferItem(string description, IAction<LongProgress> action)
+    {
+        Description = description;
+        Action = action;
+        Transfer = StoppableCommand.CreateFromTask(ct => Action.Execute(ct, new NewThreadScheduler(start => new Thread(start)
+        {
+             Priority = ThreadPriority.Normal,
+             IsBackground = true,
+        })), Maybe<IObservable<bool>>.None);
+        Progress = action.Progress;
+    }
+
+    public IObservable<LongProgress> Progress { get; }
+
+    public IStoppableCommand<Unit, Result> Transfer { get; }
+
+    public string Description { get; }
+
+    public IAction<LongProgress> Action { get; }
+}

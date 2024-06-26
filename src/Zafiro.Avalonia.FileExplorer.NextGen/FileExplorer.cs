@@ -1,7 +1,10 @@
 using Zafiro.Avalonia.Dialogs.Simple;
-using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
-using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Clipboard;
-using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core.Clipboard;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core.DirectoryContent;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core.Navigator;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core.Toolbar;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core.Transfers;
 using Zafiro.UI;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen;

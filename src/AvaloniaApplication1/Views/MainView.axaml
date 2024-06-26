@@ -3,20 +3,20 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:viewModels1="clr-namespace:AvaloniaApplication1.ViewModels"
-             xmlns:viewModels2="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;assembly=Zafiro.Avalonia.FileExplorer.NextGen"
-             xmlns:views1="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.Views;assembly=Zafiro.Avalonia.FileExplorer.NextGen"
+             xmlns:directoryContent="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.DirectoryContent;assembly=Zafiro.Avalonia.FileExplorer.NextGen"
+             xmlns:nextGen="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen;assembly=Zafiro.Avalonia.FileExplorer.NextGen"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="AvaloniaApplication1.Views.MainView"
              x:DataType="viewModels1:MainViewModel">
 
     <UserControl.DataTemplates>
-        <DataTemplate DataType="viewModels2:FileViewModel">
+        <DataTemplate DataType="directoryContent:FileViewModel">
             <DockPanel>
                 <Button Command="{Binding Delete}" DockPanel.Dock="Right" Content="Delete"></Button>
                 <TextBlock Text="{Binding Name}"></TextBlock>
             </DockPanel>
         </DataTemplate>
-        <DataTemplate DataType="viewModels2:DirectoryViewModel">
+        <DataTemplate DataType="directoryContent:DirectoryViewModel">
             <DockPanel>
                 <!-- <Button Command="{Binding Delete}" DockPanel.Dock="Right" Content="Delete"></Button> -->
                 <TextBlock Text="{Binding Name}" />
@@ -24,5 +24,5 @@
         </DataTemplate>
     </UserControl.DataTemplates>
 
-    <views1:FileExplorerView DataContext="{Binding FileExplorer}" />
+    <nextGen:FileExplorerView DataContext="{Binding FileExplorer}" />
 </UserControl>

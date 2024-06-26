@@ -1,13 +1,8 @@
-using System;
-using System.Reactive.Linq;
-using ReactiveUI;
-using Zafiro.Avalonia.Dialogs;
 using Zafiro.Avalonia.Dialogs.Simple;
 using Zafiro.Avalonia.FileExplorer.NextGen;
-using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;
-using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Clipboard;
-using Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels.Transfers;
-using Zafiro.FileSystem.Actions;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core.Clipboard;
+using Zafiro.Avalonia.FileExplorer.NextGen.Core.Transfers;
 using Zafiro.FileSystem.Mutable;
 using Zafiro.UI;
 

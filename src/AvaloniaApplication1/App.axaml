@@ -4,6 +4,7 @@
              xmlns:local="using:AvaloniaApplication1"
              xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;assembly=Zafiro.Avalonia.FileExplorer.NextGen"
              xmlns:dialogs="clr-namespace:Zafiro.Avalonia.Dialogs;assembly=Zafiro.Avalonia.Dialogs"
+             xmlns:directoryContent="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.DirectoryContent;assembly=Zafiro.Avalonia.FileExplorer.NextGen"
              RequestedThemeVariant="Default">
 
     <Application.DataTemplates>
@@ -11,7 +12,7 @@
     </Application.DataTemplates>
 
     <dialogs:Dialog.Templates>
-        <DataTemplate DataType="viewModels:CreateDirectoryViewModel">
+        <DataTemplate DataType="directoryContent:CreateDirectoryViewModel">
             <Border Width="250" Height="80">
                 <TextBox VerticalAlignment="Center" Text="{Binding DirectoryName}" />
             </Border>

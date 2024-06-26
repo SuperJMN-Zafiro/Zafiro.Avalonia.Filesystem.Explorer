@@ -24,6 +24,39 @@
         <DependentUpon>TransferManagerView.axaml</DependentUpon>
         <SubType>Code</SubType>
       </Compile>
+      <Compile Update="Core\Navigator\PathNavigator.axaml.cs">
+        <DependentUpon>PathNavigator.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Core\DirectoryContent\DirectoryContentsView.axaml.cs">
+        <DependentUpon>DirectoryContentsView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Core\DirectoryContent\DirectoryItemView.axaml.cs">
+        <DependentUpon>DirectoryItemView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Core\DirectoryContent\FileItemView.axaml.cs">
+        <DependentUpon>FileItemView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="Core\Toolbar\ToolBarView.axaml.cs">
+        <DependentUpon>ToolBarView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+      <Compile Update="FileExplorerView.axaml.cs">
+        <DependentUpon>FileExplorerView.axaml</DependentUpon>
+        <SubType>Code</SubType>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <AdditionalFiles Include="Core\Transfers\TransferManagerView.axaml" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Core\ViewModels\" />
+      <Folder Include="Core\Views\" />
     </ItemGroup>
 
 </Project>

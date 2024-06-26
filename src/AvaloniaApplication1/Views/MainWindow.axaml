@@ -3,11 +3,12 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.ViewModels;assembly=Zafiro.Avalonia.FileExplorer.NextGen"
+        xmlns:directoryContent="clr-namespace:Zafiro.Avalonia.FileExplorer.NextGen.Core.DirectoryContent;assembly=Zafiro.Avalonia.FileExplorer.NextGen"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         Width="600"
         Height="500"
         x:Class="AvaloniaApplication1.Views.MainWindow"
-        x:DataType="viewModels:DirectoryContentsViewModel"
+        x:DataType="directoryContent:DirectoryContentsViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="AvaloniaApplication1">
 </Window>
