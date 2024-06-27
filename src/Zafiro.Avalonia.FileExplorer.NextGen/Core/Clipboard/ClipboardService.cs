@@ -1,3 +1,4 @@
+using System.Reactive.Linq;
 using System.Text;
 using System.Text.Json;
 using Avalonia.Input;
@@ -7,6 +8,7 @@ using Zafiro.Avalonia.FileExplorer.NextGen.Core.DirectoryContent;
 using Zafiro.Avalonia.FileExplorer.NextGen.Core.Transfers;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem.Actions;
+using Zafiro.Reactive;
 using IFile = Zafiro.FileSystem.Readonly.IFile;
 
 namespace Zafiro.Avalonia.FileExplorer.NextGen.Core.Clipboard;
@@ -15,12 +17,23 @@ public class ClipboardService : IClipboardService
 {
     private const string MimeType = "x-special/zafiro-copied-files";
 
-    public ClipboardService(IClipboard clipboard, ITransferManager transferManager, IDictionary<string, Zafiro.FileSystem.Mutable.IMutableFileSystem> fileSystems)
+    public ClipboardService(IClipboard clipboard, ITransferManager transferManager,
+        IDictionary<string, IMutableFileSystem> fileSystems)
     {
         Clipboard = clipboard;
         TransferManager = transferManager;
         FileSystems = fileSystems;
+        CanPaste = Observable.Timer(TimeSpan.FromSeconds(0.5))
+            .Repeat()
+            .Select(_ => Observable.FromAsync(() => GetCopiedItems().Map(list => list.Any()).Match(b => b, _ => false)))
+            .Concat()
+            .ReplayLastActive()
+            .ObserveOn(RxApp.MainThreadScheduler);
+        
+        CanPaste.Subscribe(b => { });
     }
+
+    public IObservable<bool> CanPaste { get; }
 
     public IClipboard Clipboard { get; }
     public ITransferManager TransferManager { get; }
@@ -37,14 +50,19 @@ public class ClipboardService : IClipboardService
 
     public Task<Result> Paste(IMutableDirectory destination)
     {
-        var data = Result.Try(() => Clipboard.GetDataAsync(MimeType))
-            .EnsureNotNull("Nothing to paste")
-            .Map(o => (byte[]?)o!)
-            .Map(bytes => Decode(bytes))
-            .Map(s => JsonSerializer.Deserialize<List<CopiedClipboardEntry>>(s))
-            .Bind(list => Paste(list!, destination));
+        var data = GetCopiedItems()
+            .Bind(clipboardEntries => Paste(clipboardEntries, destination));
 
         return data;
+    }
+
+    private Task<Result<List<CopiedClipboardEntry>>> GetCopiedItems()
+    {
+        return Result.Try(() => Clipboard.GetDataAsync(MimeType))
+            .EnsureNotNull("Nothing to paste")
+            .Map(o => (byte[]?)o!)
+            .Map(Decode)
+            .Map(s => JsonSerializer.Deserialize<List<CopiedClipboardEntry>>(s)!);
     }
 
     private static string Decode(byte[] bytes)

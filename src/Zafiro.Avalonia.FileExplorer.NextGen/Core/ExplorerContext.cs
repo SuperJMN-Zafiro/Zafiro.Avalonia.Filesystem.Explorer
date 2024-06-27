@@ -1,6 +1,7 @@
 using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using DynamicData;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using ReactiveUI.Fody.Helpers;
 using Zafiro.Avalonia.Dialogs;
 using Zafiro.Avalonia.Dialogs.Simple;
@@ -43,9 +44,10 @@ public class ExplorerContext : ReactiveObject, IDisposable
             var copy = clipboardService.Copy(selectedItems, d.Directory.Path, MutableFileSystem);
             copy.Tap(() => notificationService.Show("Copied"));
             return copy;
-        }));
+        }, SelectionContext.SelectionCount.Select(i => i > 0)));
         
-        Paste = directories.Select(d => ReactiveCommand.CreateFromTask(() => clipboardService.Paste(d.Directory.Value)));
+        Paste = directories.Select(d => ReactiveCommand.CreateFromTask(() => clipboardService.Paste(d.Directory.Value), clipboardService.CanPaste)).ReplayLastActive();
+        
         Delete = directories.Select(d => ReactiveCommand.CreateFromTask(async () =>
         {
             var confirm = await Dialog.ShowConfirmation($"Delete", $"Do you really want to delete the selected items?");
@@ -58,9 +60,9 @@ public class ExplorerContext : ReactiveObject, IDisposable
             }
 
             return Result.Success();
-        }));
+        }, SelectionContext.SelectionCount.Select(i => i > 0)));
     }
-    
+
     public IObservable<ReactiveCommand<Unit, Result>> Paste { get; }
 
     public IObservable<ReactiveCommand<Unit, Result>> Copy { get; }
