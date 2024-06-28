@@ -1,56 +1,6 @@
 <Styles xmlns="https://github.com/avaloniaui"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
-    <StyleInclude Source="avares://Zafiro.Avalonia/Styles.axaml" />
-    <StyleInclude Source="avares://Avalonia.Controls.DataGrid/Themes/Fluent.xaml"/>
-
-    <Styles.Resources>
-        <DrawingGroup x:Key="back_xaml">
-            <DrawingGroup.ClipGeometry>
-                <RectangleGeometry Rect="0.0,0.0,365.66441,650.39211"/>
-            </DrawingGroup.ClipGeometry>
-            <GeometryDrawing Brush="{DynamicResource Accent}">
-                <GeometryDrawing.Geometry>
-                    <PathGeometry Figures="m 329.604 644.86 c 8.8 8 22.4 7.2 30.4 -1.6 c 8 -8.8 7.2 -22.4 -1.6 -30.4 l -309.6 -280 c -8 -7.2 -8 -17.6 0 -24.8 L 358.404 37.66 c 8.8 -8 9.6 -21.6 2.4 -30.4 c -8 -8.8 -21.6 -9.6 -30.4 -2.4 L 20.8044 276.06 c -27.2 24 -28 64 -0.8 88.8 z" FillRule="NonZero"/>
-                </GeometryDrawing.Geometry>
-            </GeometryDrawing>
-        </DrawingGroup>
-        <DrawingImage Drawing="{StaticResource back_xaml}" x:Key="di_back_xaml"/>
-
-        <DrawingGroup x:Key="reload_xaml">
-            <DrawingGroup.ClipGeometry>
-                <RectangleGeometry Rect="0.0,0.0,18.0,21.10205"/>
-            </DrawingGroup.ClipGeometry>
-            <DrawingGroup>
-                <DrawingGroup.Transform>
-                    <MatrixTransform Matrix="1.0,0.0,0.0,1.0,-3.0,-0.89795"/>
-                </DrawingGroup.Transform>
-                <DrawingGroup>
-                    <GeometryDrawing>
-                        <GeometryDrawing.Pen>
-                            <Pen Brush="{DynamicResource Accent}" LineJoin="Miter" Thickness="2.0" LineCap="Round"/>
-                        </GeometryDrawing.Pen>
-                        <GeometryDrawing.Geometry>
-                            <PathGeometry Figures="m 4 13 c 0 4.4183 3.58172 8 8 8 c 4.4183 0 8 -3.5817 8 -8 C 20 8.58172 16.4183 5 12 5 C 10.4407 5 8.98566 5.44609 7.75543 6.21762"/>
-                        </GeometryDrawing.Geometry>
-                    </GeometryDrawing>
-                    <GeometryDrawing>
-                        <GeometryDrawing.Pen>
-                            <Pen Brush="{DynamicResource Accent}" LineJoin="Miter" Thickness="2.0" LineCap="Round"/>
-                        </GeometryDrawing.Pen>
-                        <GeometryDrawing.Geometry>
-                            <PathGeometry Figures="M 9.2384 1.89795 L 7.49856 5.83917 C 7.27552 6.34441 7.50429 6.9348 8.00954 7.15784 l 3.94126 1.73984"/>
-                        </GeometryDrawing.Geometry>
-                    </GeometryDrawing>
-                </DrawingGroup>
-            </DrawingGroup>
-        </DrawingGroup>
-        <DrawingImage Drawing="{StaticResource reload_xaml}" x:Key="di_reload_xaml"/>
-
-    </Styles.Resources>
-
-    <Style Selector="ListBox.Transparent">
-        <Setter Property="Background" Value="Transparent" />
-    </Style>
-
+    
+        <StyleInclude Source="avares://Zafiro.Avalonia/Styles.axaml" />
+        
 </Styles>
