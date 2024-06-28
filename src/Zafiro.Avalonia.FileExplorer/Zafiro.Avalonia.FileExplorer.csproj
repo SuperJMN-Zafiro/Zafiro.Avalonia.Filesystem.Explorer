@@ -1,24 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Nullable>enable</Nullable>
-    <LangVersion>latest</LangVersion>
-    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-  </PropertyGroup>
-  <Import Project="..\Common.props" />
-  <ItemGroup>
-    <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.Controls.DataGrid" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.Themes.Fluent" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.Fonts.Inter" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)" />
-    <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
-    <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)" />
-    <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.6" />
-    <PackageReference Include="ReactiveUI.Fody" Version="19.5.41" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\Zafiro.Avalonia\src\Zafiro.Avalonia\Zafiro.Avalonia.csproj" />
-    <ProjectReference Include="..\..\..\Zafiro.FileSystem\src\Zafiro.FileSystem\Zafiro.FileSystem.csproj" />
-  </ItemGroup>
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)"/>
+        <PackageReference Include="ReactiveUI.Fody" Version="19.5.41"/>
+        <PackageReference Include="ReactiveUI.Validation" Version="4.0.9"/>
+        <PackageReference Include="Zafiro.Avalonia" Version="5.0.0" />
+        <PackageReference Include="Zafiro.Avalonia.Dialogs" Version="5.0.0" />
+        <PackageReference Include="Zafiro.FileSystem" Version="7.0.0" />
+        <PackageReference Include="Zafiro.FileSystem.Actions" Version="7.0.0" />
+        <PackageReference Include="Zafiro.UI" Version="5.0.0" />
+    </ItemGroup>
+
 </Project>
