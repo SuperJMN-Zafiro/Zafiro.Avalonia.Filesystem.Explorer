@@ -11,7 +11,7 @@ using Zafiro.Avalonia.FileExplorer.Core.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Core.Transfers;
 using Zafiro.Avalonia.Mixins;
 using Zafiro.Avalonia.Notifications;
-using Zafiro.FileSystem.Local;
+using Zafiro.FileSystem.Local.Mutable;
 
 namespace SampleFileExplorer;
 
