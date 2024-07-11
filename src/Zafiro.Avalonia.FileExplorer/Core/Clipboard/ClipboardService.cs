@@ -116,7 +116,7 @@ public class ClipboardService : IClipboardService
     private Task<Result<IAction<LongProgress>>> ToCopyAction(CopiedClipboardEntry entry, IMutableDirectory directory)
     {
         var source = FromEntry(entry);
-        var destination = directory.Get(entry.Name);
+        var destination = directory.MutableFile(entry.Name).Bind(maybe => maybe.ToResult($"Can't find file {entry.Name} in {directory}"));
 
         return source.CombineAndMap(destination, (src, dst) => (IAction<LongProgress>)new CopyFileAction(src, dst));
     }
