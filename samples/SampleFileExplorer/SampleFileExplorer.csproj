@@ -27,6 +27,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\Zafiro.FileSystem\src\Zafiro.FileSystem.Local\Zafiro.FileSystem.Local.csproj" />
+      <ProjectReference Include="..\..\..\Zafiro.FileSystem\src\Zafiro.FileSystem.SeaweedFS\Zafiro.FileSystem.SeaweedFS.csproj" />
       <ProjectReference Include="..\..\src\Zafiro.Avalonia.FileExplorer\Zafiro.Avalonia.FileExplorer.csproj" />
     </ItemGroup>
     
