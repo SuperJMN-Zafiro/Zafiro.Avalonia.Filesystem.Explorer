@@ -8,6 +8,7 @@
 
     <ItemGroup>
         <PackageReference Include="Avalonia" Version="$(AvaloniaVersion)"/>
+        <PackageReference Include="Deadpikle.AvaloniaProgressRing" Version="0.10.6" />
         <PackageReference Include="ReactiveUI.Fody" Version="19.5.41"/>
         <PackageReference Include="ReactiveUI.Validation" Version="4.0.9"/>
         <PackageReference Include="Zafiro.Avalonia" Version="5.0.0" />
