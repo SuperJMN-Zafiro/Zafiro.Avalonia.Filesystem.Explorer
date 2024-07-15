@@ -126,7 +126,7 @@ public class ClipboardService : IClipboardService
     {
         var folder = FileSystems[entry.FileSystemKey].GetDirectory(entry.ParentPath);
         return folder
-            .Bind(x => x.MutableFilesObs().ToTask())
+            .Bind(x => x.Files().ToTask())
             .Bind(x => x
                 .TryFirst(mutableFile => Equals(mutableFile.Name, entry.Name))
                 .ToResult("Not found")

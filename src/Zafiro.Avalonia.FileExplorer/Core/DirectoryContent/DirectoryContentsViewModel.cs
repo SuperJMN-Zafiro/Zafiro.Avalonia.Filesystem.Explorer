@@ -64,9 +64,9 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
 
     private async Task<Result<IEnumerable<IDirectoryItem>>> Update()
     {
-        var fileVms = (await Directory.Value.MutableFilesObs().Map(files => files.Where(file => !file.IsHidden)))
+        var fileVms = (await Directory.Value.Files().Map(files => files.Where(file => !file.IsHidden)))
             .ManyMap(x => (IDirectoryItem)new FileViewModel(x));
-        var dirVms = (await Directory.Value.MutableDirectoriesObs().Map(files => files.Where(file => !file.IsHidden)))
+        var dirVms = (await Directory.Value.Directories().Map(files => files.Where(file => !file.IsHidden)))
             .ManyMap(x => (IDirectoryItem)new DirectoryViewModel(Directory, x, Context));
 
         return dirVms.CombineAndMap(fileVms, (a, b) => a.Concat(b));
