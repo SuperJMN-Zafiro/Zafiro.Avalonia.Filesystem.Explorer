@@ -7,6 +7,7 @@ using Avalonia.Input.Platform;
 using Zafiro.Actions;
 using Zafiro.Avalonia.FileExplorer.Core.DirectoryContent;
 using Zafiro.Avalonia.FileExplorer.Core.Transfers;
+using Zafiro.Avalonia.Storage;
 using Zafiro.CSharpFunctionalExtensions;
 using Zafiro.FileSystem.Actions;
 using Zafiro.Reactive;
@@ -19,7 +20,7 @@ public class ClipboardService : IClipboardService
     private const string MimeType = "x-special/zafiro-copied-files";
 
     public ClipboardService(IClipboard clipboard, ITransferManager transferManager,
-        IDictionary<string, IMutableFileSystem> fileSystems)
+        IEnumerable<IPlugin> fileSystems)
     {
         Clipboard = clipboard;
         TransferManager = transferManager;
@@ -38,7 +39,7 @@ public class ClipboardService : IClipboardService
 
     public IClipboard Clipboard { get; }
     public ITransferManager TransferManager { get; }
-    public IDictionary<string, IMutableFileSystem> FileSystems { get; }
+    public IEnumerable<IPlugin> FileSystems { get; }
 
     public async Task<Result> Copy(IEnumerable<IDirectoryItem> items, ZafiroPath sourcePath, IMutableFileSystem mutableFileSystem)
     {
@@ -117,14 +118,15 @@ public class ClipboardService : IClipboardService
     private async Task<Result<IAction<LongProgress>>> ToCopyAction(CopiedClipboardEntry entry, IMutableDirectory directory)
     {
         var source = await FromEntry(entry);
-        var destination = await directory.MutableFile(entry.Name).Bind(maybe => maybe.ToResult($"Can't find file {entry.Name} in {directory}"));
+        var destination = await directory.GetFile(entry.Name);
 
         return source.CombineAndMap(destination, (src, dst) => (IAction<LongProgress>)new CopyFileAction(src, dst));
     }
 
     private Task<Result<IFile>> FromEntry(CopiedClipboardEntry entry)
     {
-        var folder = FileSystems[entry.FileSystemKey].GetDirectory(entry.ParentPath);
+        var plugin = FileSystems.First(plugin => plugin.Identifier == entry.FileSystemKey);
+        var folder = plugin.FileSystem.GetDirectory(entry.ParentPath);
         return folder
             .Bind(x => x.Files().ToTask())
             .Bind(x => x

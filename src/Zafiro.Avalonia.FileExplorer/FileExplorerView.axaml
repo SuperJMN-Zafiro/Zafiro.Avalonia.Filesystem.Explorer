@@ -9,10 +9,6 @@
              mc:Ignorable="d" d:DesignWidth="400"
              x:Class="Zafiro.Avalonia.FileExplorer.FileExplorerView"
              x:DataType="nextGen:FileExplorer"
-             xmlns:i="clr-namespace:Avalonia.Xaml.Interactivity;assembly=Avalonia.Xaml.Interactivity"
-             xmlns:ia="clr-namespace:Avalonia.Xaml.Interactions.Core;assembly=Avalonia.Xaml.Interactions"
-             xmlns:core="clr-namespace:Zafiro.Avalonia.FileExplorer.Core"
-             xmlns:avaloniaProgressRing="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
              x:CompileBindings="True">
 
     <UserControl.Styles>
