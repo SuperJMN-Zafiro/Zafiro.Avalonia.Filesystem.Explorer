@@ -1,4 +1,5 @@
 using System.Reactive.Linq;
+using System.Reactive.Threading.Tasks;
 using System.Text;
 using System.Text.Json;
 using Avalonia.Input;
@@ -113,17 +114,22 @@ public class ClipboardService : IClipboardService
         return combine.Map(actions => new CompositeAction(actions.ToArray()));
     }
 
-    private Task<Result<IAction<LongProgress>>> ToCopyAction(CopiedClipboardEntry entry, IMutableDirectory directory)
+    private async Task<Result<IAction<LongProgress>>> ToCopyAction(CopiedClipboardEntry entry, IMutableDirectory directory)
     {
-        var source = FromEntry(entry);
-        var destination = directory.MutableFile(entry.Name).Bind(maybe => maybe.ToResult($"Can't find file {entry.Name} in {directory}"));
+        var source = await FromEntry(entry);
+        var destination = await directory.MutableFile(entry.Name).Bind(maybe => maybe.ToResult($"Can't find file {entry.Name} in {directory}"));
 
         return source.CombineAndMap(destination, (src, dst) => (IAction<LongProgress>)new CopyFileAction(src, dst));
     }
 
     private Task<Result<IFile>> FromEntry(CopiedClipboardEntry entry)
     {
-        var folder = FileSystems[entry.FileSystemKey].GetDirectory((ZafiroPath)entry.ParentPath);
-        return folder.Bind(x => x.Files().Bind(x => x.TryFirst(x => Equals(x.Name, entry.Name)).ToResult("Not found")));
+        var folder = FileSystems[entry.FileSystemKey].GetDirectory(entry.ParentPath);
+        return folder
+            .Bind(x => x.MutableFilesObs().ToTask())
+            .Bind(x => x
+                .TryFirst(mutableFile => Equals(mutableFile.Name, entry.Name))
+                .ToResult("Not found")
+                .Map(file => file.AsReadOnly()));
     }
 }
