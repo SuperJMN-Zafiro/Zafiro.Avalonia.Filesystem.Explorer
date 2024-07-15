@@ -13,8 +13,9 @@ using Zafiro.Avalonia.FileExplorer.Core.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Core.Transfers;
 using Zafiro.Avalonia.Mixins;
 using Zafiro.Avalonia.Notifications;
-using Zafiro.FileSystem.Local.Mutable;
+using Zafiro.FileSystem.Local;
 using Zafiro.FileSystem.SeaweedFS.Filer.Client;
+using FileSystem = Zafiro.FileSystem.Local.FileSystem;
 
 namespace SampleFileExplorer;
 
@@ -41,12 +42,12 @@ public class App : Application
             {
                 var topLevel = TopLevel.GetTopLevel(mv)!;
                 var notificationService = new NotificationService(new WindowNotificationManager(topLevel) { Position = NotificationPosition.BottomRight });
-                var fs = new Zafiro.FileSystem.SeaweedFS.Filesystem(new SeaweedFSClient(new HttpClient(){ BaseAddress = new Uri("http://192.168.1.29:8888")}));
+                var fs = new Zafiro.FileSystem.SeaweedFS.FileSystem(new SeaweedFSClient(new HttpClient(){ BaseAddress = new Uri("http://192.168.1.29:8888")}));
                 var dialogService = new DesktopDialog(this);
                 ITransferManager transferManager = new TransferManager();
                 var clipboardService = new ClipboardService(topLevel.Clipboard!, transferManager, new Dictionary<string, Zafiro.FileSystem.Mutable.IMutableFileSystem>()
                 {
-                    ["local"] = new DotNetMutableFileSystem(new FileSystem()),
+                    ["local"] = new FileSystem(new System.IO.Abstractions.FileSystem()),
                 });
                 return new MainViewModel(fs, notificationService, dialogService, clipboardService, transferManager);
             }, () => new MainWindow());
@@ -60,7 +61,7 @@ public class App : Application
             {
                 var topLevel = TopLevel.GetTopLevel(mv)!;
                 var notificationService = new NotificationService(new WindowNotificationManager(topLevel));
-                var fs = new Zafiro.FileSystem.SeaweedFS.Filesystem(new SeaweedFSClient(new HttpClient(){ BaseAddress = new Uri("http://192.168.1.29:8888")}));
+                var fs = new Zafiro.FileSystem.SeaweedFS.FileSystem(new SeaweedFSClient(new HttpClient(){ BaseAddress = new Uri("http://192.168.1.29:8888")}));
                 return new TestViewModel(fs, notificationService);
             }, () => new MainWindow());
     }
