@@ -22,16 +22,17 @@ public class ExplorerContext : ReactiveObject, IDisposable
     public INotificationService NotificationService { get; }
     public IMutableFileSystem MutableFileSystem { get; }
     public IDialog Dialog { get; }
+    public FileSystemConnection Connection { get; }
 
     public ExplorerContext(IPathNavigator pathNavigator, ITransferManager transferManager,
-        INotificationService notificationService,
-        IMutableFileSystem mutableFileSystem, IDialog dialog, IClipboardService clipboardService)
+        INotificationService notificationService, IDialog dialog, IClipboardService clipboardService, FileSystemConnection connection)
     {
         PathNavigator = pathNavigator;
         TransferManager = transferManager;
         NotificationService = notificationService;
-        MutableFileSystem = mutableFileSystem;
+        MutableFileSystem = connection.FileSystem;
         Dialog = dialog;
+        Connection = connection;
         var directories = pathNavigator.Directories.Values().Select(rooted => new DirectoryContentsViewModel(rooted, this)).ReplayLastActive();
         Directory = directories;
         SelectionContext = new SelectionContext(directories);
@@ -40,7 +41,7 @@ public class ExplorerContext : ReactiveObject, IDisposable
         
         Copy = directories.Select(d => ReactiveCommand.CreateFromTask(() =>
         {
-            var copy = clipboardService.Copy(selectedItems, d.Directory.Path, MutableFileSystem);
+            var copy = clipboardService.Copy(selectedItems, d.Directory.Path, connection);
             copy.Tap(() => notificationService.Show("Copied"));
             return copy;
         }, SelectionContext.SelectionCount.Select(i => i > 0)));

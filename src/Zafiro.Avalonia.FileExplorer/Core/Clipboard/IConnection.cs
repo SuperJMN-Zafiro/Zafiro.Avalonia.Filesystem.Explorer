@@ -1,6 +1,6 @@
 namespace Zafiro.Avalonia.FileExplorer.Core.Clipboard;
 
-public interface IPlugin
+public interface IConnection
 {
     public IMutableFileSystem FileSystem { get; }
     public string Name { get; }
