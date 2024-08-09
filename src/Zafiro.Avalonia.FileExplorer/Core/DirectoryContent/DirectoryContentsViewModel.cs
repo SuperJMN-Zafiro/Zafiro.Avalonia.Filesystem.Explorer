@@ -65,7 +65,7 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
     private async Task<Result<IEnumerable<IDirectoryItem>>> Update()
     {
         var fileVms = (await Directory.Value.Files().Map(files => files.Where(file => !file.IsHidden)))
-            .ManyMap(x => (IDirectoryItem)new FileViewModel(x));
+            .ManyMap(x => (IDirectoryItem)new FileViewModel(Directory.Value, x));
         var dirVms = (await Directory.Value.Directories().Map(files => files.Where(file => !file.IsHidden)))
             .ManyMap(x => (IDirectoryItem)new DirectoryViewModel(Directory, x, Context));
 

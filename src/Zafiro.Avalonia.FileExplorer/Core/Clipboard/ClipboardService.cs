@@ -24,7 +24,7 @@ public class ClipboardService : IClipboardService
         Clipboard = clipboard;
         TransferManager = transferManager;
         Connections = connections;
-        CanPaste = Observable.Timer(TimeSpan.FromSeconds(0.5))
+        CanPaste = Observable.Timer(TimeSpan.FromSeconds(0.5), AvaloniaScheduler.Instance)
             .Repeat()
             .Select(_ => Observable.FromAsync(() => GetCopiedItems().Map(list => list.Any()).Match(b => b, _ => false)))
             .Concat()
@@ -117,7 +117,7 @@ public class ClipboardService : IClipboardService
     private async Task<Result<IAction<LongProgress>>> ToCopyAction(CopiedClipboardEntry entry, IMutableDirectory directory)
     {
         var source = await FromEntry(entry);
-        var destination = await directory.GetFile(entry.Name);
+        var destination = await directory.CreateFile(entry.Name);
 
         return source.CombineAndMap(destination, (src, dst) => (IAction<LongProgress>)new CopyFileAction(src, dst));
     }

@@ -21,7 +21,7 @@ public class TestViewModel
         {
             var file1 = fs.GetFile(
                 "D:/Pel�culas/Vaiana (microHD) (EliteTorrent.net).mkv");
-            var file2 = fs.GetFile("c:/users/jmn/Desktop/Copied.divx");
+            var file2 = fs.GetDirectory("c:/users/jmn/Desktop").Bind(x => x.CreateFile("Copied.mkv"));
 
             return file1.CombineAndBind(file2, (a, b) => a.GetContents()
                 .Map(data => new CopyFileAction(data, b))
