@@ -16,25 +16,16 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
     public IRooted<IMutableDirectory> Directory { get; }
     public ExplorerContext Context { get; }
     private readonly CompositeDisposable disposable = new();
-    private readonly SourceCache<IDirectoryItem, string> entriesCache = new(x => x.Name);
 
     public DirectoryContentsViewModel(IRooted<IMutableDirectory> directory,
         ExplorerContext context)
     {
         Directory = directory;
         Context = context;
-
-        Entries = directory.Value.Children.Transform(node =>
-        {
-            return node switch
-            {
-                IMutableDirectory mutableDirectory => (IDirectoryItem) new DirectoryViewModel(Directory, mutableDirectory, context),
-                IMutableFile mutableFile => new FileViewModel(directory.Value, mutableFile),
-                _ => throw new ArgumentOutOfRangeException(nameof(node))
-            };
-        });
-
-        Entries
+        
+        directory.Value.Children
+            .DisposeMany()
+            .Transform(DirectoryItem)
             .Sort(SortExpressionComparer<IDirectoryItem>.Descending(p => p is DirectoryViewModel)
                 .ThenByAscending(p => p.Name))
             .Bind(out var itemsCollection)
@@ -43,14 +34,16 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
             .DisposeWith(disposable);
 
         Items = itemsCollection;
+    }
 
-       
-
-        Entries
-            .Transform(item => item.Deleted.Do(_ => entriesCache.Remove(item)).Subscribe())
-            .DisposeMany()
-            .Subscribe()
-            .DisposeWith(disposable);
+    private IDirectoryItem DirectoryItem(IMutableNode node)
+    {
+        return node switch
+        {
+            IMutableDirectory mutableDirectory => new DirectoryViewModel(Directory, mutableDirectory, Context),
+            IMutableFile mutableFile => new FileViewModel(Directory.Value, mutableFile),
+            _ => throw new ArgumentOutOfRangeException(nameof(node))
+        };
     }
 
     public IObservable<IChangeSet<IDirectoryItem,string>> Entries { get; }
@@ -62,14 +55,5 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
     public void Dispose()
     {
         disposable.Dispose();
-    }
-
-    public Task<Result<IMutableDirectory>> CreateDirectory(string name)
-    {
-        return Directory.Value.CreateSubdirectory(name)
-            .Tap(dir =>
-            {
-                entriesCache.AddOrUpdate(new DirectoryViewModel(Directory, dir, Context));
-            });
     }
 }

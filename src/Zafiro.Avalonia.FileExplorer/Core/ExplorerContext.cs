@@ -34,7 +34,7 @@ public class ExplorerContext : ReactiveObject, IDisposable
         Dialog = dialog;
         Connection = connection;
         var directories = pathNavigator.Directories.Values().Select(rooted => new DirectoryContentsViewModel(rooted, this)).ReplayLastActive();
-        Directory = directories;
+        Directory = directories.DisposePrevious();
         SelectionContext = new SelectionContext(directories);
 
         SelectionContext.SelectionChanges.Bind(out var selectedItems).Subscribe().DisposeWith(disposable);
