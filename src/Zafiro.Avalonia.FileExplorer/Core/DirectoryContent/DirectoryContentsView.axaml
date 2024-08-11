@@ -11,12 +11,6 @@
              xmlns:pr="clr-namespace:AvaloniaProgressRing;assembly=AvaloniaProgressRing"
              x:DataType="directoryContent:DirectoryContentsViewModel">
 
-    <Interaction.Behaviors>
-        <core:DataContextChangedTriggerBehavior>
-            <InvokeCommandAction Command="{Binding LoadContents}" />
-        </core:DataContextChangedTriggerBehavior>
-    </Interaction.Behaviors>
-
     <UserControl.DataTemplates>
         <DataTemplate DataType="directoryContent:FileViewModel">
             <directoryContent:FileItemView />
@@ -31,11 +25,5 @@
         <KeyBinding Command="{Binding Context.Paste^}" Gesture="Ctrl+V" />
         <KeyBinding Command="{Binding Context.Delete^}" Gesture="Delete" />
     </UserControl.KeyBindings>
-    <Panel>
-        <DockPanel>
-            <Button Command="{Binding LoadContents}" DockPanel.Dock="Top" />
-            <ListBox Theme="{StaticResource EasyListBox}" Selection="{Binding Selection}" c:Selection.EnableCheckBoxes="{Binding Context.IsSelectionEnabled}" ItemsSource="{Binding Items}" />
-        </DockPanel>
-        <pr:ProgressRing Height="200" Width="200" IsActive="{Binding IsBusy^}" />
-    </Panel>
+    <ListBox Theme="{StaticResource EasyListBox}" Selection="{Binding Selection}" c:Selection.EnableCheckBoxes="{Binding Context.IsSelectionEnabled}" ItemsSource="{Binding Items}" />
 </UserControl>

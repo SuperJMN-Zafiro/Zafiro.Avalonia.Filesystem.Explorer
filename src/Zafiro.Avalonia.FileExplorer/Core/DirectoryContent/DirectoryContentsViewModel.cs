@@ -21,14 +21,18 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
     public DirectoryContentsViewModel(IRooted<IMutableDirectory> directory,
         ExplorerContext context)
     {
-        LoadContents = ReactiveCommand.CreateFromTask(Update);
-        LoadContents.HandleErrorsWith(context.NotificationService).DisposeWith(disposable);
-        LoadContents.Successes().ObserveOn(RxApp.MainThreadScheduler).Subscribe(entries => entriesCache.AddOrUpdate(entries)).DisposeWith(disposable);
         Directory = directory;
         Context = context;
 
-        Entries = entriesCache
-            .Connect();
+        Entries = directory.Value.Children.Transform(node =>
+        {
+            return node switch
+            {
+                IMutableDirectory mutableDirectory => (IDirectoryItem) new DirectoryViewModel(Directory, mutableDirectory, context),
+                IMutableFile mutableFile => new FileViewModel(directory.Value, mutableFile),
+                _ => throw new ArgumentOutOfRangeException(nameof(node))
+            };
+        });
 
         Entries
             .Sort(SortExpressionComparer<IDirectoryItem>.Descending(p => p is DirectoryViewModel)
@@ -40,37 +44,16 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
 
         Items = itemsCollection;
 
-        Entries.Subscribe(set => { Debug.WriteLine(set.JoinWithLines()); });
+       
 
         Entries
             .Transform(item => item.Deleted.Do(_ => entriesCache.Remove(item)).Subscribe())
             .DisposeMany()
             .Subscribe()
             .DisposeWith(disposable);
-
-        // Observable.Timer(TimeSpan.FromSeconds(5))
-        //     .Do(_ => { Update().Tap(items => entriesCache.EditDiff(items, (a, b) => Equals(a.Key, b.Key))); })
-        //     .Repeat()
-        //     .Subscribe()
-        //     .DisposeWith(disposable);
-        IsBusy = LoadContents.IsExecuting;
     }
-
-    public IObservable<bool> IsBusy { get; }
-
-    public ReactiveCommand<Unit,Result<IEnumerable<IDirectoryItem>>> LoadContents { get; }
 
     public IObservable<IChangeSet<IDirectoryItem,string>> Entries { get; }
-
-    private async Task<Result<IEnumerable<IDirectoryItem>>> Update()
-    {
-        var fileVms = (await Directory.Value.Files().Map(files => files.Where(file => !file.IsHidden)))
-            .ManyMap(x => (IDirectoryItem)new FileViewModel(Directory.Value, x));
-        var dirVms = (await Directory.Value.Directories().Map(files => files.Where(file => !file.IsHidden)))
-            .ManyMap(x => (IDirectoryItem)new DirectoryViewModel(Directory, x, Context));
-
-        return dirVms.CombineAndMap(fileVms, (a, b) => a.Concat(b));
-    }
 
     public ReadOnlyObservableCollection<IDirectoryItem> Items { get; }
 

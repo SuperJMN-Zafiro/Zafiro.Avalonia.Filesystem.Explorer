@@ -4,6 +4,7 @@ using System.Text;
 using System.Text.Json;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
+using DynamicData;
 using Zafiro.Actions;
 using Zafiro.Avalonia.FileExplorer.Core.DirectoryContent;
 using Zafiro.Avalonia.FileExplorer.Core.Transfers;
@@ -127,7 +128,7 @@ public class ClipboardService : IClipboardService
         var plugin = Connections.First(plugin => plugin.Identifier == entry.FileSystemKey);
         var folder = plugin.FileSystem.GetDirectory(entry.ParentPath);
         return folder
-            .Bind(x => x.Files().ToTask())
+            .Map(x => x.Files().ToCollection().ToTask())
             .Bind(x => x
                 .TryFirst(mutableFile => Equals(mutableFile.Name, entry.Name))
                 .ToResult("Not found")
