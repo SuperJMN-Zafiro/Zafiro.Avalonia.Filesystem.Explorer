@@ -27,7 +27,7 @@ public class ToolBarViewModel : ReactiveValidationObject
                 x.Height = double.NaN;
             }));
             
-            return await result.Map(name => CurrentDirectory.Directory.Value.CreateSubdirectory(name));
+            return await result.Map(name => CurrentDirectory.RootedDir.Value.CreateSubdirectory(name));
         });
 
         CreateDirectory.Values().HandleErrorsWith(context.NotificationService);

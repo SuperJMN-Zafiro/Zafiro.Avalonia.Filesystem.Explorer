@@ -128,10 +128,8 @@ public class ClipboardService : IClipboardService
         var plugin = Connections.First(plugin => plugin.Identifier == entry.FileSystemKey);
         var folder = plugin.FileSystem.GetDirectory(entry.ParentPath);
         return folder
-            .Map(x => x.Files().ToCollection().ToTask())
+            .Map(x => x.GetFile(entry.Name))
             .Bind(x => x
-                .TryFirst(mutableFile => Equals(mutableFile.Name, entry.Name))
-                .ToResult("Not found")
                 .Map(file => file.AsReadOnly()));
     }
 }

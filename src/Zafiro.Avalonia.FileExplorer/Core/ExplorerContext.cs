@@ -33,6 +33,7 @@ public class ExplorerContext : ReactiveObject, IDisposable
         MutableFileSystem = connection.FileSystem;
         Dialog = dialog;
         Connection = connection;
+        
         var directories = pathNavigator.Directories.Values().Select(rooted => new DirectoryContentsViewModel(rooted, this)).ReplayLastActive();
         Directory = directories.DisposePrevious();
         SelectionContext = new SelectionContext(directories);
@@ -41,12 +42,12 @@ public class ExplorerContext : ReactiveObject, IDisposable
         
         Copy = directories.Select(d => ReactiveCommand.CreateFromTask(() =>
         {
-            var copy = clipboardService.Copy(selectedItems, d.Directory.Path, connection);
+            var copy = clipboardService.Copy(selectedItems, d.RootedDir.Path, connection);
             copy.Tap(() => notificationService.Show("Copied"));
             return copy;
         }, SelectionContext.SelectionCount.Select(i => i > 0)));
         
-        Paste = directories.Select(d => ReactiveCommand.CreateFromTask(() => clipboardService.Paste(d.Directory.Value), clipboardService.CanPaste)).ReplayLastActive();
+        Paste = directories.Select(d => ReactiveCommand.CreateFromTask(() => clipboardService.Paste(d.RootedDir.Value), clipboardService.CanPaste)).ReplayLastActive();
         
         Delete = directories.Select(d => ReactiveCommand.CreateFromTask(async () =>
         {

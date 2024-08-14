@@ -13,18 +13,20 @@ namespace Zafiro.Avalonia.FileExplorer.Core.DirectoryContent;
 
 public class DirectoryContentsViewModel : ViewModelBase, IDisposable
 {
-    public IRooted<IMutableDirectory> Directory { get; }
+    public IRooted<IMutableDirectory> RootedDir { get; }
     public ExplorerContext Context { get; }
     private readonly CompositeDisposable disposable = new();
 
-    public DirectoryContentsViewModel(IRooted<IMutableDirectory> directory,
+    public DirectoryContentsViewModel(IRooted<IMutableDirectory> rootedDir,
         ExplorerContext context)
     {
-        Directory = directory;
+        RootedDir = rootedDir;
         Context = context;
+
+        var watcher = new DirectoryWatcher(rootedDir.Value);
+        watcher.StartWatching().DisposeWith(disposable);
         
-        directory.Value.Children
-            .DisposeMany()
+        watcher.Items
             .Transform(DirectoryItem)
             .Sort(SortExpressionComparer<IDirectoryItem>.Descending(p => p is DirectoryViewModel)
                 .ThenByAscending(p => p.Name))
@@ -40,8 +42,8 @@ public class DirectoryContentsViewModel : ViewModelBase, IDisposable
     {
         return node switch
         {
-            IMutableDirectory mutableDirectory => new DirectoryViewModel(Directory, mutableDirectory, Context),
-            IMutableFile mutableFile => new FileViewModel(Directory.Value, mutableFile),
+            IMutableDirectory mutableDirectory => new DirectoryViewModel(RootedDir, mutableDirectory, Context),
+            IMutableFile mutableFile => new FileViewModel(RootedDir.Value, mutableFile),
             _ => throw new ArgumentOutOfRangeException(nameof(node))
         };
     }
