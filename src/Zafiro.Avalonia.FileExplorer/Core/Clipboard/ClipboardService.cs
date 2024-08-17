@@ -1,10 +1,8 @@
 using System.Reactive.Linq;
-using System.Reactive.Threading.Tasks;
 using System.Text;
 using System.Text.Json;
 using Avalonia.Input;
 using Avalonia.Input.Platform;
-using DynamicData;
 using Zafiro.Actions;
 using Zafiro.Avalonia.FileExplorer.Core.DirectoryContent;
 using Zafiro.Avalonia.FileExplorer.Core.Transfers;
@@ -27,12 +25,21 @@ public class ClipboardService : IClipboardService
         Connections = connections;
         CanPaste = Observable.Timer(TimeSpan.FromSeconds(0.5), AvaloniaScheduler.Instance)
             .Repeat()
-            .Select(_ => Observable.FromAsync(() => GetCopiedItems().Map(list => list.Any()).Match(b => b, _ => false)))
+            .Select(_ => GetCanPaste())
             .Concat()
             .ReplayLastActive()
             .ObserveOn(RxApp.MainThreadScheduler);
         
         CanPaste.Subscribe(b => { });
+    }
+
+    private IObservable<bool> GetCanPaste()
+    {
+        return Observable
+            .FromAsync
+            (
+                () => GetCopiedItems().Map(clipboardEntries => clipboardEntries.Any())
+            ).Successes();
     }
 
     public IObservable<bool> CanPaste { get; }
@@ -61,7 +68,7 @@ public class ClipboardService : IClipboardService
     private Task<Result<List<CopiedClipboardEntry>>> GetCopiedItems()
     {
         return Result.Try(() => Clipboard.GetDataAsync(MimeType))
-            .EnsureNotNull("Nothing to paste")
+            .EnsureNotNull("Nothing to copy")
             .Map(o => (byte[]?)o!)
             .Map(Decode)
             .Map(s => JsonSerializer.Deserialize<List<CopiedClipboardEntry>>(s)!);
@@ -94,7 +101,7 @@ public class ClipboardService : IClipboardService
         return selectedItems.Select(x => new CopiedClipboardEntry(x.Name, parentPath, connection.Identifier, x is FileViewModel ? ItemType.File : ItemType.Directory));
     }
 
-    public async Task<Result> Paste(List<CopiedClipboardEntry> items, IMutableDirectory destination)
+    private async Task<Result> Paste(List<CopiedClipboardEntry> items, IMutableDirectory destination)
     {
         var transferItemResult = await GetAction(items, destination)
             .Map(action => (ITransferItem)new TransferItem($"Copiando {action.Actions.Count} elementos a {destination}", action));
