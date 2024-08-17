@@ -13,11 +13,9 @@
         <PackageReference Include="ReactiveUI.Validation" Version="4.0.9"/>
         <PackageReference Include="Zafiro.Avalonia" Version="5.0.0" />
         <PackageReference Include="Zafiro.Avalonia.Dialogs" Version="5.0.0" />
+        <PackageReference Include="Zafiro.FileSystem" Version="9.0.0" />
+        <PackageReference Include="Zafiro.FileSystem.Actions" Version="9.0.0" />
         <PackageReference Include="Zafiro.UI" Version="5.0.0" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <ProjectReference Include="..\..\..\Zafiro.FileSystem\src\Zafiro.FileSystem.Actions\Zafiro.FileSystem.Actions.csproj" />
     </ItemGroup>
 
 </Project>

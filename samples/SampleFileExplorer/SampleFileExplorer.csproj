@@ -34,11 +34,11 @@
         <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
         <PackageReference Include="Zafiro.Avalonia" Version="5.0.0" />
         <PackageReference Include="Zafiro.Avalonia.Dialogs" Version="5.0.0" />
+        <PackageReference Include="Zafiro.FileSystem.Local" Version="9.0.0" />
+        <PackageReference Include="Zafiro.FileSystem.SeaweedFS" Version="9.0.0" />
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\..\Zafiro.FileSystem\src\Zafiro.FileSystem.Local\Zafiro.FileSystem.Local.csproj" />
-      <ProjectReference Include="..\..\..\Zafiro.FileSystem\src\Zafiro.FileSystem.SeaweedFS\Zafiro.FileSystem.SeaweedFS.csproj" />
       <ProjectReference Include="..\..\src\Zafiro.Avalonia.FileExplorer\Zafiro.Avalonia.FileExplorer.csproj" />
     </ItemGroup>
     
