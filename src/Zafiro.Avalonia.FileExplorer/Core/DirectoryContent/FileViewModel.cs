@@ -8,12 +8,12 @@ public class FileViewModel : IDirectoryItem
     private readonly Subject<Unit> deleteSubject = new();
     public IMutableFile File { get; }
 
-    public FileViewModel(IMutableFile file)
+    public FileViewModel(IMutableDirectory parent, IMutableFile file)
     {
         File = file;
         Delete = ReactiveCommand.CreateFromTask(() =>
         {
-            return file.Delete().Tap(() => deleteSubject.OnNext(Unit.Default));
+            return parent.DeleteFile(file.Name).Tap(() => deleteSubject.OnNext(Unit.Default));
         });
     }
 

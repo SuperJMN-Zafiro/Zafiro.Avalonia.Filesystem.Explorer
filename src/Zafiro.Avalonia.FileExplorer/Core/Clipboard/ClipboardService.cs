@@ -18,14 +18,14 @@ public class ClipboardService : IClipboardService
     private const string MimeType = "x-special/zafiro-copied-files";
 
     public ClipboardService(IClipboard clipboard, ITransferManager transferManager,
-        IDictionary<string, IMutableFileSystem> fileSystems)
+        IEnumerable<IConnection> connections)
     {
         Clipboard = clipboard;
         TransferManager = transferManager;
-        FileSystems = fileSystems;
-        CanPaste = Observable.Timer(TimeSpan.FromSeconds(0.5))
+        Connections = connections;
+        CanPaste = Observable.Timer(TimeSpan.FromSeconds(0.5), AvaloniaScheduler.Instance)
             .Repeat()
-            .Select(_ => Observable.FromAsync(() => GetCopiedItems().Map(list => list.Any()).Match(b => b, _ => false)))
+            .Select(_ => GetCanPaste())
             .Concat()
             .ReplayLastActive()
             .ObserveOn(RxApp.MainThreadScheduler);
@@ -33,15 +33,24 @@ public class ClipboardService : IClipboardService
         CanPaste.Subscribe(b => { });
     }
 
+    private IObservable<bool> GetCanPaste()
+    {
+        return Observable
+            .FromAsync
+            (
+                () => GetCopiedItems().Map(clipboardEntries => clipboardEntries.Any())
+            ).Successes();
+    }
+
     public IObservable<bool> CanPaste { get; }
 
     public IClipboard Clipboard { get; }
     public ITransferManager TransferManager { get; }
-    public IDictionary<string, IMutableFileSystem> FileSystems { get; }
+    public IEnumerable<IConnection> Connections { get; }
 
-    public async Task<Result> Copy(IEnumerable<IDirectoryItem> items, ZafiroPath sourcePath, IMutableFileSystem mutableFileSystem)
+    public async Task<Result> Copy(IEnumerable<IDirectoryItem> items, ZafiroPath sourcePath, FileSystemConnection connection)
     {
-        var serialized = Serialize(items, sourcePath);
+        var serialized = Serialize(items, sourcePath, connection);
         var dataObject = new DataObject();
         dataObject.Set(MimeType, serialized);
         await Clipboard.SetDataObjectAsync(dataObject);
@@ -59,7 +68,7 @@ public class ClipboardService : IClipboardService
     private Task<Result<List<CopiedClipboardEntry>>> GetCopiedItems()
     {
         return Result.Try(() => Clipboard.GetDataAsync(MimeType))
-            .EnsureNotNull("Nothing to paste")
+            .EnsureNotNull("Nothing to copy")
             .Map(o => (byte[]?)o!)
             .Map(Decode)
             .Map(s => JsonSerializer.Deserialize<List<CopiedClipboardEntry>>(s)!);
@@ -80,19 +89,19 @@ public class ClipboardService : IClipboardService
         throw new NotSupportedException("Can't decode clipboards content");
     }
 
-    private string Serialize(IEnumerable<IDirectoryItem> selectedItems, ZafiroPath parentPath)
+    private string Serialize(IEnumerable<IDirectoryItem> selectedItems, ZafiroPath parentPath, FileSystemConnection connection)
     {
-        var toSerializationModel = ToSerializationModel(selectedItems, parentPath);
+        var toSerializationModel = ToSerializationModel(selectedItems, parentPath, connection);
         return JsonSerializer.Serialize(toSerializationModel);
     }
 
     private IEnumerable<CopiedClipboardEntry> ToSerializationModel(IEnumerable<IDirectoryItem> selectedItems,
-        ZafiroPath parentPath)
+        ZafiroPath parentPath, FileSystemConnection connection)
     {
-        return selectedItems.Select(x => new CopiedClipboardEntry(x.Name, parentPath, "local", x is FileViewModel ? ItemType.File : ItemType.Directory));
+        return selectedItems.Select(x => new CopiedClipboardEntry(x.Name, parentPath, connection.Identifier, x is FileViewModel ? ItemType.File : ItemType.Directory));
     }
 
-    public async Task<Result> Paste(List<CopiedClipboardEntry> items, IMutableDirectory destination)
+    private async Task<Result> Paste(List<CopiedClipboardEntry> items, IMutableDirectory destination)
     {
         var transferItemResult = await GetAction(items, destination)
             .Map(action => (ITransferItem)new TransferItem($"Copiando {action.Actions.Count} elementos a {destination}", action));
@@ -113,17 +122,21 @@ public class ClipboardService : IClipboardService
         return combine.Map(actions => new CompositeAction(actions.ToArray()));
     }
 
-    private Task<Result<IAction<LongProgress>>> ToCopyAction(CopiedClipboardEntry entry, IMutableDirectory directory)
+    private async Task<Result<IAction<LongProgress>>> ToCopyAction(CopiedClipboardEntry entry, IMutableDirectory directory)
     {
-        var source = FromEntry(entry);
-        var destination = directory.Get(entry.Name);
+        var source = await FromEntry(entry);
+        var destination = await directory.CreateFile(entry.Name);
 
         return source.CombineAndMap(destination, (src, dst) => (IAction<LongProgress>)new CopyFileAction(src, dst));
     }
 
     private Task<Result<IFile>> FromEntry(CopiedClipboardEntry entry)
     {
-        var folder = FileSystems[entry.FileSystemKey].GetDirectory((ZafiroPath)entry.ParentPath).Map(x => x.Value);
-        return folder.Bind(x => x.Files().Bind(x => x.TryFirst(x => Equals(x.Name, entry.Name)).ToResult("Not found")));
+        var plugin = Connections.First(plugin => plugin.Identifier == entry.FileSystemKey);
+        var folder = plugin.FileSystem.GetDirectory(entry.ParentPath);
+        return folder
+            .Map(x => x.GetFile(entry.Name))
+            .Bind(x => x
+                .Map(file => file.AsReadOnly()));
     }
 }

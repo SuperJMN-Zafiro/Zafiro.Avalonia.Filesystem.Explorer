@@ -1,17 +1,25 @@
+using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
+using System.Net.Http;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
+using Avalonia.Logging;
 using Avalonia.Markup.Xaml;
 using SampleFileExplorer.ViewModels;
 using SampleFileExplorer.Views;
+using Serilog;
 using Zafiro.Avalonia.Dialogs.Simple;
+using Zafiro.Avalonia.FileExplorer.Core;
 using Zafiro.Avalonia.FileExplorer.Core.Clipboard;
 using Zafiro.Avalonia.FileExplorer.Core.Transfers;
 using Zafiro.Avalonia.Mixins;
 using Zafiro.Avalonia.Notifications;
 using Zafiro.FileSystem.Local;
+using Zafiro.FileSystem.SeaweedFS.Filer.Client;
+using Zafiro.Misc;
+using FileSystem = Zafiro.FileSystem.Local.FileSystem;
 
 namespace SampleFileExplorer;
 
@@ -32,20 +40,30 @@ public class App : Application
 
     private void ConnectRealApp()
     {
+        Log.Logger = new LoggerConfiguration()
+            .WriteTo.Console()
+            .CreateLogger();
+        
         this.Connect(
             () => new MainView(),
             mv =>
             {
                 var topLevel = TopLevel.GetTopLevel(mv)!;
                 var notificationService = new NotificationService(new WindowNotificationManager(topLevel) { Position = NotificationPosition.BottomRight });
-                var dotNetFileSystem = new DotNetMutableFileSystem(new FileSystem());
+                var handler = LoggerExtensions.GetHandler(Log.Logger);
+                var seaweedfs = new Zafiro.FileSystem.SeaweedFS.FileSystem(new SeaweedFSClient(new System.Net.Http.HttpClient(handler)
+                {
+                    BaseAddress = new Uri("http://192.168.1.29:8888"),
+                }));
                 var dialogService = new DesktopDialog(this);
                 ITransferManager transferManager = new TransferManager();
-                var clipboardService = new ClipboardService(topLevel.Clipboard!, transferManager, new Dictionary<string, Zafiro.FileSystem.Mutable.IMutableFileSystem>()
-                {
-                    ["local"] = new DotNetMutableFileSystem(new FileSystem()),
-                });
-                return new MainViewModel(dotNetFileSystem, notificationService, dialogService, clipboardService, transferManager);
+                List<FileSystemConnection> connections = 
+                [
+                    new FileSystemConnection("local", "Local", new  FileSystem(new System.IO.Abstractions.FileSystem())),
+                    new FileSystemConnection("seaweedfs", "SeaweedFS", seaweedfs)
+                ];
+                var clipboardService = new ClipboardService(topLevel.Clipboard!, transferManager, connections);
+                return new MainViewModel(connections, notificationService, dialogService, clipboardService, transferManager);
             }, () => new MainWindow());
     }
 
@@ -57,14 +75,12 @@ public class App : Application
             {
                 var topLevel = TopLevel.GetTopLevel(mv)!;
                 var notificationService = new NotificationService(new WindowNotificationManager(topLevel));
-                var dotNetFileSystem = new DotNetMutableFileSystem(new FileSystem());
-                var dialogService = new DesktopDialog(this);
-                ITransferManager transferManager = new TransferManager();
-                var clipboardService = new ClipboardService(topLevel.Clipboard!, transferManager, new Dictionary<string, Zafiro.FileSystem.Mutable.IMutableFileSystem>()
+                var fs = new Zafiro.FileSystem.SeaweedFS.FileSystem(new SeaweedFSClient(new System.Net.Http.HttpClient()
                 {
-                    ["local"] = new DotNetMutableFileSystem(new FileSystem()),
-                });
-                return new TestViewModel(dotNetFileSystem, notificationService);
+                    BaseAddress = new Uri("http://192.168.1.29:8888"),
+                    Timeout = TimeSpan.FromHours(12),
+                }));
+                return new TestViewModel(fs, notificationService);
             }, () => new MainWindow());
     }
 }

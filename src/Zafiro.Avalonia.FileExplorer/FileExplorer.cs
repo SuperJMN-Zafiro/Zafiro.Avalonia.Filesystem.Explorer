@@ -13,14 +13,14 @@ public class FileExplorer : ReactiveObject
 {
     private readonly ObservableAsPropertyHelper<DirectoryContentsViewModel> contents;
 
-    public FileExplorer(IMutableFileSystem mutableFileSystem, INotificationService notificationService, IDialog dialog,
+    public FileExplorer(FileSystemConnection connection, IMutableFileSystem mutableFileSystem, INotificationService notificationService, IDialog dialog,
         IClipboardService clipboardService, ITransferManager transferManager)
     {
         MutableFileSystem = mutableFileSystem;
         TransferManager = transferManager;
         PathNavigator = new PathNavigatorViewModel(mutableFileSystem, notificationService);
 
-        var context = new ExplorerContext(PathNavigator, TransferManager, notificationService, mutableFileSystem, dialog, clipboardService);
+        var context = new ExplorerContext(PathNavigator, TransferManager, notificationService, dialog, clipboardService, connection);
 
         ToolBar = new ToolBarViewModel(context);
         contents = context.Directory.ToProperty(this, x => x.Contents);

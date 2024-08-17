@@ -23,7 +23,7 @@ public class DirectoryViewModel: ReactiveObject, IDirectoryItem
         
         Delete = ReactiveCommand.CreateFromTask(() =>
         {
-            return directory.Delete().Tap(() => deleteSubject.OnNext(Unit.Default));
+            return parent.Value.DeleteSubdirectory(Directory.Name).Tap(() => deleteSubject.OnNext(Unit.Default));
         });
 
         Delete.HandleErrorsWith(context.NotificationService);

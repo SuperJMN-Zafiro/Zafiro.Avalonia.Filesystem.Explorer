@@ -1,6 +1,13 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-    <PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+        <OutputType>Exe</OutputType>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
         <OutputType>WinExe</OutputType>
+    </PropertyGroup>
+    
+    <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
         <Nullable>enable</Nullable>
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
@@ -9,7 +16,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="Models\"/>
         <AvaloniaResource Include="Assets\**"/>
     </ItemGroup>
 
@@ -21,10 +27,15 @@
         <!--Condition below is needed to remove Avalonia.Diagnostics package from build output in Release configuration.-->
         <PackageReference Condition="'$(Configuration)' == 'Debug'" Include="Avalonia.Diagnostics" Version="$(AvaloniaVersion)"/>
         <PackageReference Include="Avalonia.ReactiveUI" Version="$(AvaloniaVersion)"/>
+        <PackageReference Include="Avalonia.Xaml.Behaviors" Version="11.0.10.9" />
+        <PackageReference Include="HttpClient.Extensions.LoggingHttpMessageHandler" Version="1.0.3" />
         <PackageReference Include="ReactiveUI.Fody" Version="19.5.41"/>
+        <PackageReference Include="Serilog" Version="4.0.1" />
+        <PackageReference Include="Serilog.Sinks.Console" Version="6.0.0" />
         <PackageReference Include="Zafiro.Avalonia" Version="5.0.0" />
         <PackageReference Include="Zafiro.Avalonia.Dialogs" Version="5.0.0" />
-        <PackageReference Include="Zafiro.FileSystem.Local" Version="7.0.0" />
+        <PackageReference Include="Zafiro.FileSystem.Local" Version="9.0.0" />
+        <PackageReference Include="Zafiro.FileSystem.SeaweedFS" Version="9.0.0" />
     </ItemGroup>
 
     <ItemGroup>
