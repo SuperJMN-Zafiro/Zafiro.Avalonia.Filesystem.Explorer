@@ -5,8 +5,10 @@ using System.Net.Http;
 using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.Notifications;
+using Avalonia.Controls.Templates;
 using Avalonia.Logging;
 using Avalonia.Markup.Xaml;
+using CSharpFunctionalExtensions;
 using SampleFileExplorer.ViewModels;
 using SampleFileExplorer.Views;
 using Serilog;
@@ -55,7 +57,7 @@ public class App : Application
                 {
                     BaseAddress = new Uri("http://192.168.1.29:8888"),
                 }));
-                var dialogService = new DesktopDialog(this);
+                var dialogService = new DesktopDialog(Maybe<DataTemplates>.None);
                 ITransferManager transferManager = new TransferManager();
                 List<FileSystemConnection> connections = 
                 [
