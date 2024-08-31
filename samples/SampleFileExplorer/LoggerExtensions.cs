@@ -14,7 +14,7 @@ public static class LoggerExtensions
 #if DEBUG
         if (OperatingSystem.IsWindows() || OperatingSystem.IsLinux())
         {
-            LoggingHttpMessageHandler handler = new LoggingHttpMessageHandler(new LoggerAdapter(logger));   
+            LoggingHttpMessageHandler handler = new LoggingHttpMessageHandler(new SerilogToMicrosoftLoggerAdapter(logger));   
             handler.InnerHandler = new HttpClientHandler();
             return handler;
         }

@@ -109,7 +109,7 @@ public class ClipboardService : IClipboardService
         transferItemResult.Tap(transferItem =>
         {
             TransferManager.Add(transferItem);
-            transferItem.Transfer.Start.Execute().Subscribe();
+            transferItem.Transfer.StartReactive.Execute().Subscribe();
         });
         
         return transferItemResult;
@@ -118,7 +118,7 @@ public class ClipboardService : IClipboardService
     private Task<Result<CompositeAction>> GetAction(List<CopiedClipboardEntry> items, IMutableDirectory directory)
     {
         var results = items.Select(entry => ToCopyAction(entry, directory));
-        var combine = results.Combine();
+        var combine = FunctionalMixin.CombineInOrder(results);
         return combine.Map(actions => new CompositeAction(actions.ToArray()));
     }
 
