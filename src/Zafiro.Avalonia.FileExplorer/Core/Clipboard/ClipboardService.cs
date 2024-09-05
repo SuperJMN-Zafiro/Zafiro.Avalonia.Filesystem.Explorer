@@ -118,7 +118,7 @@ public class ClipboardService : IClipboardService
     private Task<Result<CompositeAction>> GetAction(List<CopiedClipboardEntry> items, IMutableDirectory directory)
     {
         var results = items.Select(entry => ToCopyAction(entry, directory));
-        var combine = FunctionalMixin.CombineInOrder(results);
+        var combine = results.CombineSequentially();
         return combine.Map(actions => new CompositeAction(actions.ToArray()));
     }
 
